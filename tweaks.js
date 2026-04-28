@@ -231,7 +231,7 @@
       background: #F3E9E1;
     }
     #azur-tweaks .tw-title {
-      font-family: "Newsreader", Georgia, serif;
+      font-family: "Outfit", system-ui, sans-serif;
       font-size: 17px;
       letter-spacing: -0.01em;
       font-weight: 500;
