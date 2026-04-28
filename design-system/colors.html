@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azur Note — Brand Colors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Brand palette — v0.2 (Mint removed) */
+    --azur-deep:    #235770;
+    --azur-mid:     #418EA0;
+    --brick:        #AC2819;
+    --sand:         #F3E9E1;
+
+    /* Semantic roles */
+    --ink:          var(--azur-deep);
+    --accent:       var(--azur-mid);
+    --surface:      var(--sand);
+    --alert:        var(--brick);
+
+    --bg:           #FBFAF7;
+    --rule:         rgba(35, 87, 112, 0.14);
+
+    --font-display: "Newsreader", Georgia, serif;
+    --font-sans:    "Inter Tight", system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 80px 56px 120px;
+  }
+
+  /* -------- Header -------- */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 56px;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--azur-mid);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--azur-mid);
+  }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(35, 87, 112, 0.6);
+    text-align: right;
+    line-height: 1.7;
+  }
+  .changelog {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--brick);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .changelog .strike {
+    text-decoration: line-through;
+    color: rgba(172, 40, 25, 0.55);
+    margin-right: 4px;
+  }
+
+  /* -------- Section labels -------- */
+  .section-label {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 72px 0 24px;
+  }
+  .section-label .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--azur-mid);
+  }
+  .section-label h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .section-label .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    transform: translateY(-4px);
+  }
+
+  /* -------- Primary swatch row -------- */
+  .primary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .primary-row .chip {
+    aspect-ratio: 1 / 1.15;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 22px;
+    position: relative;
+  }
+  .primary-row .chip .role {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 10px;
+  }
+  .primary-row .chip .name {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .primary-row .chip .hex {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .primary-row .chip .tag {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    opacity: 0.6;
+  }
+
+  .c-deep  { background: var(--azur-deep);  color: var(--sand); }
+  .c-mid   { background: var(--azur-mid);   color: #fff; }
+  .c-brick { background: var(--brick);      color: var(--sand); }
+  .c-sand  { background: var(--sand);       color: var(--azur-deep); }
+
+  /* -------- Token table -------- */
+  .tokens {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 2fr;
+    border-top: 1px solid var(--rule);
+  }
+  .tokens .cell {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+  }
+  .tokens .head {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(35, 87, 112, 0.6);
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .tokens code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--azur-deep);
+  }
+  .tokens .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+    display: inline-block;
+    vertical-align: middle;
+    flex: 0 0 auto;
+  }
+  .tokens .cell.retired {
+    opacity: 0.55;
+  }
+  .tokens .cell.retired code {
+    text-decoration: line-through;
+    text-decoration-color: rgba(172, 40, 25, 0.6);
+  }
+  .tokens .retired-tag {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 7px;
+    border: 1px solid rgba(172, 40, 25, 0.35);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brick);
+  }
+
+  /* -------- Usage grid -------- */
+  .usage {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .card {
+    border-radius: 10px;
+    padding: 28px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .card .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .card h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .card p {
+    font-size: 13px;
+    line-height: 1.55;
+    opacity: 0.85;
+  }
+
+  .card-hero {
+    background: var(--azur-deep);
+    color: var(--sand);
+    grid-column: span 2;
+  }
+  .card-hero h3 { font-size: 40px; }
+  .card-hero .tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid rgba(243, 233, 225, 0.3);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .card-sand  { background: var(--sand);  color: var(--azur-deep); }
+  .card-brick { background: var(--brick); color: var(--sand); }
+  .card-mid   { background: var(--azur-mid); color: #fff; }
+  .card-paper { background: var(--bg);    color: var(--azur-deep); border: 1px solid var(--rule); }
+
+  /* -------- Pairings -------- */
+  .pairings {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .pair {
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid transparent;
+  }
+  .pair .pair-name {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .pair .pair-text {
+    font-family: var(--font-display);
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* -------- Tone scale -------- */
+  .scale {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .scale .step {
+    aspect-ratio: 1 / 1.3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
+  .scale .step .n { opacity: 0.6; margin-bottom: 4px; }
+  .scale .step .h { letter-spacing: 0.03em; }
+
+  /* -------- Pill / status swatches -------- */
+  .pills {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .pill-card {
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid transparent;
+  }
+  .pill-card .pill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .pill-card .pill-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-top: 14px;
+  }
+  .pill-card .pill-hexes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    opacity: 0.85;
+  }
+  .pill-card .pill-hexes .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .pill-card .pill-hexes .row .k {
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .ps-authoring { background: #D7EAFF; color: #1E3A5F; }
+  .ps-qc        { background: #EFE4FE; color: #4A2A7A; }
+  .ps-review    { background: #FFEACD; color: #7A4A10; }
+  .ps-approval  { background: #CDEED8; color: #1E5A35; }
+  .ps-archived  { background: rgba(225, 230, 232, 0.7); color: #3A4A52; border-color: var(--rule); }
+
+  .ps-authoring .pill-tag { background: rgba(30, 58, 95, 0.12); }
+  .ps-qc        .pill-tag { background: rgba(74, 42, 122, 0.12); }
+  .ps-review    .pill-tag { background: rgba(122, 74, 16, 0.14); }
+  .ps-approval  .pill-tag { background: rgba(30, 90, 53, 0.14); }
+  .ps-archived  .pill-tag { background: rgba(58, 74, 82, 0.10); }
+
+  /* -------- Callout: Mint retired -------- */
+  .retired-note {
+    margin: 56px 0 0;
+    padding: 22px 26px;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--brick);
+    border-radius: 6px;
+    background: #FBFAF7;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    align-items: center;
+  }
+  .retired-swatch {
+    width: 54px;
+    height: 54px;
+    border-radius: 6px;
+    background: #E5F3E7;
+    position: relative;
+    border: 1px solid var(--rule);
+  }
+  .retired-swatch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top right,
+      transparent 48%,
+      var(--brick) 48%,
+      var(--brick) 52%,
+      transparent 52%
+    );
+    border-radius: 6px;
+  }
+  .retired-note .txt .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brick);
+    margin-bottom: 6px;
+  }
+  .retired-note .txt h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .retired-note .txt p {
+    font-size: 13px;
+    color: rgba(35, 87, 112, 0.75);
+    max-width: 560px;
+  }
+  .retired-note .meta-right {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(35, 87, 112, 0.55);
+    text-align: right;
+    line-height: 1.7;
+  }
+
+  /* -------- Footer -------- */
+  .foot {
+    margin-top: 96px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(35, 87, 112, 0.55);
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <div>
+        <div class="eyebrow">Azur Note · Design System · v0.2</div>
+        <h1>Brand <em>colors</em></h1>
+        <div class="changelog"><span class="strike">Mint · #E5F3E7</span> retired · v0.2 · 23 Apr 2026</div>
+      </div>
+      <div class="meta">
+        4 core hues<br/>
+        Updated 23 Apr 2026<br/>
+        Owner — Design
+      </div>
+    </header>
+
+    <!-- Core palette -->
+    <div class="section-label">
+      <span class="num">01</span>
+      <h2>Core palette</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="primary-row">
+      <div class="chip c-deep">
+        <span class="tag">01</span>
+        <span class="role">Ink · Primary</span>
+        <span class="name">Azur Deep</span>
+        <span class="hex">#235770</span>
+      </div>
+      <div class="chip c-mid">
+        <span class="tag">02</span>
+        <span class="role">Accent</span>
+        <span class="name">Azur Mid</span>
+        <span class="hex">#418EA0</span>
+      </div>
+      <div class="chip c-brick">
+        <span class="tag">03</span>
+        <span class="role">Alert · Highlight</span>
+        <span class="name">Brick</span>
+        <span class="hex">#AC2819</span>
+      </div>
+      <div class="chip c-sand">
+        <span class="tag">04</span>
+        <span class="role">Surface · Paper</span>
+        <span class="name">Sand</span>
+        <span class="hex">#F3E9E1</span>
+      </div>
+    </div>
+
+    <!-- Token reference -->
+    <div class="section-label">
+      <span class="num">02</span>
+      <h2>Tokens</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="tokens">
+      <div class="cell head">Token</div>
+      <div class="cell head">Hex</div>
+      <div class="cell head">Role</div>
+      <div class="cell head">Use for</div>
+
+      <div class="cell"><span class="dot" style="background:#235770"></span><code>--azur-deep</code></div>
+      <div class="cell"><code>#235770</code></div>
+      <div class="cell">Ink / Primary</div>
+      <div class="cell">Body text, primary buttons, logomark, headings</div>
+
+      <div class="cell"><span class="dot" style="background:#418EA0"></span><code>--azur-mid</code></div>
+      <div class="cell"><code>#418EA0</code></div>
+      <div class="cell">Accent</div>
+      <div class="cell">Links, active states, secondary UI, data viz</div>
+
+      <div class="cell"><span class="dot" style="background:#AC2819"></span><code>--brick</code></div>
+      <div class="cell"><code>#AC2819</code></div>
+      <div class="cell">Alert / Highlight</div>
+      <div class="cell">Errors, destructive actions, sparingly for emphasis</div>
+
+      <div class="cell"><span class="dot" style="background:#F3E9E1;border:1px solid var(--rule)"></span><code>--sand</code></div>
+      <div class="cell"><code>#F3E9E1</code></div>
+      <div class="cell">Surface / Paper</div>
+      <div class="cell">Page backgrounds, cards, note surfaces, muted fills</div>
+
+      <!-- Retired -->
+      <div class="cell retired"><span class="dot" style="background:#E5F3E7;border:1px solid var(--rule)"></span><code>--mint</code><span class="retired-tag">Retired</span></div>
+      <div class="cell retired"><code>#E5F3E7</code></div>
+      <div class="cell retired">—</div>
+      <div class="cell retired">Removed in v0.2 · migrate to <code style="margin-left:4px">--sand</code></div>
+    </div>
+
+    <!-- Retirement callout -->
+    <div class="retired-note">
+      <div class="retired-swatch" aria-hidden="true"></div>
+      <div class="txt">
+        <div class="k">Changelog · v0.2</div>
+        <h3>Mint has been removed from the core palette.</h3>
+        <p>Surfaces that previously used <code>--mint</code> should migrate to <code>--sand</code>. The palette now reads as a single warm-neutral paper with two blues and a single alert color — fewer hues, more intent.</p>
+      </div>
+      <div class="meta-right">
+        Was — Surface<br/>
+        #E5F3E7<br/>
+        23 Apr 2026
+      </div>
+    </div>
+
+    <!-- Usage -->
+    <div class="section-label">
+      <span class="num">03</span>
+      <h2>In use</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="usage">
+      <div class="card card-hero">
+        <span class="tag">Primary surface</span>
+        <div>
+          <h3>A quiet place to<br/>think out loud.</h3>
+        </div>
+        <span class="label">Deep · on · Sand</span>
+      </div>
+      <div class="card card-sand">
+        <span class="label">Surface</span>
+        <h3>Note</h3>
+        <p>Sand is the default writing surface — warm, editorial, quiet enough for long reading.</p>
+      </div>
+      <div class="card card-paper">
+        <span class="label">Paper</span>
+        <h3>Page</h3>
+        <p>#FBFAF7 is the page-level background — a touch cooler than Sand, for negative space.</p>
+      </div>
+      <div class="card card-mid">
+        <span class="label">Accent</span>
+        <h3>Link</h3>
+        <p>Mid carries interaction. Use for links, focus rings, and active tabs.</p>
+      </div>
+      <div class="card card-brick">
+        <span class="label">Alert</span>
+        <h3>Delete</h3>
+        <p>Brick is loud on purpose. Reserve it for destructive or critical.</p>
+      </div>
+    </div>
+
+    <!-- Pairings -->
+    <div class="section-label">
+      <span class="num">04</span>
+      <h2>Approved pairings</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="pairings">
+      <div class="pair" style="background:#235770;color:#F3E9E1">
+        <span class="pair-name">Deep / Sand</span>
+        <span class="pair-text">Editorial, grounded, calm.</span>
+      </div>
+      <div class="pair" style="background:#F3E9E1;color:#235770">
+        <span class="pair-name">Sand / Deep</span>
+        <span class="pair-text">Default reading surface.</span>
+      </div>
+      <div class="pair" style="background:#418EA0;color:#F3E9E1">
+        <span class="pair-name">Mid / Sand</span>
+        <span class="pair-text">Active states, controls.</span>
+      </div>
+      <div class="pair" style="background:#F3E9E1;color:#AC2819;border-color:var(--rule)">
+        <span class="pair-name">Sand / Brick</span>
+        <span class="pair-text">Reserved for alerts only.</span>
+      </div>
+    </div>
+
+    <!-- Tone scale -->
+    <div class="section-label">
+      <span class="num">05</span>
+      <h2>Azur Deep — tone scale</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="scale">
+      <div class="step" style="background:oklch(97% 0.01 220);color:#235770"><span class="n">50</span><span class="h">#F2F7F9</span></div>
+      <div class="step" style="background:oklch(93% 0.02 220);color:#235770"><span class="n">100</span><span class="h">#DDE9ED</span></div>
+      <div class="step" style="background:oklch(85% 0.035 220);color:#235770"><span class="n">200</span><span class="h">#B8CDD5</span></div>
+      <div class="step" style="background:oklch(75% 0.05 220);color:#F3E9E1"><span class="n">300</span><span class="h">#8AAEBA</span></div>
+      <div class="step" style="background:oklch(65% 0.065 220);color:#F3E9E1"><span class="n">400</span><span class="h">#5F92A2</span></div>
+      <div class="step" style="background:#418EA0;color:#F3E9E1"><span class="n">500</span><span class="h">#418EA0</span></div>
+      <div class="step" style="background:#235770;color:#F3E9E1"><span class="n">700</span><span class="h">#235770</span></div>
+      <div class="step" style="background:oklch(36% 0.05 220);color:#F3E9E1"><span class="n">800</span><span class="h">#1A4155</span></div>
+      <div class="step" style="background:oklch(26% 0.04 220);color:#F3E9E1"><span class="n">900</span><span class="h">#112C3A</span></div>
+    </div>
+
+    <!-- Project step colors -->
+    <div class="section-label">
+      <span class="num">06</span>
+      <h2>Project step — status pills</h2>
+      <span class="rule"></span>
+    </div>
+
+    <p style="max-width: 720px; font-size: 13px; color: rgba(35,87,112,0.75); margin-bottom: 24px;">
+      Soft-tinted status colors used to label a project's position in the authoring pipeline. Each step pairs a pale background with a deeper foreground drawn from the same hue family — low contrast by design, so a table full of pills reads as quiet metadata, not alarms. These sit outside the core palette; they exist only for the step pipeline.
+    </p>
+
+    <div class="pills">
+      <div class="pill-card ps-authoring">
+        <span class="pill-tag">Authoring</span>
+        <div class="pill-name">Authoring</div>
+        <div class="pill-hexes">
+          <div class="row"><span class="k">bg</span><span>#D7EAFF</span></div>
+          <div class="row"><span class="k">fg</span><span>#1E3A5F</span></div>
+        </div>
+      </div>
+      <div class="pill-card ps-qc">
+        <span class="pill-tag">QC</span>
+        <div class="pill-name">Quality<br/>check</div>
+        <div class="pill-hexes">
+          <div class="row"><span class="k">bg</span><span>#EFE4FE</span></div>
+          <div class="row"><span class="k">fg</span><span>#4A2A7A</span></div>
+        </div>
+      </div>
+      <div class="pill-card ps-review">
+        <span class="pill-tag">Review</span>
+        <div class="pill-name">Review</div>
+        <div class="pill-hexes">
+          <div class="row"><span class="k">bg</span><span>#FFEACD</span></div>
+          <div class="row"><span class="k">fg</span><span>#7A4A10</span></div>
+        </div>
+      </div>
+      <div class="pill-card ps-approval">
+        <span class="pill-tag">Approval</span>
+        <div class="pill-name">Approval</div>
+        <div class="pill-hexes">
+          <div class="row"><span class="k">bg</span><span>#CDEED8</span></div>
+          <div class="row"><span class="k">fg</span><span>#1E5A35</span></div>
+        </div>
+      </div>
+      <div class="pill-card ps-archived">
+        <span class="pill-tag">Archived</span>
+        <div class="pill-name">Archived</div>
+        <div class="pill-hexes">
+          <div class="row"><span class="k">bg</span><span>#E1E6E8 / 70%</span></div>
+          <div class="row"><span class="k">fg</span><span>#3A4A52</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tokens" style="margin-top: 28px;">
+      <div class="cell head">Token</div>
+      <div class="cell head">Hex (bg · fg)</div>
+      <div class="cell head">Role</div>
+      <div class="cell head">Use for</div>
+
+      <div class="cell"><span class="dot" style="background:#D7EAFF;border:1px solid var(--rule)"></span><code>--step-authoring</code></div>
+      <div class="cell"><code>#D7EAFF · #1E3A5F</code></div>
+      <div class="cell">Authoring</div>
+      <div class="cell">Draft in progress — writer owns the doc</div>
+
+      <div class="cell"><span class="dot" style="background:#EFE4FE;border:1px solid var(--rule)"></span><code>--step-qc</code></div>
+      <div class="cell"><code>#EFE4FE · #4A2A7A</code></div>
+      <div class="cell">QC</div>
+      <div class="cell">Quality check — internal editorial review</div>
+
+      <div class="cell"><span class="dot" style="background:#FFEACD;border:1px solid var(--rule)"></span><code>--step-review</code></div>
+      <div class="cell"><code>#FFEACD · #7A4A10</code></div>
+      <div class="cell">Review</div>
+      <div class="cell">Out for client or medical review</div>
+
+      <div class="cell"><span class="dot" style="background:#CDEED8;border:1px solid var(--rule)"></span><code>--step-approval</code></div>
+      <div class="cell"><code>#CDEED8 · #1E5A35</code></div>
+      <div class="cell">Approval</div>
+      <div class="cell">Signed off, ready to submit</div>
+
+      <div class="cell"><span class="dot" style="background:#E1E6E8;border:1px solid var(--rule)"></span><code>--step-archived</code></div>
+      <div class="cell"><code>#E1E6E8B2 · #3A4A52</code></div>
+      <div class="cell">Archived</div>
+      <div class="cell">Closed projects, on hold, historic</div>
+    </div>
+
+    <div class="foot">
+      <span>Azur Note / Design System</span>
+      <span>colors.html · v0.2</span>
+    </div>
+
+  </div>
+</body>
+</html>

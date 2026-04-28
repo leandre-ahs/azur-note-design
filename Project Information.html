@@ -1,0 +1,2670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azur Note — Veltrazine Phase III CSR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     Tokens & primitives — copied verbatim from index.html
+     so the topbar / sidebar / pills / buttons / dots all match.
+     ============================================================ */
+  :root {
+    --azur-deep:  #235770;
+    --azur-mid:   #418EA0;
+    --brick:      #AC2819;
+    --sand:       #F3E9E1;
+    --hover:      rgba(35, 87, 112, 0.06);
+
+    --bg:         #FBFAF7;
+    --rule:       rgba(35, 87, 112, 0.12);
+    --rule-strong:rgba(35, 87, 112, 0.22);
+    --muted:      rgba(35, 87, 112, 0.58);
+
+    --font-display: "Newsreader", Georgia, serif;
+    --font-sans:    "Inter Tight", system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ---------- Top nav (verbatim) ---------- */
+  .topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar .menu-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--azur-deep);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; margin-left: 18px; }
+  .brand .mark { width: 37px; height: 37px; display: grid; place-items: center; line-height: 1; }
+  .brand .mark .logo { display: block; width: 37px; height: 37px; background: url('assets/logo.svg') center / contain no-repeat; }
+  .brand .name { font-family: var(--font-display); font-size: 20px; letter-spacing: -0.01em; }
+  .brand .name em { font-style: normal; font-family: "Outfit", system-ui, sans-serif; font-weight: 300; color: var(--azur-mid); }
+
+  .topbar .spacer { flex: 1; }
+  .topbar .divider { width: 1px; height: 28px; background: var(--rule-strong); margin: 0 20px; }
+
+  .user { display: flex; align-items: center; gap: 12px; }
+  .user .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--sand);
+    color: var(--azur-deep);
+    border: 1px solid var(--rule-strong);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+  .user .who { line-height: 1.2; }
+  .user .who .name { font-size: 13px; font-weight: 500; }
+  .user .who .role {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Buttons (verbatim) ---------- */
+  .btn {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .btn:hover { background: var(--hover); }
+  .btn.primary {
+    background: var(--azur-deep);
+    color: var(--sand);
+    border-color: var(--azur-deep);
+  }
+  .btn.primary:hover { background: #1b4658; }
+  .btn.brick {
+    background: var(--brick);
+    color: var(--sand);
+    border-color: var(--brick);
+  }
+  .btn.brick:hover { background: #8a1e12; }
+
+  /* ---------- Pills, dots (verbatim) ---------- */
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+  .pill.draft     { background: #D7EAFF; color: #1E3A5F; }
+  .pill.qc        { background: #EFE4FE; color: #4A2A7A; }
+  .pill.review    { background: #FFEACD; color: #7A4A10; }
+  .pill.approved  { background: #CDEED8; color: #1E5A35; }
+  .pill.submitted { background: var(--azur-deep); color: var(--sand); }
+  .pill.onhold    { background: rgba(225, 230, 232, 0.7); color: #3A4A52; }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    display: inline-block;
+  }
+  .dot.active  { background: var(--azur-mid); }
+  .dot.red     { background: var(--brick); }
+  .dot.ink     { background: var(--azur-deep); }
+  .dot.muted   { background: rgba(35, 87, 112, 0.3); }
+
+  /* ---------- Sidebar (verbatim) ---------- */
+  .sidebar-scrim {
+    position: fixed; inset: 0;
+    background: rgba(35, 87, 112, 0.28);
+    opacity: 0; pointer-events: none;
+    transition: opacity .24s ease;
+    z-index: 40;
+  }
+  .sidebar-scrim.open { opacity: 1; pointer-events: auto; }
+  .sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    width: 300px;
+    background: var(--bg);
+    border-right: 1px solid var(--rule-strong);
+    transform: translateX(-100%);
+    transition: transform .26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50;
+    display: flex; flex-direction: column;
+    box-shadow: 12px 0 32px rgba(35, 87, 112, 0.08);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-head .brand { margin: 0; }
+  .sidebar-close {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+  }
+  .sidebar-close:hover { background: var(--hover); }
+  .sidebar-nav {
+    flex: 1;
+    padding: 14px 12px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .sidebar-nav .group-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-size: 14px; font-weight: 500;
+    background: transparent; border: 0;
+    text-align: left; width: 100%;
+    font-family: inherit;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--hover); }
+  .nav-item.active { background: var(--hover); }
+  .nav-item.active::before {
+    content: ""; position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3px;
+    background: var(--azur-deep);
+    border-radius: 0 3px 3px 0;
+  }
+  .nav-item .icon {
+    width: 18px; height: 18px;
+    display: grid; place-items: center;
+    color: var(--azur-mid);
+  }
+  .nav-item .badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: rgba(35,87,112,0.06);
+    padding: 2px 7px;
+    border-radius: 100px;
+  }
+  .sidebar-foot {
+    border-top: 1px solid var(--rule);
+    padding: 10px 12px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  /* ---------- Profile menu (verbatim) ---------- */
+  .user-wrap { position: relative; }
+  .user-trigger {
+    display: flex; align-items: center; gap: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 4px 6px 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-family: inherit;
+  }
+  .user-trigger:hover { background: var(--hover); border-color: var(--rule); }
+  .profile-menu {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    min-width: 220px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(35, 87, 112, 0.14);
+    padding: 6px;
+    z-index: 60;
+    display: none;
+  }
+  .user-wrap.open .profile-menu { display: block; }
+  .profile-menu .p-head {
+    padding: 12px 12px 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 4px;
+  }
+  .profile-menu .p-head .name { font-weight: 500; font-size: 14px; color: var(--azur-deep); }
+  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .profile-menu .p-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: var(--azur-deep);
+    font-size: 13px;
+    cursor: pointer;
+    background: transparent; border: 0;
+    width: 100%; text-align: left;
+    font-family: inherit;
+  }
+  .profile-menu .p-item:hover { background: var(--hover); }
+  .profile-menu .p-item.danger { color: var(--brick); }
+  .profile-menu .p-item.danger:hover { background: rgba(172, 40, 25, 0.08); }
+  .profile-menu .p-divider { height: 1px; background: var(--rule); margin: 4px 6px; }
+
+  /* ---------- Toast (verbatim) ---------- */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--azur-deep);
+    color: var(--sand);
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    z-index: 100;
+    box-shadow: 0 6px 24px rgba(35,87,112,0.2);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ============================================================
+     Project Information page — content
+     Same .page container as Projects Table for consistent flow.
+     ============================================================ */
+  .page {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 28px 32px 48px;
+  }
+
+  /* Breadcrumbs */
+  .crumbs {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .crumbs a {
+    color: var(--azur-mid);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .crumbs a:hover { border-bottom-color: var(--azur-mid); }
+  .crumbs .sep { opacity: 0.6; }
+  .crumbs .here { color: var(--azur-deep); }
+
+  /* Hero header */
+  .proj-head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+  }
+  .proj-head .titles .meta-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .proj-head .code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+  .proj-head h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--azur-deep);
+    text-wrap: pretty;
+    max-width: 28ch;
+  }
+  .proj-head h1 em { font-style: normal; font-family: "Outfit", system-ui, sans-serif; font-weight: 300; color: var(--azur-mid); letter-spacing: -0.01em; }
+  .proj-head .subtitle {
+    margin-top: 4px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 44px;
+    line-height: 1.05;
+    color: var(--azur-mid);
+    letter-spacing: -0.02em;
+  }
+
+  .proj-head .head-side {
+    display: flex; flex-direction: column; gap: 10px;
+    align-items: stretch;
+    min-width: 220px;
+  }
+  .proj-head .head-side .actions-row {
+    display: flex; gap: 8px;
+    justify-content: flex-end;
+  }
+  .proj-head .head-stats {
+    display: flex; gap: 24px;
+    justify-content: flex-end;
+  }
+  .proj-head .head-stats .stat {
+    text-align: right;
+    line-height: 1.2;
+  }
+  .proj-head .head-stats .stat .k {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .proj-head .head-stats .stat .v {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* Step bar (verbatim, taller variant) */
+  .step-track {
+    display: flex; gap: 4px;
+    height: 6px;
+    margin-top: 4px;
+    width: 220px;
+  }
+  .step-track span {
+    flex: 1;
+    background: var(--rule);
+    border-radius: 2px;
+  }
+  .step-track span.done { background: var(--azur-mid); }
+  .step-track span.cur { background: var(--azur-deep); }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+    margin-top: -8px;
+    position: relative;
+  }
+  .tab {
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    padding: 12px 18px 14px;
+    margin-bottom: -1px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color .15s, border-color .15s, background .15s;
+    border-radius: 6px 6px 0 0;
+  }
+  .tab:hover {
+    color: var(--azur-deep);
+    background: var(--hover);
+  }
+  .tab.active {
+    color: var(--azur-deep);
+    border-bottom-color: var(--azur-deep);
+    background: transparent;
+  }
+  .tab .tab-icon {
+    width: 16px; height: 16px;
+    display: grid; place-items: center;
+    color: var(--azur-mid);
+  }
+  .tab.active .tab-icon { color: var(--azur-deep); }
+  .tab .tab-count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: rgba(35,87,112,0.06);
+    padding: 2px 7px;
+    border-radius: 100px;
+    margin-left: 2px;
+  }
+  .tab.active .tab-count {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .tab-empty {
+    padding: 80px 32px;
+    text-align: center;
+    border: 1px dashed var(--rule-strong);
+    border-radius: 12px;
+    background: var(--bg);
+  }
+  .tab-empty .e-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--azur-deep);
+    margin-bottom: 6px;
+  }
+  .tab-empty .e-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Planning tab ---------- */
+  .plan-summary {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 32px;
+    align-items: end;
+    padding: 22px 24px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    margin-bottom: 22px;
+  }
+  .plan-summary .ps-cell {
+    display: flex; flex-direction: column; gap: 4px;
+    min-width: 0;
+  }
+  .plan-summary .ps-k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .plan-summary .ps-v {
+    font-family: var(--font-display);
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+    font-weight: 500;
+  }
+  .plan-summary .ps-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .plan-summary .ps-bar-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px;
+  }
+  .plan-summary .ps-bar-head .ps-k { line-height: 1; }
+  .plan-summary .ps-bar-head .ps-days {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+  }
+  .plan-summary .ps-bar-head .ps-days strong {
+    font-weight: 600;
+  }
+  .plan-summary .ps-bar-head .ps-days .total { color: var(--muted); }
+  .ps-bar {
+    height: 8px;
+    border-radius: 100px;
+    background: var(--rule);
+    overflow: hidden;
+    position: relative;
+  }
+  .ps-bar .ps-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--azur-mid);
+    border-radius: 100px;
+  }
+  .ps-bar.deep .ps-bar-fill { background: var(--azur-deep); }
+
+  /* Phases */
+  .phases {
+    display: flex; flex-direction: column;
+    gap: 12px;
+  }
+  .phase {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .phase.open {
+    border-color: var(--rule-strong);
+    box-shadow: 0 1px 0 rgba(35,87,112,0.02);
+  }
+  .phase-head {
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto auto;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    color: var(--azur-deep);
+  }
+  .phase-head:hover { background: var(--hover); }
+  .phase-head .chev {
+    display: grid; place-items: center;
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    color: var(--azur-mid);
+    transition: transform .2s ease, background .15s;
+  }
+  .phase-head:hover .chev { background: rgba(65,142,160,0.10); }
+  .phase.open .phase-head .chev { transform: rotate(90deg); color: var(--azur-deep); }
+
+  .phase-title {
+    display: flex; flex-direction: column; gap: 2px;
+    min-width: 0;
+  }
+  .phase-title .name {
+    font-family: var(--font-display);
+    font-size: 19px;
+    letter-spacing: -0.005em;
+    color: var(--azur-deep);
+    line-height: 1.1;
+  }
+  .phase-title .sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .phase-dates {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .phase-dates .arr { color: var(--muted); margin: 0 6px; }
+
+  .phase-progress {
+    display: flex; align-items: center; gap: 10px;
+    width: 200px;
+  }
+  .phase-progress .pp-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--rule);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .phase-progress .pp-fill {
+    display: block;
+    height: 100%;
+    background: var(--azur-mid);
+    border-radius: 100px;
+  }
+  .phase-progress .pp-fill.done { background: var(--azur-mid); }
+  .phase-progress .pp-fill.cur { background: var(--azur-deep); }
+  .phase-progress .pp-days {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--azur-deep);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    min-width: 56px;
+    text-align: right;
+  }
+  .phase-progress .pp-days .t { color: var(--muted); }
+
+  .phase-status .pill { margin: 0; }
+
+  .phase-body {
+    padding: 4px 20px 18px 64px;
+    display: flex; flex-direction: column;
+    gap: 2px;
+    border-top: 1px solid var(--rule);
+    margin-top: 0;
+  }
+  .phase-body::before {
+    content: "";
+    display: block; height: 8px;
+  }
+
+  .subtask {
+    display: grid;
+    grid-template-columns: 16px 1fr auto 220px auto;
+    gap: 16px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .subtask:last-child { border-bottom: 0; }
+  .subtask .st-mark {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rule-strong);
+    display: grid; place-items: center;
+    color: var(--sand);
+    background: transparent;
+  }
+  .subtask.done .st-mark {
+    background: var(--azur-mid);
+    border-color: var(--azur-mid);
+  }
+  .subtask.cur .st-mark {
+    background: var(--bg);
+    border-color: var(--azur-deep);
+    box-shadow: inset 0 0 0 3px var(--azur-deep);
+  }
+  .subtask .st-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--azur-deep);
+  }
+  .subtask.done .st-name { color: var(--azur-deep); }
+  .subtask.todo .st-name { color: var(--muted); font-weight: 400; }
+  .subtask .st-dates {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .subtask.todo .st-dates { color: var(--muted); }
+  .subtask .st-dates .arr { color: var(--muted); margin: 0 6px; }
+  .subtask .st-bar-wrap {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .subtask .st-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--rule);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .subtask .st-fill {
+    display: block;
+    height: 100%;
+    border-radius: 100px;
+    background: var(--azur-mid);
+  }
+  .subtask.cur .st-fill { background: var(--azur-deep); }
+  .subtask.todo .st-fill { background: var(--rule-strong); }
+  .subtask .st-days {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--azur-deep);
+    white-space: nowrap;
+    min-width: 56px;
+    text-align: right;
+  }
+  .subtask.todo .st-days { color: var(--muted); }
+  .subtask .st-days .t { color: var(--muted); }
+  .subtask .st-owner {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--azur-deep);
+    color: var(--sand);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 11px;
+    flex: 0 0 auto;
+  }
+  .subtask .st-owner.alt { background: var(--azur-mid); }
+  .subtask .st-owner.tone { background: #7a8a9a; }
+  .subtask .st-owner.warm { background: #a67a52; }
+
+  /* Animate expand */
+  .phase-body { display: none; }
+  .phase.open .phase-body { display: flex; }
+
+  /* ---------- Data storage / file explorer ---------- */
+  .storage-bar {
+    display: flex; align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--bg);
+    margin-bottom: 14px;
+  }
+  .storage-bar .provider {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 10px;
+    border-radius: 100px;
+    background: var(--sand);
+    border: 1px solid var(--rule-strong);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--azur-deep);
+  }
+  .storage-bar .provider .dot { background: #2bb673; }
+  .storage-bar .crumb-path {
+    flex: 1;
+    display: flex; align-items: center; gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--azur-deep);
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .storage-bar .crumb-path .seg {
+    padding: 4px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--azur-mid);
+    background: transparent;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: 0.04em;
+  }
+  .storage-bar .crumb-path .seg:hover { background: var(--hover); color: var(--azur-deep); }
+  .storage-bar .crumb-path .seg.here { color: var(--azur-deep); font-weight: 500; }
+  .storage-bar .crumb-path .sep { color: var(--muted); padding: 0 2px; }
+  .storage-bar .search-wrap {
+    position: relative;
+    width: 220px;
+  }
+  .storage-bar .search-wrap input {
+    width: 100%;
+    height: 32px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    background: var(--bg);
+    padding: 0 10px 0 30px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--azur-deep);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .storage-bar .search-wrap input:focus { border-color: var(--azur-mid); }
+  .storage-bar .search-wrap svg {
+    position: absolute;
+    left: 9px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .storage-bar .ico-btn {
+    width: 32px; height: 32px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+  }
+  .storage-bar .ico-btn:hover { background: var(--hover); }
+  .storage-bar .ico-btn.primary {
+    background: var(--azur-deep);
+    color: var(--sand);
+    border-color: var(--azur-deep);
+    width: auto;
+    padding: 0 12px;
+    gap: 6px;
+    display: inline-flex; align-items: center;
+    font-size: 12px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+
+  .explorer {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+    min-height: 480px;
+  }
+
+  /* Tree pane */
+  .tree-pane {
+    border-right: 1px solid var(--rule);
+    padding: 14px 10px;
+    overflow: auto;
+  }
+  .tree-pane .tree-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 10px 8px;
+  }
+  .tree-node {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-size: 13px;
+    user-select: none;
+  }
+  .tree-node:hover { background: var(--hover); }
+  .tree-node.active {
+    background: var(--hover);
+    font-weight: 500;
+  }
+  .tree-node.active::before {
+    content: ""; width: 3px; height: 16px;
+    background: var(--azur-deep);
+    border-radius: 0 3px 3px 0;
+    margin-left: -10px;
+    margin-right: 7px;
+  }
+  .tree-node .tcaret {
+    width: 14px; height: 14px;
+    display: grid; place-items: center;
+    color: var(--muted);
+    transition: transform .2s;
+    flex: 0 0 auto;
+  }
+  .tree-node.expanded > .tcaret { transform: rotate(90deg); }
+  .tree-node .tcaret.empty { visibility: hidden; }
+  .tree-node .ticon {
+    width: 16px; height: 16px;
+    display: grid; place-items: center;
+    color: var(--azur-mid);
+    flex: 0 0 auto;
+  }
+  .tree-node .tname {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tree-node .tcount {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .tree-children {
+    display: none;
+    margin-left: 18px;
+    border-left: 1px dashed var(--rule);
+    padding-left: 4px;
+  }
+  .tree-node.expanded + .tree-children { display: block; }
+
+  /* File list pane */
+  .files-pane {
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .files-head {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) 110px 160px 32px;
+    gap: 14px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(35,87,112,0.025);
+  }
+  .files-list {
+    overflow: auto;
+    flex: 1;
+  }
+  .file-row {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) 110px 160px 32px;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background .12s;
+  }
+  .file-row:hover { background: var(--hover); }
+  .file-row:last-child { border-bottom: 0; }
+  .file-row .ficon {
+    width: 22px; height: 22px;
+    border-radius: 5px;
+    display: grid; place-items: center;
+    flex: 0 0 auto;
+    background: rgba(65,142,160,0.12);
+    color: var(--azur-mid);
+  }
+  .file-row .ficon.folder { background: rgba(35,87,112,0.10); color: var(--azur-deep); }
+  .file-row .ficon.docx   { background: rgba(30,90,160,0.12); color: #1e5aa0; }
+  .file-row .ficon.pdf    { background: rgba(172,40,25,0.10); color: var(--brick); }
+  .file-row .ficon.xlsx   { background: rgba(30,120,75,0.12); color: #1e7848; }
+  .file-row .ficon.pptx   { background: rgba(214,114,40,0.14); color: #c4691f; }
+  .file-row .ficon.img    { background: rgba(122,90,160,0.12); color: #6a4fa0; }
+
+  .file-row .fname {
+    display: flex; flex-direction: column; gap: 2px;
+    min-width: 0;
+  }
+  .file-row .fname .n {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .file-row .fname .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .file-row .fname .meta .lock {
+    color: var(--brick);
+  }
+  .file-row.folder-row .fname .n { color: var(--azur-deep); }
+
+  .file-row .fsize,
+  .file-row .fmod,
+  .file-row .fowner {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .file-row .fsize.muted,
+  .file-row .fmod.muted { color: var(--muted); }
+  .file-row .fowner {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .file-row .fowner .av {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--azur-deep);
+    color: var(--sand);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 11px;
+    flex: 0 0 auto;
+  }
+  .file-row .fowner .av.alt { background: var(--azur-mid); }
+  .file-row .fowner .av.tone { background: #7a8a9a; }
+  .file-row .fowner .av.warm { background: #a67a52; }
+  .file-row .fowner .nm {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--azur-deep);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .file-row .fmore {
+    color: var(--muted);
+    display: grid; place-items: center;
+    width: 22px; height: 22px;
+    border-radius: 5px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .file-row .fmore:hover { background: var(--hover); color: var(--azur-deep); }
+
+  /* Storage footer (capacity) */
+  .storage-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(35,87,112,0.02);
+  }
+  .storage-foot .cap {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .storage-foot .cap-bar {
+    width: 140px;
+    height: 4px;
+    background: var(--rule);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .storage-foot .cap-fill {
+    display: block;
+    height: 100%;
+    background: var(--azur-mid);
+    width: 28%;
+  }
+  .storage-foot .cap-val { color: var(--azur-deep); letter-spacing: 0.04em; }
+
+  /* ---------- Two-column layout ---------- */
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 980px) {
+    .body-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .card + .card { margin-top: 24px; }
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .card-head h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+  }
+  .card-head .h-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-head .h-meta a {
+    color: var(--azur-mid);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .card-head .h-meta a:hover { border-bottom-color: var(--azur-mid); }
+
+  .card-body {
+    padding: 22px 22px 24px;
+  }
+
+  /* ---------- Field rows (definition list) ---------- */
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 32px;
+  }
+  .fields.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fields.full   { grid-template-columns: 1fr; }
+
+  .field-row {
+    display: flex; flex-direction: column; gap: 5px;
+    min-width: 0;
+  }
+  .field-row .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field-row .v {
+    font-size: 14px;
+    color: var(--azur-deep);
+    font-weight: 500;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .field-row .v.mono {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+  }
+  .field-row .v.muted { color: var(--muted); font-weight: 400; font-family: "Outfit", system-ui, sans-serif; }
+  .field-row .v.sub {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  /* Person row */
+  .person {
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .person .av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--sand);
+    background: var(--azur-deep);
+    flex: 0 0 auto;
+  }
+  .person .av.alt { background: var(--azur-mid); }
+  .person .av.tone { background: #7a8a9a; }
+  .person .av.warm { background: #a67a52; }
+  .person .av.red { background: var(--brick); }
+  .person .n { font-weight: 500; }
+  .person .r {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: block;
+    line-height: 1.2;
+    margin-top: 1px;
+  }
+
+  /* Y/N pill */
+  .yn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--muted);
+  }
+  .yn.yes {
+    background: rgba(65, 142, 160, 0.10);
+    color: var(--azur-deep);
+    border-color: rgba(65, 142, 160, 0.4);
+  }
+  .yn.yes::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--azur-mid);
+  }
+  .yn.no::before {
+    content: "—";
+    font-size: 14px;
+    margin-right: 0;
+    margin-top: -2px;
+  }
+
+  /* Reference / SOP chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--rule-strong);
+    background: var(--sand);
+    font-size: 12px;
+    color: var(--azur-deep);
+    font-weight: 500;
+  }
+  .chip svg { color: var(--azur-mid); }
+  .chip.internal { background: transparent; }
+  .chip.internal::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--azur-deep);
+  }
+  .chip.client::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--azur-mid);
+  }
+
+  /* ---------- Side rail ---------- */
+  .side-rail { /* part of normal flow, same card rhythm as main column */ }
+
+  /* Document preview */
+  .preview {
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 18px 14px;
+    position: relative;
+  }
+  .preview .paper {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    aspect-ratio: 8.5 / 11;
+    padding: 22px 24px 16px;
+    box-shadow: 0 14px 32px -16px rgba(35, 87, 112, 0.22),
+                0 4px 12px -6px rgba(35, 87, 112, 0.14);
+    overflow: hidden;
+    position: relative;
+    cursor: zoom-in;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .preview .paper:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px -16px rgba(35, 87, 112, 0.28),
+                0 6px 16px -6px rgba(35, 87, 112, 0.18);
+  }
+  .preview .paper .ph-h {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--azur-deep);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .preview .paper .ph-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .preview .paper .ph-rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 10px 0 12px;
+  }
+  .preview .paper .ph-block {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-bottom: 10px;
+  }
+  .preview .paper .ph-line {
+    height: 5px;
+    border-radius: 2px;
+    background: rgba(35,87,112, 0.10);
+  }
+  .preview .paper .ph-line.short { width: 60%; }
+  .preview .paper .ph-line.mid { width: 84%; }
+  .preview .paper .ph-h2 {
+    font-family: var(--font-display);
+    font-size: 10px;
+    color: var(--azur-deep);
+    margin: 8px 0 4px;
+  }
+  .preview .paper .ph-bar {
+    height: 36px;
+    margin-top: 6px;
+    border-radius: 4px;
+    background: linear-gradient(90deg,
+      rgba(65,142,160,0.18) 0%,
+      rgba(65,142,160,0.18) 38%,
+      rgba(35,87,112, 0.10) 38%,
+      rgba(35,87,112, 0.10) 100%);
+  }
+  .preview .paper .corner {
+    position: absolute;
+    top: 0; right: 0;
+    width: 26px; height: 26px;
+    background: linear-gradient(225deg, var(--sand) 50%, transparent 50%);
+  }
+  .preview .meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .preview .meta .v { color: var(--azur-deep); font-weight: 500; }
+
+  .preview .open-btn {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: rgba(251, 250, 247, 0.96);
+    border: 1px solid var(--rule-strong);
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .15s;
+  }
+  .preview:hover .open-btn { opacity: 1; }
+
+  /* Status block in side rail */
+  .status-block {
+    padding: 18px 22px 20px;
+  }
+  .status-block .row {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .status-block .row .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .status-block .progress-line {
+    display: flex; gap: 4px; align-items: center;
+    margin-top: 14px;
+  }
+  .status-block .progress-line .seg {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--rule);
+    position: relative;
+  }
+  .status-block .progress-line .seg.done { background: var(--azur-mid); }
+  .status-block .progress-line .seg.cur { background: var(--azur-deep); }
+  .status-block .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .status-block .progress-labels span.cur { color: var(--azur-deep); font-weight: 600; }
+  .status-block .progress-labels span.done { color: var(--azur-mid); }
+
+  .status-block .next {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .status-block .next strong {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--azur-deep);
+    text-transform: none;
+    letter-spacing: normal;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .status-block .next .due { color: var(--brick); font-weight: 600; }
+
+  /* People mini-card */
+  .people-mini { display: flex; flex-direction: column; gap: 14px; padding: 18px 22px 20px; }
+  .people-mini .person { width: 100%; }
+  .people-mini .person .body { display: flex; flex-direction: column; }
+  .people-mini .person .body .role-line {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Members tab ---------- */
+  .members-card .card-head h2 { font-size: 22px; }
+  .member-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .member-row {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.4fr) auto;
+    gap: 6px 24px;
+    align-items: center;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .member-row .role-tag {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+  .member-row .member-status {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+  }
+  .member-row .person {
+    grid-row: 1 / span 2;
+  }
+  .member-row:last-child { border-bottom: 0; }
+  .member-row:hover { background: var(--hover); }
+
+  .member-row .person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .member-row .person .av {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+  .member-row .person .body {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    min-width: 0;
+  }
+  .member-row .person .body .n {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--azur-deep);
+  }
+  .member-row .person .body .email {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .role-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(35, 87, 112, 0.06);
+    border: 1px solid var(--rule-strong);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--azur-deep);
+    white-space: nowrap;
+  }
+  .role-tag::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--azur-deep);
+    flex: 0 0 auto;
+  }
+  .role-tag.client {
+    background: rgba(172, 40, 25, 0.06);
+    border-color: rgba(172, 40, 25, 0.3);
+    color: var(--brick);
+  }
+  .role-tag.client::before { background: var(--brick); }
+
+  .member-meta {
+    font-size: 13px;
+    color: var(--azur-deep);
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .member-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .members-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+  .members-actions-top {
+    margin-top: 0;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 880px) {
+    .member-row {
+      grid-template-columns: 1fr auto;
+      gap: 8px 16px;
+    }
+    .member-row .role-tag { justify-self: end; }
+    .member-row .member-status { justify-self: end; }
+  }
+
+  /* ============================================================
+     Footer
+     ============================================================ */
+
+
+  /* hide-side-rail-when-banner-hero already showing preview */
+
+  /* Footer */
+  .foot {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .foot .leaf {
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--azur-mid);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* ---------- end styles ---------- */
+</style>
+</head>
+<body>
+
+  <!-- ===================== Sidebar ===================== -->
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+        <div class="name">Azur <em>Note</em></div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="group-label">Workspace</span>
+      <button class="nav-item active" data-nav="projects">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5h5l1.5 1.5h6.5v8.5a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1v-10z"/></svg></span>
+        Projects
+        <span class="badge">24</span>
+      </button>
+      <button class="nav-item" data-nav="clients">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.5V13a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1.5"/><circle cx="7" cy="6" r="2.4"/><path d="M11.5 14.5V13a2.8 2.8 0 0 0-2-2.7"/><circle cx="12.5" cy="6.5" r="2"/></svg></span>
+        Clients
+        <span class="badge">12</span>
+      </button>
+      <button class="nav-item" data-nav="members">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6.5" r="2.6"/><path d="M3.5 14.5a5.5 5.5 0 0 1 11 0"/></svg></span>
+        Members
+        <span class="badge">8</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="nav-item" data-nav="help">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><path d="M7 7.2a2 2 0 0 1 3.9.5c0 1.3-2 1.6-2 2.8"/><circle cx="9" cy="12.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
+        Help &amp; feedback
+      </button>
+      <button class="nav-item" data-nav="settings">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="2.2"/><path d="M14.5 9a5.6 5.6 0 0 0-.1-1l1.4-1-1.2-2-1.7.5a5.5 5.5 0 0 0-1.7-1l-.3-1.7H8.1L7.8 4.5a5.5 5.5 0 0 0-1.7 1l-1.7-.5-1.2 2 1.4 1a5.6 5.6 0 0 0 0 2l-1.4 1 1.2 2 1.7-.5a5.5 5.5 0 0 0 1.7 1l.3 1.7h1.8l.3-1.7a5.5 5.5 0 0 0 1.7-1l1.7.5 1.2-2-1.4-1c.07-.33.1-.66.1-1z"/></svg></span>
+        Settings
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===================== Top nav ===================== -->
+  <nav class="topbar" aria-label="Primary">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <path d="M1 1h14M1 6h14M1 11h14"/>
+      </svg>
+    </button>
+
+    <div class="brand">
+      <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+      <div class="name">Azur <em>Note</em></div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="divider"></div>
+
+    <div class="user-wrap" id="userWrap">
+      <button class="user-trigger" id="userTrigger" aria-haspopup="menu" aria-expanded="false">
+        <div class="who">
+          <div class="name">A. Moreau</div>
+          <div class="role">Medical writer</div>
+        </div>
+        <div class="avatar">A</div>
+      </button>
+      <div class="profile-menu" role="menu">
+        <div class="p-head">
+          <div class="name">Alex Moreau</div>
+          <div class="mail">alex.moreau@azurnote.co</div>
+        </div>
+        <button class="p-item" data-action="profile" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M2.5 11.5a4.5 4.5 0 0 1 9 0"/></svg>
+          Profile
+        </button>
+        <button class="p-item" data-action="settings" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="1.6"/><path d="M11.5 7a4.4 4.4 0 0 0-.1-.8l1-.8-.8-1.4-1.3.4a4.4 4.4 0 0 0-1.4-.8L8.6 2.5H6.4l-.3 1.2a4.4 4.4 0 0 0-1.4.8l-1.3-.4-.8 1.4 1 .8A4.4 4.4 0 0 0 3.5 7"/></svg>
+          Settings
+        </button>
+        <div class="p-divider"></div>
+        <button class="p-item danger" data-action="logout" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3M9 4l3 3-3 3M5 7h7"/></svg>
+          Log out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== Page ===================== -->
+  <main class="page">
+
+    <!-- Breadcrumbs -->
+    <div class="crumbs">
+      <a href="index.html">Projects</a>
+      <span class="sep">›</span>
+      <span>Heliocare Pharma</span>
+      <span class="sep">›</span>
+      <span class="here">Veltrazine Phase III CSR</span>
+    </div>
+
+    <!-- Header (default variant: "header") -->
+    <header class="proj-head">
+      <div class="titles">
+        <div class="meta-row">
+          <span class="pill review">Review</span>
+          <span class="dot active" title="Active"></span>
+          <span class="code">PRJ-2041 · HCP-2026-04</span>
+        </div>
+        <h1>Veltrazine Phase III</h1>
+        <div class="subtitle">Clinical Study Report</div>
+      </div>
+      <div class="head-side">
+        <div class="actions-row">
+          <button class="btn" id="downloadBtn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1.5v8M3.5 6.5l3.5 3.5 3.5-3.5M2 12.5h10"/></svg>
+            Download
+          </button>
+          <button class="btn primary" id="reviewBtn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7l3 3 7-7"/></svg>
+            Continue review
+          </button>
+        </div>
+        <div class="head-stats">
+          <div class="stat">
+            <div class="k">Created</div>
+            <div class="v">04 Sep 25</div>
+          </div>
+          <div class="stat">
+            <div class="k">Updated</div>
+            <div class="v">26 Apr 26</div>
+          </div>
+          <div class="stat">
+            <div class="k">Due</div>
+            <div class="v" style="color: var(--brick)">30 May 26</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Project sections">
+      <button class="tab active" role="tab" aria-selected="true" data-tab="information">
+        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 6.2v3.6M7 4.2v.2"/></svg></span>
+        Information
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="planning">
+        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2.8" width="10" height="9.5" rx="1.2"/><path d="M2 5.5h10M4.5 1.5v2M9.5 1.5v2"/></svg></span>
+        Planning
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="storage">
+        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="7" cy="3.5" rx="4.8" ry="1.8"/><path d="M2.2 3.5v7c0 1 2.15 1.8 4.8 1.8s4.8-.8 4.8-1.8v-7M2.2 7c0 1 2.15 1.8 4.8 1.8s4.8-.8 4.8-1.8"/></svg></span>
+        Data storage
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="members">
+        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="5.5" r="2.2"/><path d="M1.5 11.5a4 4 0 0 1 8 0"/><circle cx="10" cy="5" r="1.6"/><path d="M10 8a3 3 0 0 1 2.5 3.5"/></svg></span>
+        Members
+        <span class="tab-count">6</span>
+      </button>
+    </div>
+
+    <div class="body-grid">
+
+      <!-- ============== LEFT COLUMN ============== -->
+      <div class="main-col">
+
+        <!-- Information panel -->
+        <div class="tab-panel active" id="panel-information" role="tabpanel">
+
+        <!-- Project information -->
+        <section class="card">
+          <div class="card-head">
+            <h2>Project information</h2>
+            <div class="h-meta"><a href="#" data-action="edit">Edit</a></div>
+          </div>
+          <div class="card-body">
+            <div class="fields">
+              <div class="field-row">
+                <span class="k">Document type</span>
+                <span class="v">Clinical Study Report (CSR)</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Phase</span>
+                <span class="v">Phase III</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Project manager</span>
+                <span class="v">
+                  <span class="person">
+                    <span class="av alt">L</span>
+                    <span class="body">
+                      <span class="n">L. Sørensen</span>
+                      <span class="role-line" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Senior PM</span>
+                    </span>
+                  </span>
+                </span>
+              </div>
+              <div class="field-row">
+                <span class="k">Lead writer</span>
+                <span class="v">
+                  <span class="person">
+                    <span class="av">M</span>
+                    <span class="body">
+                      <span class="n">M. Okafor</span>
+                      <span class="role-line" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Medical writer III</span>
+                    </span>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Client -->
+        <section class="card">
+          <div class="card-head">
+            <h2>Client</h2>
+            <div class="h-meta"><a href="#" data-action="edit">Edit</a></div>
+          </div>
+          <div class="card-body">
+            <div class="fields">
+              <div class="field-row">
+                <span class="k">Client</span>
+                <span class="v">
+                  <span style="display:inline-flex;align-items:center;gap:8px;">
+                    <span class="dot active"></span>
+                    Heliocare Pharma
+                  </span>
+                  <span class="v sub">CL-0014 · Active since 2023</span>
+                </span>
+              </div>
+              <div class="field-row">
+                <span class="k">Sponsor</span>
+                <span class="v">Heliocare Pharma — Clinical Development</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Main client contact</span>
+                <span class="v">
+                  <span class="person">
+                    <span class="av tone">D</span>
+                    <span class="body">
+                      <span class="n">Dr. D. Halberg</span>
+                      <span class="role-line" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Director, Medical Affairs</span>
+                    </span>
+                  </span>
+                </span>
+              </div>
+              <div class="field-row">
+                <span class="k">Client project code</span>
+                <span class="v mono">HCP-VLZ-CSR-03</span>
+              </div>
+              <div class="field-row">
+                <span class="k">SOPs in use</span>
+                <span class="v">
+                  <div class="chips">
+                    <span class="chip client">Heliocare</span>
+                    <span class="chip internal">Azur Health Science</span>
+                  </div>
+                </span>
+              </div>
+              <div class="field-row">
+                <span class="k">Style guide</span>
+                <span class="v">
+                  <div class="chips">
+                    <span class="chip">
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 1.5h5l1.5 1.5v6h-7v-7.5z M7 1.5v1.5h1.5"/></svg>
+                      Heliocare Style v3.2
+                    </span>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Medical information -->
+        <section class="card">
+          <div class="card-head">
+            <h2>Medical information</h2>
+            <div class="h-meta"><a href="#" data-action="edit">Edit</a></div>
+          </div>
+          <div class="card-body">
+            <div class="fields">
+              <div class="field-row">
+                <span class="k">Medical indication</span>
+                <span class="v">Treatment-resistant hypertension</span>
+                <span class="v sub">Adults with uncontrolled BP on ≥3 antihypertensives</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Therapy name</span>
+                <span class="v">Veltrazine <span style="color:var(--muted);font-weight:400;">(VLZ-204)</span></span>
+                <span class="v sub">Selective endothelin-A receptor antagonist</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Phase</span>
+                <span class="v">Phase III · Confirmatory</span>
+              </div>
+            </div>
+            <div class="fields cols-3" style="margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--rule);">
+              <div class="field-row">
+                <span class="k">Rare disease</span>
+                <span class="v"><span class="yn no">No</span></span>
+              </div>
+              <div class="field-row">
+                <span class="k">Gene therapy</span>
+                <span class="v"><span class="yn no">No</span></span>
+              </div>
+              <div class="field-row">
+                <span class="k">Medical device</span>
+                <span class="v"><span class="yn no">No</span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        </div>
+        <!-- /information panel -->
+
+        <!-- Planning panel -->
+        <div class="tab-panel" id="panel-planning" role="tabpanel" hidden>
+
+          <!-- Summary header -->
+          <div class="plan-summary">
+            <div class="ps-cell">
+              <span class="ps-k">Start date</span>
+              <span class="ps-v">04 Sep 25</span>
+            </div>
+            <div class="ps-cell">
+              <span class="ps-k">End date</span>
+              <span class="ps-v">30 May 26</span>
+            </div>
+            <div class="ps-cell ps-bar-wrap">
+              <div class="ps-bar-head">
+                <span class="ps-k">Project progress</span>
+                <span class="ps-days"><strong>168</strong> <span class="total">/ 268 days</span></span>
+              </div>
+              <div class="ps-bar deep"><div class="ps-bar-fill" style="width: 62.6%;"></div></div>
+            </div>
+          </div>
+
+          <!-- Phases -->
+          <div class="phases">
+
+            <!-- Draft 1 (done) -->
+            <div class="phase">
+              <button class="phase-head" aria-expanded="false">
+                <span class="chev">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5l4 3.5-4 3.5"/></svg>
+                </span>
+                <span class="phase-title">
+                  <span class="name">Draft 1</span>
+                  <span class="sub">5 subtasks · Authoring + QC</span>
+                </span>
+                <span class="phase-dates">04 Sep 25 <span class="arr">→</span> 18 Dec 25</span>
+                <span class="phase-progress">
+                  <span class="pp-bar"><span class="pp-fill done" style="width:100%;"></span></span>
+                  <span class="pp-days"><strong>105</strong><span class="t"> / 105</span></span>
+                </span>
+                <span class="phase-status"><span class="pill approved">Complete</span></span>
+              </button>
+              <div class="phase-body">
+                <div class="subtask done">
+                  <span class="st-mark">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                  </span>
+                  <span class="st-name">Outline &amp; data lock</span>
+                  <span class="st-dates">04 Sep 25 <span class="arr">→</span> 22 Sep 25</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
+                  <span class="st-days"><strong>18</strong><span class="t"> / 18 d</span></span>
+                </div>
+                <div class="subtask done">
+                  <span class="st-mark">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                  </span>
+                  <span class="st-name">Authoring</span>
+                  <span class="st-dates">23 Sep 25 <span class="arr">→</span> 14 Nov 25</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
+                  <span class="st-days"><strong>53</strong><span class="t"> / 53 d</span></span>
+                </div>
+                <div class="subtask done">
+                  <span class="st-mark">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                  </span>
+                  <span class="st-name">Internal QC</span>
+                  <span class="st-dates">15 Nov 25 <span class="arr">→</span> 28 Nov 25</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
+                  <span class="st-days"><strong>14</strong><span class="t"> / 14 d</span></span>
+                </div>
+                <div class="subtask done">
+                  <span class="st-mark">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                  </span>
+                  <span class="st-name">Senior writer review</span>
+                  <span class="st-dates">29 Nov 25 <span class="arr">→</span> 06 Dec 25</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
+                  <span class="st-days"><strong>8</strong><span class="t"> / 8 d</span></span>
+                </div>
+                <div class="subtask done">
+                  <span class="st-mark">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                  </span>
+                  <span class="st-name">Send to client</span>
+                  <span class="st-dates">15 Dec 25 <span class="arr">→</span> 18 Dec 25</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
+                  <span class="st-days"><strong>4</strong><span class="t"> / 4 d</span></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Draft 2 (in progress, expanded by default) -->
+            <div class="phase open">
+              <button class="phase-head" aria-expanded="true">
+                <span class="chev">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5l4 3.5-4 3.5"/></svg>
+                </span>
+                <span class="phase-title">
+                  <span class="name">Draft 2</span>
+                  <span class="sub">4 subtasks · Client review round 2 in flight</span>
+                </span>
+                <span class="phase-dates">19 Dec 25 <span class="arr">→</span> 30 May 26</span>
+                <span class="phase-progress">
+                  <span class="pp-bar"><span class="pp-fill cur" style="width:38%;"></span></span>
+                  <span class="pp-days"><strong>61</strong><span class="t"> / 162</span></span>
+                </span>
+                <span class="phase-status"><span class="pill review">Review</span></span>
+              </button>
+              <div class="phase-body">
+                <div class="subtask done">
+                  <span class="st-mark">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                  </span>
+                  <span class="st-name">Client review — round 1</span>
+                  <span class="st-dates">19 Dec 25 <span class="arr">→</span> 28 Jan 26</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
+                  <span class="st-days"><strong>41</strong><span class="t"> / 41 d</span></span>
+                </div>
+                <div class="subtask done">
+                  <span class="st-mark">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                  </span>
+                  <span class="st-name">Comment resolution</span>
+                  <span class="st-dates">29 Jan 26 <span class="arr">→</span> 12 Mar 26</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
+                  <span class="st-days"><strong>43</strong><span class="t"> / 43 d</span></span>
+                </div>
+                <div class="subtask cur">
+                  <span class="st-mark"></span>
+                  <span class="st-name">Client review — round 2</span>
+                  <span class="st-dates">29 Mar 26 <span class="arr">→</span> 30 May 26</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:48%;"></span></span></span>
+                  <span class="st-days"><strong>30</strong><span class="t"> / 63 d</span></span>
+                </div>
+                <div class="subtask todo">
+                  <span class="st-mark"></span>
+                  <span class="st-name">Final QC pass</span>
+                  <span class="st-dates">25 May 26 <span class="arr">→</span> 30 May 26</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 6 d</span></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Final version (upcoming) -->
+            <div class="phase">
+              <button class="phase-head" aria-expanded="false">
+                <span class="chev">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5l4 3.5-4 3.5"/></svg>
+                </span>
+                <span class="phase-title">
+                  <span class="name">Final version</span>
+                  <span class="sub">3 subtasks · Approval &amp; submission</span>
+                </span>
+                <span class="phase-dates">01 Jun 26 <span class="arr">→</span> 26 Jun 26</span>
+                <span class="phase-progress">
+                  <span class="pp-bar"><span class="pp-fill" style="width:0%;"></span></span>
+                  <span class="pp-days"><strong>0</strong><span class="t"> / 26</span></span>
+                </span>
+                <span class="phase-status"><span class="pill onhold">Upcoming</span></span>
+              </button>
+              <div class="phase-body">
+                <div class="subtask todo">
+                  <span class="st-mark"></span>
+                  <span class="st-name">Sponsor sign-off</span>
+                  <span class="st-dates">01 Jun 26 <span class="arr">→</span> 10 Jun 26</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 10 d</span></span>
+                </div>
+                <div class="subtask todo">
+                  <span class="st-mark"></span>
+                  <span class="st-name">PDF finalisation &amp; eCTD prep</span>
+                  <span class="st-dates">11 Jun 26 <span class="arr">→</span> 20 Jun 26</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 10 d</span></span>
+                </div>
+                <div class="subtask todo">
+                  <span class="st-mark"></span>
+                  <span class="st-name">Submission to regulator</span>
+                  <span class="st-dates">22 Jun 26 <span class="arr">→</span> 26 Jun 26</span>
+                  <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 5 d</span></span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Data storage panel -->
+        <div class="tab-panel" id="panel-storage" role="tabpanel" hidden>
+
+          <!-- Toolbar -->
+          <div class="storage-bar">
+            <span class="provider"><span class="dot"></span> Huddle</span>
+            <div class="crumb-path">
+              <button class="seg">Heliocare</button>
+              <span class="sep">/</span>
+              <button class="seg">Veltrazine Phase III</button>
+              <span class="sep">/</span>
+              <button class="seg here">CSR</button>
+            </div>
+            <div class="search-wrap">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="5.5" cy="5.5" r="3.6"/><path d="M8.4 8.4l3 3"/></svg>
+              <input type="text" placeholder="Search this folder…" />
+            </div>
+            <button class="ico-btn" title="Refresh">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 4.5A4.5 4.5 0 1 0 12 9M11.5 1.8v2.7H8.8"/></svg>
+            </button>
+            <button class="ico-btn primary" title="Upload">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.5 9V2M3.5 5l3-3 3 3M2 11.5h9"/></svg>
+              Upload
+            </button>
+          </div>
+
+          <!-- Two-pane explorer -->
+          <div class="explorer">
+
+            <!-- Folder tree -->
+            <aside class="tree-pane">
+              <div class="tree-label">Folders</div>
+
+              <div class="tree-node expanded">
+                <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
+                <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                <span class="tname">Veltrazine Phase III</span>
+              </div>
+              <div class="tree-children" style="display:block;">
+                <div class="tree-node">
+                  <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
+                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tname">Protocol</span>
+                </div>
+                <div class="tree-node active">
+                  <span class="tcaret expanded"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
+                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tname">CSR</span>
+                  <span class="tcount">42</span>
+                </div>
+                <div class="tree-children" style="display:block; margin-left: 28px;">
+                  <div class="tree-node">
+                    <span class="tcaret empty"></span>
+                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="tname">01 Drafts</span>
+                  </div>
+                  <div class="tree-node">
+                    <span class="tcaret empty"></span>
+                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="tname">02 QC</span>
+                  </div>
+                  <div class="tree-node">
+                    <span class="tcaret empty"></span>
+                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="tname">03 Client review</span>
+                  </div>
+                  <div class="tree-node">
+                    <span class="tcaret empty"></span>
+                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="tname">04 Final</span>
+                  </div>
+                </div>
+                <div class="tree-node">
+                  <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
+                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tname">Statistical analysis</span>
+                </div>
+                <div class="tree-node">
+                  <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
+                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tname">Source data</span>
+                </div>
+                <div class="tree-node">
+                  <span class="tcaret empty"></span>
+                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tname">Correspondence</span>
+                </div>
+                <div class="tree-node">
+                  <span class="tcaret empty"></span>
+                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tname">Archive</span>
+                </div>
+              </div>
+            </aside>
+
+            <!-- File list -->
+            <div class="files-pane">
+              <div class="files-head">
+                <span></span>
+                <span>Name</span>
+                <span>Size</span>
+                <span>Modified</span>
+                <span></span>
+              </div>
+              <div class="files-list">
+
+                <!-- Sub-folders -->
+                <div class="file-row folder-row">
+                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="fname"><span class="n">01 Drafts</span><span class="meta">12 files</span></span>
+                  <span class="fsize muted">—</span>
+                  <span class="fmod">14 Nov 25</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row folder-row">
+                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="fname"><span class="n">02 QC</span><span class="meta">8 files</span></span>
+                  <span class="fsize muted">—</span>
+                  <span class="fmod">28 Nov 25</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row folder-row">
+                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="fname"><span class="n">03 Client review</span><span class="meta">17 files · shared with Heliocare</span></span>
+                  <span class="fsize muted">—</span>
+                  <span class="fmod">22 Apr 26</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row folder-row">
+                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="fname"><span class="n">04 Final</span><span class="meta">empty</span></span>
+                  <span class="fsize muted">—</span>
+                  <span class="fmod muted">—</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+
+                <!-- Files -->
+                <div class="file-row">
+                  <span class="ficon docx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3.4" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">W</text></svg></span>
+                  <span class="fname"><span class="n">VLZ-CSR_v3-draft_round2.docx</span><span class="meta"><span class="lock">● Locked by M. Okafor</span> · checked out 26 Apr</span></span>
+                  <span class="fsize">4.8 MB</span>
+                  <span class="fmod">26 Apr 26</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row">
+                  <span class="ficon pdf"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">P</text></svg></span>
+                  <span class="fname"><span class="n">VLZ-CSR_v2-clientcomments.pdf</span><span class="meta">received from Heliocare · 14 Apr</span></span>
+                  <span class="fsize">7.2 MB</span>
+                  <span class="fmod">14 Apr 26</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row">
+                  <span class="ficon xlsx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">X</text></svg></span>
+                  <span class="fname"><span class="n">Efficacy_TLF_v3.xlsx</span><span class="meta">linked into §3.2</span></span>
+                  <span class="fsize">12.4 MB</span>
+                  <span class="fmod">02 Apr 26</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row">
+                  <span class="ficon docx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3.4" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">W</text></svg></span>
+                  <span class="fname"><span class="n">VLZ-CSR_v2_with-track-changes.docx</span><span class="meta">archived</span></span>
+                  <span class="fsize">5.1 MB</span>
+                  <span class="fmod">12 Mar 26</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row">
+                  <span class="ficon pptx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">P</text></svg></span>
+                  <span class="fname"><span class="n">CSR_kickoff_deck.pptx</span><span class="meta">internal</span></span>
+                  <span class="fsize">3.6 MB</span>
+                  <span class="fmod">04 Sep 25</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+                <div class="file-row">
+                  <span class="ficon img"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="2" width="8" height="8" rx="1"/><circle cx="4.5" cy="5" r=".7" fill="currentColor"/><path d="M2.4 9l2-2.5 2 2 1.5-1.2 1.7 1.7"/></svg></span>
+                  <span class="fname"><span class="n">forest-plot-primary.png</span><span class="meta">figure 14.2</span></span>
+                  <span class="fsize">920 KB</span>
+                  <span class="fmod">28 Mar 26</span>
+                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                </div>
+
+              </div>
+              <div class="storage-foot">
+                <span>10 items · 3 sub-folders</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Members panel -->
+        <div class="tab-panel" id="panel-members" role="tabpanel" hidden>
+
+          <!-- Manage members CTA -->
+          <div class="members-actions members-actions-top">
+            <button class="btn primary" id="manageMembersBtn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="5" r="2.2"/><path d="M1.5 12a4 4 0 0 1 8 0"/><path d="M11 5.5v3M9.5 7h3"/></svg>
+              Manage members
+            </button>
+          </div>
+
+          <!-- Internal team -->
+          <section class="card members-card">
+            <div class="card-head">
+              <h2>Internal team</h2>
+              <div class="h-meta">Azur Note · 5 members</div>
+            </div>
+            <ul class="member-list">
+              <li class="member-row">
+                <span class="person">
+                  <span class="av">A</span>
+                  <span class="body">
+                    <span class="n">Alex Moreau</span>
+                    <span class="email">alex.moreau@azurnote.co</span>
+                  </span>
+                </span>
+                <span class="role-tag">Project lead</span>
+                <span class="member-status"><span class="dot active"></span>Online</span>
+              </li>
+              <li class="member-row">
+                <span class="person">
+                  <span class="av alt">M</span>
+                  <span class="body">
+                    <span class="n">Mariam Okafor</span>
+                    <span class="email">mariam.okafor@azurnote.co</span>
+                  </span>
+                </span>
+                <span class="role-tag">Author</span>
+                <span class="member-status"><span class="dot active"></span>Online</span>
+              </li>
+              <li class="member-row">
+                <span class="person">
+                  <span class="av tone">J</span>
+                  <span class="body">
+                    <span class="n">Jonas Vrettas</span>
+                    <span class="email">jonas.vrettas@azurnote.co</span>
+                  </span>
+                </span>
+                <span class="role-tag">QC</span>
+                <span class="member-status"><span class="dot muted"></span>Away</span>
+              </li>
+              <li class="member-row">
+                <span class="person">
+                  <span class="av warm">S</span>
+                  <span class="body">
+                    <span class="n">Sofia Linde</span>
+                    <span class="email">sofia.linde@azurnote.co</span>
+                  </span>
+                </span>
+                <span class="role-tag">Statistician</span>
+                <span class="member-status"><span class="dot muted"></span>Offline</span>
+              </li>
+              <li class="member-row">
+                <span class="person">
+                  <span class="av">R</span>
+                  <span class="body">
+                    <span class="n">Rohan Bhatt</span>
+                    <span class="email">rohan.bhatt@azurnote.co</span>
+                  </span>
+                </span>
+                <span class="role-tag">Reviewer</span>
+                <span class="member-status"><span class="dot muted"></span>Offline</span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- External team -->
+          <section class="card members-card">
+            <div class="card-head">
+              <h2>External team</h2>
+              <div class="h-meta">Heliocare Pharma · 3 members</div>
+            </div>
+            <ul class="member-list">
+              <li class="member-row">
+                <span class="person">
+                  <span class="av red">E</span>
+                  <span class="body">
+                    <span class="n">Dr. Eleanor Vance</span>
+                    <span class="email">e.vance@heliocare-pharma.com</span>
+                  </span>
+                </span>
+                <span class="role-tag client">Client lead</span>
+                <span class="member-status"><span class="dot muted"></span>Last seen 2h ago</span>
+              </li>
+              <li class="member-row">
+                <span class="person">
+                  <span class="av tone">P</span>
+                  <span class="body">
+                    <span class="n">Priya Ramaswamy</span>
+                    <span class="email">p.ramaswamy@heliocare-pharma.com</span>
+                  </span>
+                </span>
+                <span class="role-tag client">Reviewer</span>
+                <span class="member-status"><span class="dot muted"></span>Last seen yesterday</span>
+              </li>
+              <li class="member-row">
+                <span class="person">
+                  <span class="av warm">T</span>
+                  <span class="body">
+                    <span class="n">Thomas Begg</span>
+                    <span class="email">t.begg@heliocare-pharma.com</span>
+                  </span>
+                </span>
+                <span class="role-tag client">Observer</span>
+                <span class="member-status"><span class="dot muted"></span>Last seen 5d ago</span>
+              </li>
+            </ul>
+          </section>
+
+        </div>
+
+      </div>
+
+      <!-- ============== RIGHT RAIL ============== -->
+      <aside class="side-rail">
+
+        <!-- Document preview -->
+        <section class="card">
+          <div class="card-head">
+            <h2 style="font-size: 18px;">Document</h2>
+            <div class="h-meta"><a href="#" data-action="open">Open ↗</a></div>
+          </div>
+          <div class="preview">
+            <div class="paper" id="docPreview">
+              <div class="corner"></div>
+              <div class="ph-h">Veltrazine — Clinical Study Report</div>
+              <div class="ph-sub">PROTOCOL VLZ-204 · v3 DRAFT · 26 APR 2026</div>
+              <div class="ph-rule"></div>
+              <div class="ph-block">
+                <div class="ph-line mid"></div>
+                <div class="ph-line"></div>
+                <div class="ph-line short"></div>
+              </div>
+              <div class="ph-h2">2 — Synopsis</div>
+              <div class="ph-block">
+                <div class="ph-line"></div>
+                <div class="ph-line mid"></div>
+                <div class="ph-line"></div>
+                <div class="ph-line short"></div>
+              </div>
+              <div class="ph-h2">3 — Efficacy results</div>
+              <div class="ph-bar"></div>
+              <div class="ph-block" style="margin-top:10px;">
+                <div class="ph-line"></div>
+                <div class="ph-line mid"></div>
+              </div>
+              <button class="open-btn" aria-label="Open document">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 2h6v6M10 2L5 7M5 2H2v8h8V7"/></svg>
+              </button>
+            </div>
+            <div class="meta">
+              <span>v3 · DRAFT</span>
+              <span class="v">142 pages</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Status & next step -->
+        <section class="card">
+          <div class="card-head">
+            <h2 style="font-size: 18px;">Status</h2>
+            <span class="h-meta">26 Apr 26</span>
+          </div>
+          <div class="status-block">
+            <div class="row">
+              <span class="k">Stage</span>
+              <span class="pill review">Review</span>
+            </div>
+            <div class="row" style="margin-bottom: 4px;">
+              <span class="k">Progress</span>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--azur-deep);">3 / 5</span>
+            </div>
+            <div class="progress-line">
+              <span class="seg done"></span>
+              <span class="seg done"></span>
+              <span class="seg cur"></span>
+              <span class="seg"></span>
+              <span class="seg"></span>
+            </div>
+            <div class="progress-labels">
+              <span class="done">Authoring</span>
+              <span class="done">QC</span>
+              <span class="cur">Review</span>
+              <span>Approval</span>
+              <span>Submitted</span>
+            </div>
+
+            <div class="next">
+              Next milestone
+              <strong>Client review round 2</strong>
+              <span class="due">Due 30 May 26 — in 32 days</span>
+            </div>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+    <!-- /body-grid -->
+
+    <div class="foot">
+      <div>Last opened by you · 26 Apr 26 · 14:22</div>
+      <div class="leaf">Azur Note</div>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="tweaks.js"></script>
+  <script>
+    (function(){
+      // Toast
+      const toastEl = document.getElementById('toast');
+      let toastTimer;
+      const toast = (msg) => {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+      };
+
+      // Sidebar
+      const sidebar = document.getElementById('sidebar');
+      const scrim = document.getElementById('sidebarScrim');
+      const openSidebar = () => { sidebar.classList.add('open'); scrim.classList.add('open'); };
+      const closeSidebar = () => { sidebar.classList.remove('open'); scrim.classList.remove('open'); };
+      document.getElementById('menuBtn').addEventListener('click', openSidebar);
+      document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+      scrim.addEventListener('click', closeSidebar);
+      document.querySelectorAll('.sidebar .nav-item').forEach(b => {
+        b.addEventListener('click', () => {
+          const key = b.dataset.nav;
+          document.querySelectorAll('.sidebar .nav-item').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          const labels = { projects: 'Projects', clients: 'Clients', members: 'Members', help: 'Help & feedback', settings: 'Settings' };
+          if (key === 'projects') {
+            window.location.href = 'index.html';
+            return;
+          }
+          toast(`${labels[key] || key} — coming soon`);
+        });
+      });
+
+      // Profile menu
+      const userWrap = document.getElementById('userWrap');
+      const userTrigger = document.getElementById('userTrigger');
+      userTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = userWrap.classList.toggle('open');
+        userTrigger.setAttribute('aria-expanded', open);
+      });
+      document.querySelectorAll('#userWrap .p-item').forEach(b => {
+        b.addEventListener('click', () => {
+          const a = b.dataset.action;
+          userWrap.classList.remove('open');
+          if (a === 'logout') toast('Logged out');
+          else if (a === 'settings') toast('Opening Settings…');
+          else if (a === 'profile') toast('Opening Profile…');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!userWrap.contains(e.target)) userWrap.classList.remove('open');
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          userWrap.classList.remove('open');
+          closeSidebar();
+        }
+      });
+
+      // Tabs
+      const tabs = document.querySelectorAll('.tab');
+      const panels = document.querySelectorAll('.tab-panel');
+      tabs.forEach(t => {
+        t.addEventListener('click', () => {
+          const target = t.dataset.tab;
+          tabs.forEach(x => {
+            const on = x === t;
+            x.classList.toggle('active', on);
+            x.setAttribute('aria-selected', on ? 'true' : 'false');
+          });
+          panels.forEach(p => {
+            const on = p.id === 'panel-' + target;
+            p.classList.toggle('active', on);
+            if (on) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+          });
+        });
+      });
+
+      // Phase collapse/expand
+      document.querySelectorAll('.phase-head').forEach(h => {
+        h.addEventListener('click', () => {
+          const phase = h.closest('.phase');
+          const open = phase.classList.toggle('open');
+          h.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      });
+
+      // Tree node expand/collapse + active selection
+      document.querySelectorAll('.tree-node').forEach(n => {
+        n.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Set active
+          document.querySelectorAll('.tree-node').forEach(x => x.classList.remove('active'));
+          n.classList.add('active');
+          // Toggle children if has caret
+          const caret = n.querySelector('.tcaret');
+          if (caret && !caret.classList.contains('empty')) {
+            n.classList.toggle('expanded');
+            const next = n.nextElementSibling;
+            if (next && next.classList.contains('tree-children')) {
+              next.style.display = n.classList.contains('expanded') ? 'block' : 'none';
+            }
+          }
+        });
+      });
+
+      // Page-level CTAs
+      document.getElementById('manageMembersBtn')?.addEventListener('click', () => toast('Opening member management…'));
+      document.getElementById('reviewBtn')?.addEventListener('click', () => toast('Opening review workspace…'));
+      document.getElementById('downloadBtn')?.addEventListener('click', () => toast('Preparing download…'));
+      document.getElementById('docPreview')?.addEventListener('click', () => toast('Opening document…'));
+      document.querySelectorAll('[data-action="edit"]').forEach(a => {
+        a.addEventListener('click', (e) => { e.preventDefault(); toast('Edit mode — coming soon'); });
+      });
+      document.querySelectorAll('[data-action="open"]').forEach(a => {
+        a.addEventListener('click', (e) => { e.preventDefault(); toast('Opening document…'); });
+      });
+    })();
+  </script>
+
+</body>
+</html>

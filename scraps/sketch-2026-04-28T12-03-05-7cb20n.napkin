@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "created": "2026-04-28T12:03:05.768Z",
+  "modified": "2026-04-28T12:05:27.774Z",
+  "objects": [
+    {
+      "id": "ckxnc7rxq",
+      "type": "rect",
+      "x": 363,
+      "y": 352,
+      "width": 605,
+      "height": 136,
+      "data": {
+        "fill": null,
+        "stroke": "#000000",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "h60pmmpwm",
+      "type": "text",
+      "x": 389,
+      "y": 381,
+      "data": {
+        "content": "Creating PRJ-XYZ",
+        "fontSize": 16,
+        "color": "#000000",
+        "bold": false
+      },
+      "width": 125,
+      "height": 21
+    },
+    {
+      "id": "guzb8b7px",
+      "type": "stroke",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "points": [
+          {
+            "x": 390,
+            "y": 442
+          },
+          {
+            "x": 763.0656778638313,
+            "y": 442
+          }
+        ],
+        "color": "#000000",
+        "size": 2
+      }
+    },
+    {
+      "id": "8jmuvjv7d",
+      "type": "text",
+      "x": 390,
+      "y": 424,
+      "data": {
+        "content": "Creating Huddle workspace...",
+        "fontSize": 16,
+        "color": "#000000",
+        "bold": false
+      },
+      "width": 243,
+      "height": 21
+    }
+  ]
+}

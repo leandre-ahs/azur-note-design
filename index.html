@@ -1,0 +1,3551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azur Note — Projects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azur-deep:  #235770;
+    --azur-mid:   #418EA0;
+    --brick:      #AC2819;
+    --sand:       #F3E9E1;
+    --hover:      rgba(35, 87, 112, 0.06);
+
+    --bg:         #FBFAF7;
+    --rule:       rgba(35, 87, 112, 0.12);
+    --rule-strong:rgba(35, 87, 112, 0.22);
+    --muted:      rgba(35, 87, 112, 0.58);
+
+    --font-display: "Newsreader", Georgia, serif;
+    --font-sans:    "Inter Tight", system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ---------- Top nav ---------- */
+  .topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar .menu-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--azur-deep);
+  }
+  .topbar .menu-btn svg { display:block; }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: 18px;
+  }
+  .brand .mark {
+    width: 37px; height: 37px;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+  }
+  .brand .mark .logo {
+    display: block;
+    width: 37px;
+    height: 37px;
+    background: url('assets/logo.svg') center / contain no-repeat;
+  }
+  .brand .name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .brand .name em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+
+  .topbar .spacer { flex: 1; }
+
+  .topbar .divider {
+    width: 1px;
+    height: 28px;
+    background: var(--rule-strong);
+    margin: 0 20px;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .user .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--sand);
+    color: var(--azur-deep);
+    border: 1px solid var(--rule-strong);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+  .user .who {
+    line-height: 1.2;
+  }
+  .user .who .name {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .user .who .role {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Page ---------- */
+  .page {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 40px 32px 48px;
+  }
+
+  .page-head {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+
+  /* View switcher — list / timeline */
+  .view-switch {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 40px;
+    background: var(--bg);
+  }
+  .view-switch button {
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule-strong);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .view-switch button:last-child { border-right: 0; }
+  .view-switch button:hover { background: var(--hover); }
+  .view-switch button.on {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+  .view-switch svg { display: block; }
+
+  /* Filters dropdown button */
+  .filters-btn {
+    position: relative;
+  }
+  .filters-btn > .trigger {
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid var(--rule-strong);
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .filters-btn > .trigger:hover { background: var(--hover); }
+  .filters-btn > .trigger .badge {
+    display: inline-grid;
+    place-items: center;
+    min-width: 18px; height: 18px;
+    padding: 0 5px;
+    background: var(--azur-mid);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    border-radius: 100px;
+    line-height: 1;
+  }
+
+  .filters-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 320px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(35, 87, 112, 0.12);
+    padding: 6px;
+    z-index: 20;
+    display: none;
+  }
+  .filters-btn.open .filters-panel { display: block; }
+  .filters-btn.open > .trigger {
+    background: var(--hover);
+    border-color: var(--azur-mid);
+  }
+  .filters-panel .f-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .filters-panel .f-row:hover { background: var(--hover); }
+  .filters-panel .f-row .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .filters-panel .f-row .v {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--azur-deep);
+  }
+  .filters-panel .f-row .chev {
+    color: var(--muted);
+  }
+  .filters-panel .f-divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 4px 12px;
+  }
+  .filters-panel .f-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px 6px;
+  }
+  .filters-panel .f-foot button {
+    background: transparent;
+    border: 0;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--azur-mid);
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .filters-panel .f-foot button:hover { text-decoration: underline; }
+  .welcome {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--azur-mid);
+    margin-bottom: 10px;
+  }
+  .page-head h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .page-head h1 em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  .btn {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .btn:hover { background: var(--hover); }
+  .btn.primary {
+    background: var(--azur-deep);
+    color: var(--sand);
+    border-color: var(--azur-deep);
+  }
+  .btn.primary:hover { background: #1b4658; }
+  .btn .plus {
+    width: 14px; height: 14px;
+    position: relative;
+  }
+  .btn .plus::before, .btn .plus::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+  .btn .plus::before { left: 6px; top: 0; width: 2px; height: 14px; }
+  .btn .plus::after  { top: 6px; left: 0; height: 2px; width: 14px; }
+
+  /* ---------- Filters row ---------- */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .seg {
+    display: flex;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    overflow: hidden;
+    background: transparent;
+  }
+  .seg button {
+    height: 34px;
+    padding: 0 14px;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule-strong);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .seg button:last-child { border-right: 0; }
+  .seg button:hover { background: var(--hover); }
+  .seg button.on { background: var(--azur-deep); color: var(--sand); }
+  .seg button .count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    opacity: 0.8;
+  }
+
+  .filter-chip {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px dashed var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .filter-chip:hover { border-style: solid; background: var(--sand); }
+  .filter-chip .k { color: var(--muted); }
+
+  .search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    width: 280px;
+  }
+  .search input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--azur-deep);
+    width: 100%;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search svg { flex: 0 0 auto; color: var(--muted); }
+
+  /* ---------- Table ---------- */
+  .table-wrap {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    white-space: nowrap;
+  }
+  thead th .sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  thead th .sort svg { opacity: 0.5; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--rule);
+    transition: background .12s;
+  }
+  tbody tr:last-child { border-bottom: 0; }
+  tbody tr:nth-child(even) { background: rgba(243, 233, 225, 0.45); }
+  tbody tr:hover { background: var(--hover); }
+
+  tbody td {
+    padding: 18px 20px;
+    vertical-align: middle;
+  }
+
+  /* Client column */
+  .client-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 180px;
+  }
+  .client-cell .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+  }
+  .dot.active  { background: var(--azur-mid); }
+  .dot.red    { background: var(--brick); }
+  .dot.ink    { background: var(--azur-deep); }
+  .dot.muted  { background: rgba(35, 87, 112, 0.3); }
+
+  .client-cell .name {
+    font-weight: 500;
+    color: var(--azur-deep);
+  }
+  .client-cell .id {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  /* Project column */
+  .project-cell a {
+    color: var(--azur-deep);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+  }
+  .project-cell a:hover {
+    color: var(--azur-mid);
+    border-bottom-color: var(--azur-mid);
+  }
+  .project-cell .code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    margin-top: 2px;
+  }
+
+  /* Indication */
+  .indication {
+    color: var(--azur-deep);
+  }
+  .indication .sub {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Step — pill + tiny bar */
+  .step {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 120px;
+  }
+  .step .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+  .pill.draft     { background: #D7EAFF; color: #1E3A5F; }
+  .pill.qc        { background: #EFE4FE; color: #4A2A7A; }
+  .pill.review    { background: #FFEACD; color: #7A4A10; }
+  .pill.approved  { background: #CDEED8; color: #1E5A35; }
+  .pill.submitted { background: var(--azur-deep); color: var(--sand); }
+  .pill.onhold    { background: rgba(225, 230, 232, 0.7); color: #3A4A52; }
+  .pill.archived  { background: rgba(225, 230, 232, 0.7); color: #3A4A52; }
+
+  .step .bar {
+    display: flex;
+    gap: 2px;
+    height: 4px;
+  }
+  .step .bar span {
+    flex: 1;
+    background: var(--rule);
+    border-radius: 1px;
+  }
+  .step .bar span.done { background: var(--azur-mid); }
+  .step .bar span.cur  { background: var(--azur-deep); }
+
+  /* Writer */
+  .writer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .writer .av {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--sand);
+    background: var(--azur-deep);
+    flex: 0 0 auto;
+  }
+  .writer .av.alt  { background: var(--azur-mid); }
+  .writer .av.tone { background: #7a8a9a; }
+  .writer .av.warm { background: #a67a52; }
+  .writer .av.red  { background: var(--brick); }
+  .writer .n { font-weight: 500; }
+
+  /* Dates */
+  .date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .date.over { color: var(--brick); }
+  .date.over::after {
+    content: "OVERDUE";
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    margin-top: 2px;
+    opacity: 0.85;
+  }
+  .date.soft { color: var(--muted); }
+
+  /* Action */
+  .row-act {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+  .icon-btn {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all .12s;
+  }
+  tbody tr:hover .icon-btn { opacity: 1; }
+  .icon-btn:hover {
+    border-color: var(--rule-strong);
+    background: var(--bg);
+  }
+  .icon-btn.danger:hover {
+    color: var(--brick);
+    border-color: rgba(172, 40, 25, 0.3);
+  }
+
+  /* ---------- Footer / mark ---------- */
+  .foot {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+  .summary {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .leaf-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.85;
+  }
+  .leaf-mark svg { display: block; }
+  .leaf-mark .t {
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--azur-mid);
+    line-height: 1;
+  }
+  .leaf-mark .t small {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-style: normal;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ---------- View toggle ---------- */
+  .view[hidden] { display: none !important; }
+
+  /* ---------- Timeline view ---------- */
+  .timeline-wrap {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .tl-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+  .tl-range {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tl-nav {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .tl-nav:hover { background: var(--hover); }
+  .tl-period {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    min-width: 88px;
+    text-align: center;
+  }
+  .tl-period .y {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .tl-period .r {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .tl-zoom {
+    display: inline-flex;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .tl-zoom button {
+    height: 28px;
+    padding: 0 12px;
+    border: 0;
+    border-right: 1px solid var(--rule-strong);
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    cursor: pointer;
+  }
+  .tl-zoom button:last-child { border-right: 0; }
+  .tl-zoom button:hover { background: var(--hover); }
+  .tl-zoom button.on {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+  .tl-legend {
+    margin-left: auto;
+    display: inline-flex;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .tl-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tl-legend i {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  .tl-grid {
+    display: flex;
+  }
+  .tl-col-left {
+    flex: 0 0 280px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--rule);
+    background: var(--bg);
+    z-index: 2;
+    box-shadow: 6px 0 12px -8px rgba(35, 87, 112, 0.12);
+  }
+  .tl-col-right {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-color: var(--azur-mid) transparent;
+    scrollbar-width: thin;
+  }
+  .tl-col-right::-webkit-scrollbar { height: 10px; }
+  .tl-col-right::-webkit-scrollbar-track { background: rgba(35,87,112,0.04); }
+  .tl-col-right::-webkit-scrollbar-thumb {
+    background: rgba(35,87,112,0.25);
+    border-radius: 100px;
+  }
+  .tl-col-right::-webkit-scrollbar-thumb:hover { background: var(--azur-mid); }
+
+  .tl-scroll-inner {
+    min-width: 1680px;
+    position: relative;
+  }
+  .tl-head-left, .tl-head-right {
+    height: 56px;
+    border-bottom: 1px solid var(--rule);
+    background: rgba(243, 233, 225, 0.35);
+    box-sizing: border-box;
+  }
+  .tl-head-left {
+    padding: 14px 20px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .tl-head-left .scroll-hint {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--azur-mid);
+    text-transform: none;
+    font-family: var(--font-mono);
+  }
+  .tl-head-right {
+    position: relative;
+    padding: 0;
+  }
+  .tl-years {
+    display: grid;
+    grid-template-columns: 4fr 12fr; /* Sep-Dec 2025 = 4/16, 2026 = 12/16 */
+    height: 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .tl-years span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--azur-mid);
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    border-left: 1px solid var(--rule);
+  }
+  .tl-years span:first-child { border-left: 0; }
+  .tl-months {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    height: 34px;
+    align-items: center;
+  }
+  .tl-months span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-left: 8px;
+    border-left: 1px solid var(--rule);
+    height: 60%;
+    display: flex;
+    align-items: center;
+  }
+  .tl-months span:first-child { border-left: 0; }
+
+  .tl-today {
+    position: absolute;
+    top: 0; bottom: -9999px;
+    width: 0;
+    border-left: 1.5px dashed var(--brick);
+    z-index: 2;
+  }
+  .tl-today .tlab {
+    position: absolute;
+    top: 6px;
+    left: 4px;
+    background: var(--brick);
+    color: var(--sand);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .tl-row-left {
+    padding: 10px 16px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--rule);
+    box-sizing: border-box;
+  }
+  .tl-row-left:last-child { border-bottom: 0; }
+  .tl-row-right {
+    height: 56px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    box-sizing: border-box;
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc((100% / 16) - 1px),
+      var(--rule) calc((100% / 16) - 1px),
+      var(--rule) calc(100% / 16)
+    );
+  }
+  .tl-row-right:last-child { border-bottom: 0; }
+  .tl-row-right.alt { background-color: rgba(243, 233, 225, 0.3); }
+  .tl-row-left .name {
+    font-weight: 500;
+    color: var(--azur-deep);
+    font-size: 13px;
+  }
+  .tl-row-left .id {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    margin-top: 2px;
+  }
+
+  .tl-bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    border-radius: 6px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s;
+  }
+  .tl-bar:hover {
+    transform: translateY(-50%) scale(1.01);
+    box-shadow: 0 4px 14px rgba(35, 87, 112, 0.14);
+    z-index: 3;
+  }
+  .tl-bar .bar-label {
+    font-weight: 600;
+  }
+  .tl-bar .bar-dates {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    opacity: 0.85;
+  }
+  .tl-bar.draft    { background: #D7EAFF; color: #1E3A5F; }
+  .tl-bar.qc       { background: #EFE4FE; color: #4A2A7A; }
+  .tl-bar.review   { background: #FFEACD; color: #7A4A10; }
+  .tl-bar.approved { background: #CDEED8; color: #1E5A35; }
+  .tl-bar.submitted{ background: var(--azur-deep); color: var(--sand); }
+  .tl-bar.onhold   { background: rgba(225, 230, 232, 0.9); color: #3A4A52; border: 1px solid rgba(58, 74, 82, 0.25); }
+  .tl-bar.overdue  { outline: 1.5px solid var(--brick); outline-offset: 1px; }
+
+  /* ---------- Sidebar (sliding sheet) ---------- */
+  .sidebar-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(35, 87, 112, 0.28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .24s ease;
+    z-index: 40;
+  }
+  .sidebar-scrim.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: 300px;
+    background: var(--bg);
+    border-right: 1px solid var(--rule-strong);
+    transform: translateX(-100%);
+    transition: transform .26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 12px 0 32px rgba(35, 87, 112, 0.08);
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .sidebar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-head .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+  }
+  .sidebar-close {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .sidebar-close:hover { background: var(--hover); }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sidebar-nav .group-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px 6px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--hover); }
+  .nav-item.active {
+    background: var(--hover);
+    color: var(--azur-deep);
+  }
+  .nav-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 20%; bottom: 20%;
+    width: 3px;
+    background: var(--azur-deep);
+    border-radius: 0 3px 3px 0;
+  }
+  .nav-item .icon {
+    width: 18px;
+    height: 18px;
+    display: grid;
+    place-items: center;
+    color: var(--azur-mid);
+  }
+  .nav-item .badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: rgba(35,87,112,0.06);
+    padding: 2px 7px;
+    border-radius: 100px;
+  }
+  .sidebar-foot {
+    border-top: 1px solid var(--rule);
+    padding: 10px 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* ---------- Profile menu ---------- */
+  .user-wrap {
+    position: relative;
+  }
+  .user-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 4px 6px 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-family: inherit;
+  }
+  .user-trigger:hover {
+    background: var(--hover);
+    border-color: var(--rule);
+  }
+  .profile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 220px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(35, 87, 112, 0.14);
+    padding: 6px;
+    z-index: 60;
+    display: none;
+  }
+  .user-wrap.open .profile-menu { display: block; }
+  .profile-menu .p-head {
+    padding: 12px 12px 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 4px;
+  }
+  .profile-menu .p-head .name {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--azur-deep);
+  }
+  .profile-menu .p-head .mail {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .profile-menu .p-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: var(--azur-deep);
+    font-size: 13px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .profile-menu .p-item:hover { background: var(--hover); }
+  .profile-menu .p-item.danger { color: var(--brick); }
+  .profile-menu .p-item.danger:hover { background: rgba(172, 40, 25, 0.08); }
+  .profile-menu .p-divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 4px 6px;
+  }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--azur-deep);
+    color: var(--sand);
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    z-index: 100;
+    box-shadow: 0 6px 24px rgba(35,87,112,0.2);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ---------- Sort indicator ---------- */
+  thead th .sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  thead th[data-sort].active { color: var(--azur-deep); }
+  thead th[data-sort].active .sort-arrow { color: var(--azur-mid); }
+  .sort-arrow {
+    display: inline-flex;
+    flex-direction: column;
+    color: rgba(35,87,112, 0.3);
+    line-height: 0;
+  }
+  .sort-arrow svg { display: block; }
+
+  /* Empty state */
+  .empty {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--azur-deep);
+    margin-bottom: 6px;
+  }
+  .empty p { font-size: 13px; }
+
+  /* ---------- Create Project dialog ---------- */
+  .dialog-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(35, 87, 112, 0.32);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+    z-index: 70;
+    display: grid;
+    place-items: start center;
+    padding: 48px 24px;
+    overflow-y: auto;
+  }
+  .dialog-scrim.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .dialog {
+    width: min(960px, 100%);
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 12px;
+    box-shadow: 0 24px 64px rgba(35, 87, 112, 0.24);
+    transform: translateY(12px);
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+  }
+  .dialog-scrim.open .dialog { transform: translateY(0); }
+
+  .dialog-head {
+    background: var(--sand);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 18px 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .dialog-head .code {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--azur-deep);
+    flex: 1;
+  }
+  .dialog-head .spacer { flex: 1; }
+  .dialog-head .btn-create {
+    background: var(--azur-deep);
+    color: var(--sand);
+    border: 0;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background .12s;
+  }
+  .dialog-head .btn-create:hover { background: #1a4555; }
+  .dialog-head .btn-create .plus {
+    width: 14px; height: 14px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  .dialog-head .btn-create .plus::before,
+  .dialog-head .btn-create .plus::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+  .dialog-head .btn-create .plus::before { left: 6px; top: 0; width: 2px; height: 14px; }
+  .dialog-head .btn-create .plus::after  { top: 6px; left: 0; height: 2px; width: 14px; }
+  .dialog-head .close {
+    width: 32px; height: 32px;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    color: var(--azur-deep);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .dialog-head .close:hover { background: rgba(35, 87, 112, 0.08); }
+
+  .dialog-body {
+    padding: 28px 32px 32px;
+  }
+  .dlg-section + .dlg-section { margin-top: 32px; }
+  .dlg-section h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+    margin-bottom: 16px;
+  }
+  .dlg-grid {
+    display: grid;
+    gap: 18px 24px;
+  }
+  .dlg-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .dlg-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    letter-spacing: 0.01em;
+  }
+  .field .input,
+  .field select,
+  .field input[type="text"],
+  .field input[type="number"],
+  .field input[type="date"] {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .12s, box-shadow .12s;
+    width: 100%;
+  }
+  .field .input::placeholder,
+  .field input::placeholder { color: rgba(35, 87, 112, 0.4); }
+  .field .input:focus,
+  .field select:focus,
+  .field input:focus {
+    border-color: var(--azur-mid);
+    box-shadow: 0 0 0 3px rgba(65, 142, 160, 0.15);
+  }
+
+  /* Select w/ chevron */
+  .field .select-wrap {
+    position: relative;
+  }
+  .field .select-wrap select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 34px;
+    cursor: pointer;
+  }
+  .field .select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 14px; top: 50%;
+    width: 7px; height: 7px;
+    border-right: 1.5px solid var(--azur-deep);
+    border-bottom: 1.5px solid var(--azur-deep);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  /* Search-user input */
+  .field .input-search {
+    position: relative;
+  }
+  .field .input-search input {
+    padding-left: 34px;
+  }
+  .field .input-search svg {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--azur-mid);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* Date input */
+  .field .input-date input {
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+  .field input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.55;
+    cursor: pointer;
+  }
+
+  /* Number w/ spinners */
+  .field input[type="number"] {
+    font-family: var(--font-mono);
+  }
+
+  /* ---------- Progress dialog (after Create) ---------- */
+  .progress-dialog {
+    width: min(440px, 100%);
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 12px;
+    box-shadow: 0 24px 64px rgba(35, 87, 112, 0.24);
+    transform: translateY(12px);
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+    align-self: center;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  .dialog-scrim.open .progress-dialog { transform: translateY(0); }
+
+  .pd-head {
+    padding: 22px 24px 6px;
+  }
+  .pd-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--azur-mid);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pd-eyebrow .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--azur-mid);
+    animation: pd-blink 1.2s ease-in-out infinite;
+  }
+  @keyframes pd-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .pd-head h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+    line-height: 1.15;
+  }
+  .pd-head h3 em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+  .pd-code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Overall progress meter */
+  .pd-meter {
+    height: 3px;
+    background: var(--rule);
+    margin: 18px 24px 0;
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+  }
+  .pd-meter .fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: var(--azur-deep);
+    transition: width .5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .pd-steps {
+    list-style: none;
+    padding: 18px 24px 8px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .pd-step {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 0;
+    position: relative;
+    transition: opacity .2s;
+  }
+  .pd-step::before {
+    content: "";
+    position: absolute;
+    left: 13px;
+    top: 32px;
+    bottom: -11px;
+    width: 1px;
+    background: var(--rule);
+  }
+  .pd-step:last-child::before { display: none; }
+
+  .pd-step .marker {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 1px solid var(--rule-strong);
+    background: var(--bg);
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    z-index: 1;
+    transition: all .25s;
+  }
+  .pd-step .label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    line-height: 1.3;
+  }
+  .pd-step .label .sub {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 400;
+  }
+  .pd-step .timing {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-align: right;
+    min-width: 32px;
+  }
+
+  /* Pending */
+  .pd-step.pending { opacity: 0.5; }
+  .pd-step.pending .label { color: var(--muted); font-weight: 400; }
+
+  /* Active */
+  .pd-step.active .marker {
+    border-color: var(--azur-mid);
+    background: var(--bg);
+    color: var(--azur-mid);
+    position: relative;
+  }
+  .pd-step.active .marker::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1.5px solid var(--azur-mid);
+    border-top-color: transparent;
+    animation: pd-spin 0.9s linear infinite;
+  }
+  @keyframes pd-spin { to { transform: rotate(360deg); } }
+  .pd-step.active .label { color: var(--azur-deep); }
+  .pd-step.active .timing { color: var(--azur-mid); }
+
+  /* Done */
+  .pd-step.done .marker {
+    background: var(--azur-deep);
+    border-color: var(--azur-deep);
+    color: var(--sand);
+  }
+  .pd-step.done::before { background: var(--azur-mid); }
+
+  .pd-foot {
+    padding: 14px 24px 18px;
+    border-top: 1px solid var(--rule);
+    background: rgba(243, 233, 225, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .pd-foot .hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pd-foot .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--rule-strong);
+    color: var(--azur-deep);
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .pd-foot .btn-ghost:hover { background: var(--hover); }
+  .pd-foot .btn-ghost:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .pd-foot .btn-ghost.primary {
+    background: var(--azur-deep);
+    color: var(--sand);
+    border-color: var(--azur-deep);
+  }
+  .pd-foot .btn-ghost.primary:hover { background: #1a4555; }
+
+  /* Done state — final flourish */
+  .pd-dialog.complete .pd-eyebrow .dot { animation: none; background: #2a8a4a; }
+  .pd-dialog.complete .pd-eyebrow { color: #2a8a4a; }
+
+  /* ---------- Custom datepicker ---------- */
+  .datepicker {
+    position: relative;
+  }
+  .datepicker .dp-field {
+    height: 40px;
+    padding: 0 38px 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: border-color .12s, box-shadow .12s;
+    position: relative;
+  }
+  .datepicker .dp-field .dp-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+  .datepicker .dp-field:hover { border-color: var(--azur-mid); }
+  .datepicker.open .dp-field {
+    border-color: var(--azur-mid);
+    box-shadow: 0 0 0 3px rgba(65, 142, 160, 0.15);
+  }
+  .datepicker .dp-field .placeholder { color: rgba(35, 87, 112, 0.4); }
+  .datepicker .dp-field .dp-icon {
+    position: absolute;
+    right: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--azur-mid);
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .dp-popover {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 300px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    box-shadow: 0 16px 40px rgba(35, 87, 112, 0.18);
+    padding: 14px;
+    z-index: 80;
+    display: none;
+  }
+  .datepicker.open .dp-popover { display: block; }
+  .datepicker.align-right .dp-popover {
+    left: auto;
+    right: 0;
+  }
+  .datepicker.drop-up .dp-popover {
+    top: auto;
+    bottom: calc(100% + 6px);
+  }
+
+  .dp-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .dp-head button {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 0;
+    background: transparent;
+    color: var(--azur-deep);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background .12s;
+  }
+  .dp-head button:hover { background: var(--hover); }
+  .dp-head .dp-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+  }
+  .dp-head .dp-title:hover { background: var(--hover); }
+
+  .dp-dow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+  }
+  .dp-dow span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    padding: 6px 0;
+  }
+  .dp-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .dp-cell {
+    aspect-ratio: 1 / 1;
+    border: 0;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--azur-deep);
+    display: grid;
+    place-items: center;
+    position: relative;
+    transition: background .12s;
+  }
+  .dp-cell:hover:not(:disabled) { background: var(--hover); }
+  .dp-cell.other { color: rgba(35, 87, 112, 0.3); }
+  .dp-cell.today {
+    font-weight: 600;
+  }
+  .dp-cell.today::after {
+    content: "";
+    position: absolute;
+    bottom: 4px; left: 50%;
+    transform: translateX(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--azur-mid);
+  }
+  .dp-cell.selected {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+  .dp-cell.selected.today::after { background: var(--sand); }
+  .dp-cell:disabled {
+    color: rgba(35, 87, 112, 0.2);
+    cursor: not-allowed;
+  }
+
+  .dp-months, .dp-years {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+  .dp-month, .dp-year {
+    height: 48px;
+    border: 0;
+    background: transparent;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--azur-deep);
+    cursor: pointer;
+    transition: background .12s;
+  }
+  .dp-month:hover, .dp-year:hover { background: var(--hover); }
+  .dp-month.selected, .dp-year.selected {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+
+  .dp-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+  }
+  .dp-foot button {
+    background: transparent;
+    border: 0;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--azur-mid);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+  .dp-foot button:hover { text-decoration: underline; }
+  .dp-foot button.primary {
+    color: var(--azur-deep);
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===================== Sidebar ===================== -->
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+        <div class="name">Azur <em>Note</em></div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="group-label">Workspace</span>
+      <button class="nav-item active" data-nav="projects">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5h5l1.5 1.5h6.5v8.5a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1v-10z"/></svg></span>
+        Projects
+        <span class="badge">24</span>
+      </button>
+      <button class="nav-item" data-nav="clients">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.5V13a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1.5"/><circle cx="7" cy="6" r="2.4"/><path d="M11.5 14.5V13a2.8 2.8 0 0 0-2-2.7"/><circle cx="12.5" cy="6.5" r="2"/></svg></span>
+        Clients
+        <span class="badge">12</span>
+      </button>
+      <button class="nav-item" data-nav="members">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6.5" r="2.6"/><path d="M3.5 14.5a5.5 5.5 0 0 1 11 0"/></svg></span>
+        Members
+        <span class="badge">8</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="nav-item" data-nav="help">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><path d="M7 7.2a2 2 0 0 1 3.9.5c0 1.3-2 1.6-2 2.8"/><circle cx="9" cy="12.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
+        Help &amp; feedback
+      </button>
+      <button class="nav-item" data-nav="settings">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="2.2"/><path d="M14.5 9a5.6 5.6 0 0 0-.1-1l1.4-1-1.2-2-1.7.5a5.5 5.5 0 0 0-1.7-1l-.3-1.7H8.1L7.8 4.5a5.5 5.5 0 0 0-1.7 1l-1.7-.5-1.2 2 1.4 1a5.6 5.6 0 0 0 0 2l-1.4 1 1.2 2 1.7-.5a5.5 5.5 0 0 0 1.7 1l.3 1.7h1.8l.3-1.7a5.5 5.5 0 0 0 1.7-1l1.7.5 1.2-2-1.4-1c.07-.33.1-.66.1-1z"/></svg></span>
+        Settings
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===================== Top nav ===================== -->
+  <nav class="topbar" aria-label="Primary">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <path d="M1 1h14M1 6h14M1 11h14"/>
+      </svg>
+    </button>
+
+    <div class="brand">
+      <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+      <div class="name">Azur <em>Note</em></div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="divider"></div>
+
+    <div class="user-wrap" id="userWrap">
+      <button class="user-trigger" id="userTrigger" aria-haspopup="menu" aria-expanded="false">
+        <div class="who">
+          <div class="name">A. Moreau</div>
+          <div class="role">Medical writer</div>
+        </div>
+        <div class="avatar">A</div>
+      </button>
+      <div class="profile-menu" role="menu">
+        <div class="p-head">
+          <div class="name">Alex Moreau</div>
+          <div class="mail">alex.moreau@azurnote.co</div>
+        </div>
+        <button class="p-item" data-action="profile" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M2.5 11.5a4.5 4.5 0 0 1 9 0"/></svg>
+          Profile
+        </button>
+        <button class="p-item" data-action="settings" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="1.6"/><path d="M11.5 7a4.4 4.4 0 0 0-.1-.8l1-.8-.8-1.4-1.3.4a4.4 4.4 0 0 0-1.4-.8L8.6 2.5H6.4l-.3 1.2a4.4 4.4 0 0 0-1.4.8l-1.3-.4-.8 1.4 1 .8A4.4 4.4 0 0 0 3.5 7"/></svg>
+          Settings
+        </button>
+        <div class="p-divider"></div>
+        <button class="p-item danger" data-action="logout" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3M9 4l3 3-3 3M5 7h7"/></svg>
+          Log out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== Page ===================== -->
+  <main class="page">
+
+    <header class="page-head">
+      <div>
+        <div class="welcome">Welcome back, Alex</div>
+        <h1 style="font-family: &quot;Newsreader&quot;">Projects<em>.</em></h1>
+      </div>
+      <div class="view-switch" role="tablist" aria-label="View">
+        <button class="on" aria-pressed="true" title="List view">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M2 3.5h10M2 7h10M2 10.5h10"/>
+          </svg>
+          List
+        </button>
+        <button aria-pressed="false" title="Timeline view">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M2 3.5h7M2 7h10M4 10.5h6"/>
+            <circle cx="10.5" cy="3.5" r="1" fill="currentColor" stroke="none"/>
+            <circle cx="2.5" cy="10.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          Timeline
+        </button>
+      </div>
+      <div class="actions">
+        <button class="btn"><span class="plus"></span>Create client</button>
+        <button class="btn primary" id="createProjectBtn"><span class="plus"></span>Create project</button>
+      </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="seg" role="tablist">
+        <button class="on" data-status="all">All <span class="count" data-count="all">24</span></button>
+        <button data-status="active">Active <span class="count" data-count="active">14</span></button>
+        <button data-status="onhold">On hold <span class="count" data-count="onhold">3</span></button>
+        <button data-status="archived">Archived <span class="count" data-count="archived">7</span></button>
+      </div>
+
+      <div class="filters-btn" id="filtersBtn">
+        <button class="trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M1 2h11l-4 5v4l-3 1V7L1 2Z"/>
+          </svg>
+          Filters
+          <span class="badge">0</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 4l2.5 2.5L7.5 4"/></svg>
+        </button>
+        <div class="filters-panel" role="menu">
+          <div class="f-row f-section" data-filter="client">
+            <span class="k">Client</span>
+            <span class="v" data-value-for="client">All clients</span>
+            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+          </div>
+          <div class="f-row f-section" data-filter="step">
+            <span class="k">Step</span>
+            <span class="v" data-value-for="step">Any step</span>
+            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+          </div>
+          <div class="f-row f-section" data-filter="writer">
+            <span class="k">Writer</span>
+            <span class="v" data-value-for="writer">Anyone</span>
+            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+          </div>
+          <div class="f-row f-section" data-filter="indication">
+            <span class="k">Indication</span>
+            <span class="v" data-value-for="indication">Any</span>
+            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+          </div>
+          <div class="f-row f-section" data-filter="due">
+            <span class="k">Due</span>
+            <span class="v" data-value-for="due">Any time</span>
+            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+          </div>
+          <div class="f-divider"></div>
+          <div class="f-foot">
+            <button type="button" id="filtersClear">Clear all</button>
+            <button type="button" id="filtersDone" style="color: var(--azur-deep);">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="6" cy="6" r="4.5"/>
+          <path d="M9.5 9.5L13 13" stroke-linecap="round"/>
+        </svg>
+        <input placeholder="Search projects, indications, writers…" />
+      </div>
+    </div>
+
+    <!-- Table view -->
+    <div id="view-list" class="view">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="client" style="width: 16%;"><span class="sort">Client<span class="sort-arrow" aria-hidden="true"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="project" style="width: 18%;"><span class="sort">Project<span class="sort-arrow" aria-hidden="true"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="indication" style="width: 16%;"><span class="sort">Medical indication<span class="sort-arrow" aria-hidden="true"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="step" style="width: 12%;"><span class="sort">Step<span class="sort-arrow" aria-hidden="true"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="writer" style="width: 14%;"><span class="sort">Lead writer<span class="sort-arrow" aria-hidden="true"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="start" style="width: 9%;"><span class="sort">Start<span class="sort-arrow" aria-hidden="true"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="end" style="width: 9%;"><span class="sort">End<span class="sort-arrow" aria-hidden="true"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th style="width: 6%; text-align: right;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- Row 1 -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Heliocare Pharma</div>
+                  <span class="id">CL-0042</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Veltrazine Phase III CSR</a>
+              <span class="code">PRJ-2041</span>
+            </td>
+            <td class="indication">
+              Type 2 diabetes
+              <span class="sub">Cardiovascular outcomes</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill review">Review</span>
+                <div class="bar"><span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av">M</div>
+                <span class="n">M. Okafor</span>
+              </div>
+            </td>
+            <td><span class="date">12 Jan 26</span></td>
+            <td><span class="date">30 May 26</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 2 -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Northwind Bio</div>
+                  <span class="id">CL-0019</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Oneira insomnia label update</a>
+              <span class="code">PRJ-2063</span>
+            </td>
+            <td class="indication">
+              Chronic insomnia
+              <span class="sub">Adult, non-respiratory</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill draft">Authoring</span>
+                <div class="bar"><span class="cur"></span><span></span><span></span><span></span><span></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av alt">S</div>
+                <span class="n">S. Varga</span>
+              </div>
+            </td>
+            <td><span class="date">04 Mar 26</span></td>
+            <td><span class="date">18 Jun 26</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 3 — overdue -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot red" title="Overdue"></span>
+                <div>
+                  <div class="name">Avenir Médical</div>
+                  <span class="id">CL-0008</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Colivax pediatric submission</a>
+              <span class="code">PRJ-1998</span>
+            </td>
+            <td class="indication">
+              Rotavirus prophylaxis
+              <span class="sub">Pediatric, 6–32 wks</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill qc">QC</span>
+                <div class="bar"><span class="done"></span><span class="cur"></span><span></span><span></span><span></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av tone">R</div>
+                <span class="n">R. Lindqvist</span>
+              </div>
+            </td>
+            <td><span class="date">22 Nov 25</span></td>
+            <td><span class="date over">09 Apr 26</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 4 -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot ink" title="Submitted"></span>
+                <div>
+                  <div class="name">Heliocare Pharma</div>
+                  <span class="id">CL-0042</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Veltrazine patient brochure</a>
+              <span class="code">PRJ-2058</span>
+            </td>
+            <td class="indication">
+              Type 2 diabetes
+              <span class="sub">Lay summary</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill approved">Approved</span>
+                <div class="bar"><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av warm">E</div>
+                <span class="n">E. Petrov</span>
+              </div>
+            </td>
+            <td><span class="date">02 Feb 26</span></td>
+            <td><span class="date">28 Apr 26</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 5 -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Kestrel Oncology</div>
+                  <span class="id">CL-0031</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Myrrax Phase II protocol</a>
+              <span class="code">PRJ-2072</span>
+            </td>
+            <td class="indication">
+              HER2+ breast cancer
+              <span class="sub">Adjuvant, post-surgical</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill draft">Authoring</span>
+                <div class="bar"><span class="cur"></span><span></span><span></span><span></span><span></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av">M</div>
+                <span class="n">M. Okafor</span>
+              </div>
+            </td>
+            <td><span class="date">18 Mar 26</span></td>
+            <td><span class="date">22 Aug 26</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 6 -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot muted" title="On hold"></span>
+                <div>
+                  <div class="name">Polaris Therapeutics</div>
+                  <span class="id">CL-0026</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Sentris migraine manuscript</a>
+              <span class="code">PRJ-2049</span>
+            </td>
+            <td class="indication">
+              Episodic migraine
+              <span class="sub">CGRP antagonist</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill onhold">On hold</span>
+                <div class="bar"><span class="done"></span><span class="done"></span><span></span><span></span><span></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av alt">S</div>
+                <span class="n">S. Varga</span>
+              </div>
+            </td>
+            <td><span class="date">08 Dec 25</span></td>
+            <td><span class="date soft">TBD</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn danger" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 7 -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Northwind Bio</div>
+                  <span class="id">CL-0019</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Oneira Phase IV registry</a>
+              <span class="code">PRJ-2081</span>
+            </td>
+            <td class="indication">
+              Chronic insomnia
+              <span class="sub">Real-world evidence</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill submitted">Submitted</span>
+                <div class="bar"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av red">K</div>
+                <span class="n">K. Amiri</span>
+              </div>
+            </td>
+            <td><span class="date">15 Sep 25</span></td>
+            <td><span class="date">02 Apr 26</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 8 -->
+          <tr>
+            <td>
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Avenir Médical</div>
+                  <span class="id">CL-0008</span>
+                </div>
+              </div>
+            </td>
+            <td class="project-cell">
+              <a href="Project Information.html">Colivax adult booster IB</a>
+              <span class="code">PRJ-2087</span>
+            </td>
+            <td class="indication">
+              Rotavirus prophylaxis
+              <span class="sub">Adult booster</span>
+            </td>
+            <td>
+              <div class="step">
+                <span class="pill review">Review</span>
+                <div class="bar"><span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span></div>
+              </div>
+            </td>
+            <td>
+              <div class="writer">
+                <div class="av tone">R</div>
+                <span class="n">R. Lindqvist</span>
+              </div>
+            </td>
+            <td><span class="date">29 Jan 26</span></td>
+            <td><span class="date">14 Jul 26</span></td>
+            <td>
+              <div class="row-act">
+                <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    </div><!-- /view-list -->
+
+    <!-- Timeline view -->
+    <div id="view-timeline" class="view" hidden>
+      <div class="timeline-wrap">
+        <div class="tl-toolbar">
+          <div class="tl-range">
+            <button class="tl-nav" aria-label="Previous period">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7.5 2.5 4 6l3.5 3.5"/></svg>
+            </button>
+            <div class="tl-period">
+              <span class="y">2026</span>
+              <span class="r">Jan — Dec</span>
+            </div>
+            <button class="tl-nav" aria-label="Next period">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
+            </button>
+          </div>
+          <div class="tl-zoom">
+            <button>Week</button>
+            <button class="on">Month</button>
+            <button>Quarter</button>
+          </div>
+          <div class="tl-legend">
+            <span><i style="background:#D7EAFF"></i>Authoring</span>
+            <span><i style="background:#EFE4FE"></i>QC</span>
+            <span><i style="background:#FFEACD"></i>Review</span>
+            <span><i style="background:#CDEED8"></i>Approved</span>
+            <span><i style="background:var(--azur-deep)"></i>Submitted</span>
+            <span><i style="background:rgba(225,230,232,0.9);border:1px solid rgba(58,74,82,0.25)"></i>On hold</span>
+          </div>
+        </div>
+
+        <div class="tl-grid">
+          <div class="tl-col-left">
+            <div class="tl-head-left">
+              <span>Project</span>
+              <span class="scroll-hint">← scroll →</span>
+            </div>
+
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Veltrazine Phase III CSR</div>
+                  <span class="id">Heliocare Pharma · PRJ-2041</span>
+                </div>
+              </div>
+            </div>
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Oneira insomnia label update</div>
+                  <span class="id">Northwind Bio · PRJ-2063</span>
+                </div>
+              </div>
+            </div>
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot red" title="Overdue"></span>
+                <div>
+                  <div class="name">Colivax pediatric submission</div>
+                  <span class="id">Avenir Médical · PRJ-1998</span>
+                </div>
+              </div>
+            </div>
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot ink" title="Submitted"></span>
+                <div>
+                  <div class="name">Veltrazine patient brochure</div>
+                  <span class="id">Heliocare Pharma · PRJ-2058</span>
+                </div>
+              </div>
+            </div>
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Myrrax Phase II protocol</div>
+                  <span class="id">Kestrel Oncology · PRJ-2072</span>
+                </div>
+              </div>
+            </div>
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot muted" title="On hold"></span>
+                <div>
+                  <div class="name">Sentris migraine manuscript</div>
+                  <span class="id">Polaris Therapeutics · PRJ-2049</span>
+                </div>
+              </div>
+            </div>
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Oneira Phase IV registry</div>
+                  <span class="id">Northwind Bio · PRJ-2081</span>
+                </div>
+              </div>
+            </div>
+            <div class="tl-row-left">
+              <div class="client-cell">
+                <span class="dot active" title="Active"></span>
+                <div>
+                  <div class="name">Colivax adult booster IB</div>
+                  <span class="id">Avenir Médical · PRJ-2087</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-col-right" id="tlScroll">
+            <div class="tl-scroll-inner">
+              <div class="tl-head-right">
+                <div class="tl-years">
+                  <span>2025</span>
+                  <span>2026</span>
+                </div>
+                <div class="tl-months">
+                  <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                  <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+                  <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+                  <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                </div>
+                <div class="tl-today" style="left: 48.5%;" title="Today · 23 Apr 2026">
+                  <span class="tlab">Today</span>
+                </div>
+              </div>
+
+              <div class="tl-row-right">
+                <div class="tl-bar review" style="left:27.4%;width:28.6%">
+                  <span class="bar-label">Review · M. Okafor</span>
+                  <span class="bar-dates">12 Jan → 30 May</span>
+                </div>
+              </div>
+              <div class="tl-row-right alt">
+                <div class="tl-bar draft" style="left:38.3%;width:21.7%">
+                  <span class="bar-label">Authoring · S. Varga</span>
+                  <span class="bar-dates">4 Mar → 18 Jun</span>
+                </div>
+              </div>
+              <div class="tl-row-right">
+                <div class="tl-bar qc overdue" style="left:17.1%;width:28.5%">
+                  <span class="bar-label">QC · R. Lindqvist</span>
+                  <span class="bar-dates">22 Nov 25 → 9 Apr · OVERDUE</span>
+                </div>
+              </div>
+              <div class="tl-row-right alt">
+                <div class="tl-bar approved" style="left:31.7%;width:17.9%">
+                  <span class="bar-label">Approved · E. Petrov</span>
+                  <span class="bar-dates">2 Feb → 28 Apr</span>
+                </div>
+              </div>
+              <div class="tl-row-right">
+                <div class="tl-bar draft" style="left:41.1%;width:32.1%">
+                  <span class="bar-label">Authoring · M. Okafor</span>
+                  <span class="bar-dates">18 Mar → 22 Aug</span>
+                </div>
+              </div>
+              <div class="tl-row-right alt">
+                <div class="tl-bar onhold" style="left:20.4%;width:24%">
+                  <span class="bar-label">On hold · S. Varga</span>
+                  <span class="bar-dates">8 Dec 25 → TBD</span>
+                </div>
+              </div>
+              <div class="tl-row-right">
+                <div class="tl-bar submitted" style="left:3.1%;width:41.1%">
+                  <span class="bar-label">Submitted · K. Amiri</span>
+                  <span class="bar-dates">15 Sep 25 → 2 Apr</span>
+                </div>
+              </div>
+              <div class="tl-row-right alt">
+                <div class="tl-bar review" style="left:30.8%;width:34.5%">
+                  <span class="bar-label">Review · R. Lindqvist</span>
+                  <span class="bar-dates">29 Jan → 14 Jul</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /view-timeline -->
+
+    <!-- Footer -->
+    <div class="foot">
+      <div class="summary">Showing 8 of 24 projects · Sorted by end date · Updated just now</div>
+      <div class="leaf-mark" aria-hidden="true">
+        <div class="t">
+          Azur Note
+          <small>notes that grow</small>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===================== Create Project Dialog ===================== -->
+  <div class="dialog-scrim" id="createDialog" role="dialog" aria-modal="true" aria-labelledby="createDialogTitle">
+    <div class="dialog">
+      <div class="dialog-head">
+        <span class="code" id="createDialogTitle">PRJ-2026-CLT-1</span>
+        <button class="btn-create" id="createSubmit" type="button">
+          <span class="plus" aria-hidden="true"></span>
+          Create
+        </button>
+        <button class="close" id="createClose" type="button" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+        </button>
+      </div>
+      <div class="dialog-body">
+
+        <!-- Client -->
+        <section class="dlg-section">
+          <h3>Client</h3>
+          <div class="dlg-grid cols-2">
+            <div class="field">
+              <label for="cp-client">Client</label>
+              <div class="select-wrap">
+                <select id="cp-client">
+                  <option value="" disabled selected>Client</option>
+                  <option>Heliocare Pharma</option>
+                  <option>Northwind Bio</option>
+                  <option>Cygnus Therapeutics</option>
+                  <option>Okapi Sciences</option>
+                  <option>Vireo Clinical</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="cp-sponsor">Sponsor</label>
+              <div class="select-wrap">
+                <select id="cp-sponsor">
+                  <option value="" disabled selected>Sponsor</option>
+                  <option>Heliocare Pharma</option>
+                  <option>Northwind Bio</option>
+                  <option>Other — same as client</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="cp-code">Client Project Code</label>
+              <input id="cp-code" type="text" placeholder="Client Project Code" />
+            </div>
+            <div class="field">
+              <label for="cp-contact">Main Client Contact</label>
+              <div class="input-search">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5L13 13" stroke-linecap="round"/></svg>
+                <input id="cp-contact" type="text" placeholder="Search users…" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Project Information -->
+        <section class="dlg-section">
+          <h3>Project information</h3>
+          <div class="dlg-grid cols-2">
+            <div class="field">
+              <label for="cp-doctype">Document Type</label>
+              <div class="select-wrap">
+                <select id="cp-doctype">
+                  <option value="" disabled selected>Document Type</option>
+                  <option>Clinical Study Report (CSR)</option>
+                  <option>Protocol</option>
+                  <option>Investigator's Brochure</option>
+                  <option>Manuscript</option>
+                  <option>Label update</option>
+                  <option>Patient narrative</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="cp-indication">Medical Indication</label>
+              <div class="select-wrap">
+                <select id="cp-indication">
+                  <option value="" disabled selected>Medical Indication</option>
+                  <option>Type 2 diabetes</option>
+                  <option>Chronic insomnia</option>
+                  <option>Oncology — NSCLC</option>
+                  <option>Rheumatoid arthritis</option>
+                  <option>Rare disease</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="dlg-grid cols-3" style="margin-top: 18px;">
+            <div class="field">
+              <label for="cp-pm">Project Manager</label>
+              <div class="input-search">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5L13 13" stroke-linecap="round"/></svg>
+                <input id="cp-pm" type="text" placeholder="Search users…" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="cp-writer">Lead Writer</label>
+              <div class="input-search">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5L13 13" stroke-linecap="round"/></svg>
+                <input id="cp-writer" type="text" placeholder="Search users…" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="cp-created">Creation Date</label>
+              <div class="datepicker" data-dp="cp-created" data-align="right"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Planning -->
+        <section class="dlg-section">
+          <h3>Planning</h3>
+          <div class="dlg-grid cols-3">
+            <div class="field">
+              <label for="cp-start">Start Date</label>
+              <div class="datepicker" data-dp="cp-start"></div>
+            </div>
+            <div class="field">
+              <label for="cp-end">End Date</label>
+              <div class="datepicker" data-dp="cp-end"></div>
+            </div>
+            <div class="field">
+              <label for="cp-hours">Budgeted Hours</label>
+              <input id="cp-hours" type="number" placeholder="Budgeted Hours" min="0" step="0.5" />
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== Project Creation Progress Dialog ===================== -->
+  <div class="dialog-scrim" id="progressDialog" role="dialog" aria-modal="true" aria-labelledby="progressTitle">
+    <div class="progress-dialog pd-dialog" id="pdInner">
+      <div class="pd-head">
+        <div class="pd-eyebrow" id="pdEyebrow">
+          <span class="dot"></span>
+          <span id="pdEyebrowText">Provisioning</span>
+        </div>
+        <h3 id="progressTitle">Creating project<em>…</em></h3>
+        <div class="pd-code" id="pdCode">PRJ-2026-CLT-1</div>
+      </div>
+
+      <div class="pd-meter"><div class="fill" id="pdFill"></div></div>
+
+      <ol class="pd-steps" id="pdSteps">
+        <li class="pd-step pending" data-step="0">
+          <span class="marker">1</span>
+          <span class="label">
+            Creating Huddle workspace
+            <span class="sub">Workspace · permissions · folders</span>
+          </span>
+          <span class="timing"></span>
+        </li>
+        <li class="pd-step pending" data-step="1">
+          <span class="marker">2</span>
+          <span class="label">
+            Inviting people to workspace
+            <span class="sub">Project manager · writer · client contact</span>
+          </span>
+          <span class="timing"></span>
+        </li>
+        <li class="pd-step pending" data-step="2">
+          <span class="marker">3</span>
+          <span class="label">
+            Retrieving files from workspace
+            <span class="sub">Templates · references · style guide</span>
+          </span>
+          <span class="timing"></span>
+        </li>
+        <li class="pd-step pending" data-step="3">
+          <span class="marker">4</span>
+          <span class="label">
+            Creating MyHours project
+            <span class="sub">Time tracking · budget · tasks</span>
+          </span>
+          <span class="timing"></span>
+        </li>
+        <li class="pd-step pending" data-step="4">
+          <span class="marker">5</span>
+          <span class="label">
+            Creating Smartsheet project sheet
+            <span class="sub">Milestones · deliverables · owners</span>
+          </span>
+          <span class="timing"></span>
+        </li>
+      </ol>
+
+      <div class="pd-foot">
+        <span class="hint" id="pdHint">This usually takes a few seconds</span>
+        <button type="button" class="btn-ghost" id="pdAction" disabled>Open project</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="tweaks.js"></script>
+  <script>
+    (function(){
+      // ========== Toast ==========
+      const toastEl = document.getElementById('toast');
+      let toastTimer;
+      const toast = (msg) => {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+      };
+
+      // ========== Sidebar ==========
+      const sidebar = document.getElementById('sidebar');
+      const scrim = document.getElementById('sidebarScrim');
+      const openSidebar = () => { sidebar.classList.add('open'); scrim.classList.add('open'); };
+      const closeSidebar = () => { sidebar.classList.remove('open'); scrim.classList.remove('open'); };
+      document.getElementById('menuBtn').addEventListener('click', openSidebar);
+      document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+      scrim.addEventListener('click', closeSidebar);
+      document.querySelectorAll('.sidebar .nav-item').forEach(b => {
+        b.addEventListener('click', () => {
+          const key = b.dataset.nav;
+          document.querySelectorAll('.sidebar .nav-item').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          const labels = { projects: 'Projects', clients: 'Clients', members: 'Members', help: 'Help & feedback', settings: 'Settings' };
+          toast(`${labels[key] || key} — coming soon`);
+          if (key === 'projects') closeSidebar();
+        });
+      });
+
+      // ========== Profile menu ==========
+      const userWrap = document.getElementById('userWrap');
+      const userTrigger = document.getElementById('userTrigger');
+      userTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = userWrap.classList.toggle('open');
+        userTrigger.setAttribute('aria-expanded', open);
+      });
+      document.querySelectorAll('#userWrap .p-item').forEach(b => {
+        b.addEventListener('click', () => {
+          const a = b.dataset.action;
+          userWrap.classList.remove('open');
+          if (a === 'logout') toast('Logged out');
+          else if (a === 'settings') toast('Opening Settings…');
+          else if (a === 'profile') toast('Opening Profile…');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!userWrap.contains(e.target)) userWrap.classList.remove('open');
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          userWrap.classList.remove('open');
+          closeSidebar();
+        }
+      });
+
+      // ========== Filter button (panel open/close) ==========
+      const fbtn = document.getElementById('filtersBtn');
+      const ftrigger = fbtn.querySelector('.trigger');
+      ftrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fbtn.classList.toggle('open');
+        ftrigger.setAttribute('aria-expanded', fbtn.classList.contains('open'));
+      });
+      document.addEventListener('click', (e) => {
+        if (!fbtn.contains(e.target)) {
+          fbtn.classList.remove('open');
+          ftrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // ========== Model: collect rows + extract data ==========
+      const STEP_KEYS = ['draft','qc','review','approved','submitted','onhold'];
+      const STEP_LABELS = { draft: 'Authoring', qc: 'QC', review: 'Review', approved: 'Approved', submitted: 'Submitted', onhold: 'On hold' };
+      const STATUS_OF_STEP = { draft: 'active', qc: 'active', review: 'active', approved: 'active', submitted: 'archived', onhold: 'onhold' };
+
+      const parseDate = (s) => {
+        if (!s || /tbd/i.test(s)) return null;
+        const m = s.match(/(\d{1,2})\s+([A-Za-z]{3})\s+(\d{2,4})/);
+        if (!m) return null;
+        const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        const mi = months.indexOf(m[2].toLowerCase());
+        if (mi < 0) return null;
+        let y = parseInt(m[3]); if (y < 100) y += 2000;
+        return new Date(y, mi, parseInt(m[1]));
+      };
+
+      const rows = Array.from(document.querySelectorAll('#view-list tbody tr')).map(tr => {
+        const pill = tr.querySelector('.pill');
+        const stepKey = pill ? STEP_KEYS.find(k => pill.classList.contains(k)) : null;
+        const client = tr.querySelector('.client-cell .name')?.textContent.trim() || '';
+        const project = tr.querySelector('.project-cell a')?.textContent.trim() || '';
+        const indication = tr.querySelector('.indication')?.firstChild?.textContent?.trim() || '';
+        const writer = tr.querySelector('.writer .n')?.textContent.trim() || '';
+        const dates = tr.querySelectorAll('.date');
+        const start = parseDate(dates[0]?.textContent) ;
+        const end = parseDate(dates[1]?.textContent);
+        return {
+          tr, stepKey, client, project, indication, writer, start, end,
+          status: STATUS_OF_STEP[stepKey] || 'active',
+        };
+      });
+
+      // Populate filter options (client/step/writer) dynamically from the data
+      const uniqueSorted = (arr) => [...new Set(arr)].filter(Boolean).sort();
+      const clients = uniqueSorted(rows.map(r => r.client));
+      const writers = uniqueSorted(rows.map(r => r.writer));
+      const indications = uniqueSorted(rows.map(r => r.indication));
+      const steps = STEP_KEYS.filter(k => rows.some(r => r.stepKey === k));
+
+      // ========== Filter state ==========
+      const filters = {
+        status: 'all',
+        search: '',
+        client: new Set(),
+        step: new Set(),
+        writer: new Set(),
+        indication: new Set(),
+      };
+
+      const countBadge = fbtn.querySelector('.badge');
+
+      const updateBadge = () => {
+        const n = filters.client.size + filters.step.size + filters.writer.size + filters.indication.size;
+        countBadge.textContent = n;
+        countBadge.style.background = n > 0 ? 'var(--azur-deep)' : '';
+        countBadge.style.color = n > 0 ? 'var(--sand)' : '';
+      };
+
+      const updateSummaries = () => {
+        const set = (k, arr, emptyLabel, oneLabel) => {
+          const el = document.querySelector(`[data-value-for="${k}"]`);
+          if (!el) return;
+          if (arr.size === 0) el.textContent = emptyLabel;
+          else if (arr.size === 1) el.textContent = oneLabel([...arr][0]);
+          else el.textContent = `${arr.size} selected`;
+        };
+        set('client', filters.client, 'All clients', v => v);
+        set('step', filters.step, 'Any step', v => STEP_LABELS[v]);
+        set('writer', filters.writer, 'Anyone', v => v);
+        set('indication', filters.indication, 'Any', v => v);
+      };
+
+      // ========== Sort state ==========
+      let sortKey = null, sortDir = 1;
+
+      // ========== Apply ==========
+      const tbody = document.querySelector('#view-list tbody');
+      const summaryEl = document.querySelector('.foot .summary');
+      const totalRows = rows.length;
+
+      const apply = () => {
+        // Filter
+        const q = filters.search.trim().toLowerCase();
+        let visible = rows.filter(r => {
+          if (filters.status !== 'all' && r.status !== filters.status) return false;
+          if (filters.client.size && !filters.client.has(r.client)) return false;
+          if (filters.step.size && !filters.step.has(r.stepKey)) return false;
+          if (filters.writer.size && !filters.writer.has(r.writer)) return false;
+          if (filters.indication.size && !filters.indication.has(r.indication)) return false;
+          if (q) {
+            const hay = `${r.client} ${r.project} ${r.indication} ${r.writer}`.toLowerCase();
+            if (!hay.includes(q)) return false;
+          }
+          return true;
+        });
+
+        // Sort
+        if (sortKey) {
+          visible = [...visible].sort((a, b) => {
+            const av = a[sortKey], bv = b[sortKey];
+            if (av instanceof Date || bv instanceof Date) {
+              const at = av ? av.getTime() : Infinity;
+              const bt = bv ? bv.getTime() : Infinity;
+              return (at - bt) * sortDir;
+            }
+            return String(av || '').localeCompare(String(bv || '')) * sortDir;
+          });
+        }
+
+        // Re-attach rows
+        const visSet = new Set(visible.map(r => r.tr));
+        rows.forEach(r => { r.tr.style.display = visSet.has(r.tr) ? '' : 'none'; });
+        visible.forEach(r => tbody.appendChild(r.tr));
+
+        // Update summary
+        if (summaryEl) {
+          const sortLabel = sortKey
+            ? `Sorted by ${sortKey} ${sortDir > 0 ? '↑' : '↓'}`
+            : 'Default order';
+          summaryEl.textContent = `Showing ${visible.length} of ${totalRows} projects · ${sortLabel}`;
+        }
+      };
+
+      // ========== Status segmented tabs ==========
+      document.querySelectorAll('.seg button').forEach(b => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.seg button').forEach(x => x.classList.remove('on'));
+          b.classList.add('on');
+          filters.status = b.dataset.status;
+          apply();
+        });
+      });
+
+      // ========== Search ==========
+      const searchInput = document.querySelector('.search input');
+      if (searchInput) {
+        searchInput.addEventListener('input', () => {
+          filters.search = searchInput.value;
+          apply();
+        });
+      }
+
+      // ========== Filter-row sub-menus (click to cycle through a tiny dropdown of checkboxes) ==========
+      // We generate a popover submenu inline when a filter row is clicked.
+      const makeSubmenu = (row, key, options, labelFn = v => v) => {
+        let pop = row.querySelector('.submenu');
+        if (pop) { pop.remove(); return; }
+        // Close any other open submenus
+        document.querySelectorAll('.filters-panel .submenu').forEach(p => p.remove());
+        pop = document.createElement('div');
+        pop.className = 'submenu';
+        Object.assign(pop.style, {
+          position: 'absolute', right: 'calc(100% + 6px)', top: '0',
+          background: 'var(--bg)', border: '1px solid var(--rule-strong)',
+          borderRadius: '10px', padding: '6px', minWidth: '210px',
+          boxShadow: '0 12px 32px rgba(35,87,112,0.14)', zIndex: '30',
+          maxHeight: '300px', overflowY: 'auto',
+        });
+        options.forEach(val => {
+          const it = document.createElement('label');
+          Object.assign(it.style, {
+            display: 'flex', alignItems: 'center', gap: '10px',
+            padding: '8px 10px', borderRadius: '6px', cursor: 'pointer',
+            fontSize: '13px', color: 'var(--azur-deep)',
+          });
+          it.addEventListener('mouseenter', () => it.style.background = 'var(--hover)');
+          it.addEventListener('mouseleave', () => it.style.background = '');
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = filters[key].has(val);
+          cb.addEventListener('change', () => {
+            if (cb.checked) filters[key].add(val);
+            else filters[key].delete(val);
+            updateBadge();
+            updateSummaries();
+            apply();
+          });
+          const span = document.createElement('span');
+          span.textContent = labelFn(val);
+          it.append(cb, span);
+          pop.appendChild(it);
+        });
+        row.style.position = 'relative';
+        row.appendChild(pop);
+        // Stop propagation so the row-level click doesn't close it
+        pop.addEventListener('click', e => e.stopPropagation());
+      };
+
+      document.querySelectorAll('.f-row.f-section').forEach(row => {
+        row.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const key = row.dataset.filter;
+          if (key === 'client') makeSubmenu(row, 'client', clients);
+          else if (key === 'step') makeSubmenu(row, 'step', steps, v => STEP_LABELS[v]);
+          else if (key === 'writer') makeSubmenu(row, 'writer', writers);
+          else if (key === 'indication') makeSubmenu(row, 'indication', indications);
+          else if (key === 'due') toast('Date picker — coming soon');
+        });
+      });
+
+      // Clear filters
+      document.getElementById('filtersClear').addEventListener('click', () => {
+        filters.client.clear();
+        filters.step.clear();
+        filters.writer.clear();
+        filters.indication.clear();
+        updateBadge();
+        updateSummaries();
+        apply();
+        document.querySelectorAll('.filters-panel .submenu').forEach(p => p.remove());
+      });
+      document.getElementById('filtersDone').addEventListener('click', () => {
+        fbtn.classList.remove('open');
+        ftrigger.setAttribute('aria-expanded', 'false');
+      });
+
+      // ========== Sorting ==========
+      document.querySelectorAll('thead th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          const k = th.dataset.sort;
+          if (sortKey === k) sortDir = -sortDir;
+          else { sortKey = k; sortDir = 1; }
+          document.querySelectorAll('thead th[data-sort]').forEach(x => x.classList.remove('active'));
+          th.classList.add('active');
+          apply();
+        });
+      });
+
+      // ========== View switch ==========
+      const tlScroll = document.getElementById('tlScroll');
+      const scrollToToday = (pos = 0.2, behavior = 'smooth') => {
+        if (!tlScroll) return;
+        const inner = tlScroll.querySelector('.tl-scroll-inner');
+        const todayPct = 0.485;
+        const target = inner.offsetWidth * todayPct - tlScroll.clientWidth * pos;
+        tlScroll.scrollTo({ left: Math.max(0, target), behavior });
+      };
+
+      document.querySelectorAll('.view-switch button').forEach((b, i) => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.view-switch button').forEach(x => {
+            x.classList.remove('on');
+            x.setAttribute('aria-pressed', 'false');
+          });
+          b.classList.add('on');
+          b.setAttribute('aria-pressed', 'true');
+          const isList = i === 0;
+          document.getElementById('view-list').hidden = !isList;
+          document.getElementById('view-timeline').hidden = isList;
+          if (!isList) scrollToToday(0.2, 'smooth');
+        });
+      });
+
+      // Wheel → horizontal scroll on timeline
+      if (tlScroll) {
+        tlScroll.addEventListener('wheel', (e) => {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            const max = tlScroll.scrollWidth - tlScroll.clientWidth;
+            const next = tlScroll.scrollLeft + e.deltaY;
+            if ((e.deltaY > 0 && tlScroll.scrollLeft < max) ||
+                (e.deltaY < 0 && tlScroll.scrollLeft > 0)) {
+              e.preventDefault();
+              tlScroll.scrollLeft = Math.max(0, Math.min(max, next));
+            }
+          }
+        }, { passive: false });
+      }
+
+      // Timeline zoom
+      document.querySelectorAll('.tl-zoom button').forEach(b => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.tl-zoom button').forEach(x => x.classList.remove('on'));
+          b.classList.add('on');
+          toast(`Zoom: ${b.textContent.trim()}`);
+        });
+      });
+
+      // Initial: position today at ~20% from left
+      requestAnimationFrame(() => scrollToToday(0.2, 'auto'));
+
+      // Initial counts for status tabs
+      const countBy = (st) => rows.filter(r => st === 'all' || r.status === st).length;
+      ['all','active','onhold','archived'].forEach(st => {
+        const el = document.querySelector(`[data-count="${st}"]`);
+        if (el) el.textContent = countBy(st);
+      });
+
+      // Initial apply
+      apply();
+
+      // ========== Custom Datepicker ==========
+      const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const DOW = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+
+      const sameDay = (a, b) => a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+      const fmt = (d) => `${String(d.getDate()).padStart(2,'0')} ${MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`;
+
+      const dpState = {};
+
+      const createDatepicker = (host, opts = {}) => {
+        const key = host.dataset.dp || Math.random().toString(36).slice(2);
+        if (host.dataset.align === 'right') host.classList.add('align-right');
+
+        let value = null;
+        let view = new Date(); // the month being viewed
+        let mode = 'day'; // 'day' | 'month' | 'year'
+        const placeholder = opts.placeholder || 'mm / dd / yyyy';
+
+        // Build static structure
+        host.innerHTML = `
+          <button type="button" class="dp-field">
+            <span class="dp-text placeholder">${placeholder}</span>
+            <svg class="dp-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <rect x="1.5" y="2.5" width="11" height="9.5" rx="1"/>
+              <path d="M1.5 5.5h11M4 1.5v2M10 1.5v2"/>
+            </svg>
+          </button>
+          <div class="dp-popover" role="dialog"></div>
+        `;
+
+        const fieldEl = host.querySelector('.dp-field');
+        const textEl = host.querySelector('.dp-text');
+        const pop = host.querySelector('.dp-popover');
+
+        const renderDays = () => {
+          const y = view.getFullYear();
+          const m = view.getMonth();
+          const firstOfMonth = new Date(y, m, 1);
+          // Mon = 0, Sun = 6
+          const jsDow = firstOfMonth.getDay(); // 0 Sun .. 6 Sat
+          const leading = (jsDow + 6) % 7; // Mon-first
+          const daysInMonth = new Date(y, m + 1, 0).getDate();
+          const today = new Date();
+
+          const cells = [];
+          // Leading days from prev month
+          for (let i = leading - 1; i >= 0; i--) {
+            const d = new Date(y, m, -i);
+            cells.push({ d, other: true });
+          }
+          for (let i = 1; i <= daysInMonth; i++) {
+            cells.push({ d: new Date(y, m, i), other: false });
+          }
+          // Trailing to fill 6 rows
+          while (cells.length < 42) {
+            const last = cells[cells.length - 1].d;
+            const d = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1);
+            cells.push({ d, other: true });
+          }
+
+          pop.innerHTML = `
+            <div class="dp-head">
+              <button type="button" class="dp-prev" aria-label="Previous month">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7.5 2.5 4 6l3.5 3.5"/></svg>
+              </button>
+              <button type="button" class="dp-title">${MONTHS_FULL[m]} ${y}</button>
+              <button type="button" class="dp-next" aria-label="Next month">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
+              </button>
+            </div>
+            <div class="dp-dow">${DOW.map(d => `<span>${d}</span>`).join('')}</div>
+            <div class="dp-grid">
+              ${cells.map(({ d, other }) => {
+                const cls = ['dp-cell'];
+                if (other) cls.push('other');
+                if (sameDay(d, today)) cls.push('today');
+                if (sameDay(d, value)) cls.push('selected');
+                return `<button type="button" class="${cls.join(' ')}" data-iso="${d.toISOString()}">${d.getDate()}</button>`;
+              }).join('')}
+            </div>
+            <div class="dp-foot">
+              <button type="button" class="dp-today">Today</button>
+              <button type="button" class="dp-clear primary">Clear</button>
+            </div>
+          `;
+
+          pop.querySelector('.dp-prev').addEventListener('click', () => {
+            view = new Date(y, m - 1, 1); renderDays();
+          });
+          pop.querySelector('.dp-next').addEventListener('click', () => {
+            view = new Date(y, m + 1, 1); renderDays();
+          });
+          pop.querySelector('.dp-title').addEventListener('click', () => {
+            mode = 'month'; renderMonths();
+          });
+          pop.querySelectorAll('.dp-cell').forEach(b => {
+            b.addEventListener('click', () => {
+              setValue(new Date(b.dataset.iso));
+              host.classList.remove('open');
+            });
+          });
+          pop.querySelector('.dp-today').addEventListener('click', () => {
+            view = new Date();
+            renderDays();
+          });
+          pop.querySelector('.dp-clear').addEventListener('click', () => {
+            setValue(null);
+            host.classList.remove('open');
+          });
+        };
+
+        const renderMonths = () => {
+          pop.innerHTML = `
+            <div class="dp-head">
+              <button type="button" class="dp-prev" aria-label="Previous year">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7.5 2.5 4 6l3.5 3.5"/></svg>
+              </button>
+              <button type="button" class="dp-title">${view.getFullYear()}</button>
+              <button type="button" class="dp-next" aria-label="Next year">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
+              </button>
+            </div>
+            <div class="dp-months">
+              ${MONTHS_SHORT.map((mn, i) => {
+                const cls = ['dp-month'];
+                if (value && value.getFullYear() === view.getFullYear() && value.getMonth() === i) cls.push('selected');
+                return `<button type="button" class="${cls.join(' ')}" data-m="${i}">${mn}</button>`;
+              }).join('')}
+            </div>
+          `;
+          pop.querySelector('.dp-prev').addEventListener('click', () => {
+            view = new Date(view.getFullYear() - 1, view.getMonth(), 1); renderMonths();
+          });
+          pop.querySelector('.dp-next').addEventListener('click', () => {
+            view = new Date(view.getFullYear() + 1, view.getMonth(), 1); renderMonths();
+          });
+          pop.querySelector('.dp-title').addEventListener('click', () => {
+            mode = 'year'; renderYears();
+          });
+          pop.querySelectorAll('.dp-month').forEach(b => {
+            b.addEventListener('click', () => {
+              view = new Date(view.getFullYear(), parseInt(b.dataset.m), 1);
+              mode = 'day';
+              renderDays();
+            });
+          });
+        };
+
+        const renderYears = () => {
+          const startY = Math.floor(view.getFullYear() / 12) * 12;
+          const years = Array.from({ length: 12 }, (_, i) => startY + i);
+          pop.innerHTML = `
+            <div class="dp-head">
+              <button type="button" class="dp-prev" aria-label="Earlier years">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7.5 2.5 4 6l3.5 3.5"/></svg>
+              </button>
+              <span class="dp-title" style="cursor:default">${startY} – ${startY + 11}</span>
+              <button type="button" class="dp-next" aria-label="Later years">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4.5 2.5 8 6l-3.5 3.5"/></svg>
+              </button>
+            </div>
+            <div class="dp-years">
+              ${years.map(y => {
+                const cls = ['dp-year'];
+                if (value && value.getFullYear() === y) cls.push('selected');
+                return `<button type="button" class="${cls.join(' ')}" data-y="${y}">${y}</button>`;
+              }).join('')}
+            </div>
+          `;
+          pop.querySelector('.dp-prev').addEventListener('click', () => {
+            view = new Date(view.getFullYear() - 12, view.getMonth(), 1); renderYears();
+          });
+          pop.querySelector('.dp-next').addEventListener('click', () => {
+            view = new Date(view.getFullYear() + 12, view.getMonth(), 1); renderYears();
+          });
+          pop.querySelectorAll('.dp-year').forEach(b => {
+            b.addEventListener('click', () => {
+              view = new Date(parseInt(b.dataset.y), view.getMonth(), 1);
+              mode = 'month';
+              renderMonths();
+            });
+          });
+        };
+
+        const render = () => {
+          if (mode === 'day') renderDays();
+          else if (mode === 'month') renderMonths();
+          else if (mode === 'year') renderYears();
+        };
+
+        const setValue = (d) => {
+          value = d;
+          if (d) {
+            textEl.textContent = fmt(d);
+            textEl.classList.remove('placeholder');
+            view = new Date(d.getFullYear(), d.getMonth(), 1);
+          } else {
+            textEl.textContent = placeholder;
+            textEl.classList.add('placeholder');
+          }
+          host.dataset.value = d ? d.toISOString() : '';
+          host.dispatchEvent(new CustomEvent('dp:change', { detail: { value: d } }));
+        };
+
+        fieldEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = host.classList.contains('open');
+          // Close any other open datepickers
+          document.querySelectorAll('.datepicker.open').forEach(el => {
+            if (el !== host) el.classList.remove('open');
+          });
+          host.classList.toggle('open', !isOpen);
+          if (!isOpen) {
+            mode = 'day';
+            render();
+            // Auto-flip above if not enough room below
+            requestAnimationFrame(() => {
+              host.classList.remove('drop-up');
+              const rect = fieldEl.getBoundingClientRect();
+              const popH = pop.offsetHeight;
+              const spaceBelow = window.innerHeight - rect.bottom;
+              if (spaceBelow < popH + 16 && rect.top > popH + 16) {
+                host.classList.add('drop-up');
+              }
+            });
+          }
+        });
+
+        pop.addEventListener('click', (e) => e.stopPropagation());
+
+        dpState[key] = { setValue, getValue: () => value, host };
+        return dpState[key];
+      };
+
+      // Close any datepicker on outside click / Esc
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.datepicker.open').forEach(el => el.classList.remove('open'));
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.datepicker.open').forEach(el => el.classList.remove('open'));
+        }
+      });
+
+      // Instantiate all datepickers in the page
+      document.querySelectorAll('.datepicker').forEach(host => {
+        createDatepicker(host);
+      });
+
+      // ========== Create Project Dialog ==========
+      const dlg = document.getElementById('createDialog');
+      const dlgTitle = document.getElementById('createDialogTitle');
+      const clientSelect = document.getElementById('cp-client');
+      const codeInput = document.getElementById('cp-code');
+
+      const CLIENT_CODES = {
+        'Heliocare Pharma': 'HCP',
+        'Northwind Bio': 'NWB',
+        'Cygnus Therapeutics': 'CYG',
+        'Okapi Sciences': 'OKS',
+        'Vireo Clinical': 'VRO',
+      };
+      const nextSeq = () => {
+        const n = (rows.filter(r => r.status === 'active').length + 1).toString().padStart(1, '0');
+        return n;
+      };
+      const refreshCode = () => {
+        const year = new Date().getFullYear();
+        const clientKey = CLIENT_CODES[clientSelect.value] || 'CLT';
+        dlgTitle.textContent = `PRJ-${year}-${clientKey}-${nextSeq()}`;
+      };
+
+      const openDialog = () => {
+        dlg.classList.add('open');
+        refreshCode();
+        document.body.style.overflow = 'hidden';
+        // Preset creation date to today
+        dpState['cp-created'].setValue(new Date());
+      };
+      const closeDialog = () => {
+        dlg.classList.remove('open');
+        document.body.style.overflow = '';
+      };
+
+      document.getElementById('createProjectBtn').addEventListener('click', openDialog);
+      document.getElementById('createClose').addEventListener('click', closeDialog);
+      dlg.addEventListener('click', (e) => {
+        if (e.target === dlg) closeDialog();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dlg.classList.contains('open')) closeDialog();
+      });
+      clientSelect.addEventListener('change', refreshCode);
+
+      document.getElementById('createSubmit').addEventListener('click', () => {
+        const client = clientSelect.value;
+        if (!client) {
+          clientSelect.focus();
+          toast('Choose a client first');
+          return;
+        }
+        const code = dlgTitle.textContent;
+        closeDialog();
+        runProgressDialog(code);
+      });
+
+      // ========== Project creation progress dialog ==========
+      const pdScrim = document.getElementById('progressDialog');
+      const pdInner = document.getElementById('pdInner');
+      const pdSteps = [...document.querySelectorAll('#pdSteps .pd-step')];
+      const pdFill = document.getElementById('pdFill');
+      const pdEyebrow = document.getElementById('pdEyebrow');
+      const pdEyebrowText = document.getElementById('pdEyebrowText');
+      const pdCode = document.getElementById('pdCode');
+      const pdHint = document.getElementById('pdHint');
+      const pdAction = document.getElementById('pdAction');
+
+      // Realistic-ish per-step durations (ms)
+      const STEP_DURATIONS = [1400, 1100, 1700, 1200, 1500];
+
+      let pdRunning = false;
+
+      const fmtTiming = (ms) => {
+        const s = (ms / 1000);
+        return s < 10 ? `${s.toFixed(1)}s` : `${Math.round(s)}s`;
+      };
+
+      const resetProgress = () => {
+        pdSteps.forEach((s, i) => {
+          s.classList.remove('done', 'active');
+          s.classList.add('pending');
+          s.querySelector('.marker').textContent = String(i + 1);
+          s.querySelector('.timing').textContent = '';
+        });
+        pdFill.style.width = '0%';
+        pdInner.classList.remove('complete');
+        pdEyebrow.querySelector('.dot').style.background = '';
+        pdEyebrowText.textContent = 'Provisioning';
+        pdHint.textContent = 'This usually takes a few seconds';
+        pdAction.disabled = true;
+        pdAction.textContent = 'Open project';
+        pdAction.classList.remove('primary');
+      };
+
+      const runProgressDialog = (code) => {
+        if (pdRunning) return;
+        pdRunning = true;
+        resetProgress();
+        pdCode.textContent = code;
+        pdScrim.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        let stepIdx = 0;
+        const total = pdSteps.length;
+
+        const advance = () => {
+          if (stepIdx >= total) {
+            // All done
+            pdInner.classList.add('complete');
+            pdEyebrowText.textContent = 'Ready';
+            pdHint.textContent = `Created in ${fmtTiming(STEP_DURATIONS.reduce((a,b)=>a+b,0))}`;
+            pdAction.disabled = false;
+            pdAction.classList.add('primary');
+            pdAction.focus();
+            pdRunning = false;
+            return;
+          }
+          const step = pdSteps[stepIdx];
+          step.classList.remove('pending');
+          step.classList.add('active');
+          const dur = STEP_DURATIONS[stepIdx];
+
+          setTimeout(() => {
+            step.classList.remove('active');
+            step.classList.add('done');
+            // Replace marker with checkmark
+            step.querySelector('.marker').innerHTML = `
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 6.2 5 8.7l4.5-5"/>
+              </svg>`;
+            step.querySelector('.timing').textContent = fmtTiming(dur);
+            stepIdx += 1;
+            pdFill.style.width = `${(stepIdx / total) * 100}%`;
+            advance();
+          }, dur);
+        };
+
+        // Small initial delay so the first step doesn't pop instantly
+        setTimeout(advance, 250);
+        pdFill.style.width = `${(0.5 / total) * 100}%`;
+      };
+
+      const closeProgress = () => {
+        if (pdRunning) return; // don't allow close mid-flight
+        pdScrim.classList.remove('open');
+        document.body.style.overflow = '';
+      };
+
+      pdAction.addEventListener('click', () => {
+        if (pdAction.disabled) return;
+        toast(`Opening ${pdCode.textContent}…`);
+        closeProgress();
+      });
+
+      // Esc closes only when complete
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && pdScrim.classList.contains('open') && !pdRunning) {
+          closeProgress();
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

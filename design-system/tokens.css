@@ -1,0 +1,26 @@
+/* Azur Note — Brand color tokens
+ * v0.2 — 23 Apr 2026
+ * Changelog: removed --mint (#E5F3E7). Migrate usages to --sand.
+ */
+
+:root {
+  /* Core palette */
+  --azur-deep:  #235770;  /* Ink / Primary            */
+  --azur-mid:   #418EA0;  /* Accent                   */
+  --brick:      #AC2819;  /* Alert / Highlight        */
+  --sand:       #F3E9E1;  /* Surface / Paper          */
+
+  /* Semantic aliases */
+  --color-ink:      var(--azur-deep);
+  --color-accent:   var(--azur-mid);
+  --color-surface:  var(--sand);
+  --color-paper:    var(--sand);
+  --color-alert:    var(--brick);
+
+  /* Project step pills (outside core palette) */
+  --step-authoring-bg: #D7EAFF; --step-authoring-fg: #1E3A5F;
+  --step-qc-bg:        #EFE4FE; --step-qc-fg:        #4A2A7A;
+  --step-review-bg:    #FFEACD; --step-review-fg:    #7A4A10;
+  --step-approval-bg:  #CDEED8; --step-approval-fg:  #1E5A35;
+  --step-archived-bg:  rgba(225, 230, 232, 0.7); --step-archived-fg: #3A4A52;
+}
