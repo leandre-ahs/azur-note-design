@@ -1,0 +1,1735 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azur Note — Heliocare Pharma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azur-deep:  #235770;
+    --azur-mid:   #418EA0;
+    --brick:      #AC2819;
+    --sand:       #F3E9E1;
+    --hover:      rgba(35, 87, 112, 0.06);
+    --bg:         #FBFAF7;
+    --rule:       rgba(35, 87, 112, 0.12);
+    --rule-strong:rgba(35, 87, 112, 0.22);
+    --muted:      rgba(35, 87, 112, 0.58);
+    --font-display: "Outfit", system-ui, sans-serif;
+    --font-sans:    "Inter Tight", system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ---------- Top nav ---------- */
+  .topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar .menu-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--azur-deep);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; margin-left: 18px; }
+  .brand .mark { width: 37px; height: 37px; display: grid; place-items: center; line-height: 1; }
+  .brand .mark .logo { display: block; width: 37px; height: 37px; background: url('assets/logo.svg') center / contain no-repeat; }
+  .brand .name { font-family: var(--font-display); font-size: 20px; letter-spacing: -0.01em; }
+  .brand .name em { font-style: normal; font-family: "Outfit", system-ui, sans-serif; font-weight: 300; color: var(--azur-mid); }
+  .topbar .spacer { flex: 1; }
+  .topbar .divider { width: 1px; height: 28px; background: var(--rule-strong); margin: 0 20px; }
+
+  /* User menu */
+  .user-wrap { position: relative; }
+  .user-trigger {
+    display: flex; align-items: center; gap: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 4px 6px 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-family: inherit;
+  }
+  .user-trigger:hover { background: var(--hover); border-color: var(--rule); }
+  .user-trigger .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--sand);
+    color: var(--azur-deep);
+    border: 1px solid var(--rule-strong);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+  .user-trigger .who { line-height: 1.2; text-align: right; }
+  .user-trigger .who .name { font-size: 13px; font-weight: 500; }
+  .user-trigger .who .role {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .profile-menu {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    min-width: 220px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(35, 87, 112, 0.14);
+    padding: 6px;
+    z-index: 60;
+    display: none;
+  }
+  .user-wrap.open .profile-menu { display: block; }
+  .profile-menu .p-head { padding: 12px 12px 10px; border-bottom: 1px solid var(--rule); margin-bottom: 4px; }
+  .profile-menu .p-head .name { font-weight: 500; font-size: 14px; color: var(--azur-deep); }
+  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .profile-menu .p-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 6px;
+    color: var(--azur-deep); font-size: 13px;
+    cursor: pointer; background: transparent; border: 0;
+    width: 100%; text-align: left; font-family: inherit;
+  }
+  .profile-menu .p-item:hover { background: var(--hover); }
+  .profile-menu .p-item.danger { color: var(--brick); }
+  .profile-menu .p-divider { height: 1px; background: var(--rule); margin: 4px 6px; }
+
+  /* Sidebar */
+  .sidebar-scrim {
+    position: fixed; inset: 0;
+    background: rgba(35, 87, 112, 0.28);
+    opacity: 0; pointer-events: none;
+    transition: opacity .24s ease;
+    z-index: 40;
+  }
+  .sidebar-scrim.open { opacity: 1; pointer-events: auto; }
+  .sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    width: 300px;
+    background: var(--bg);
+    border-right: 1px solid var(--rule-strong);
+    transform: translateX(-100%);
+    transition: transform .26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50;
+    display: flex; flex-direction: column;
+    box-shadow: 12px 0 32px rgba(35, 87, 112, 0.08);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-head .brand { margin: 0; }
+  .sidebar-close {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+  }
+  .sidebar-close:hover { background: var(--hover); }
+  .sidebar-nav { flex: 1; padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .sidebar-nav .group-label {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 10px 14px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-size: 14px; font-weight: 500;
+    background: transparent; border: 0;
+    text-align: left; width: 100%;
+    font-family: inherit; position: relative;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: var(--hover); }
+  .nav-item.active { background: var(--hover); }
+  .nav-item.active::before {
+    content: ""; position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3px; background: var(--azur-deep);
+    border-radius: 0 3px 3px 0;
+  }
+  .nav-item .icon { width: 18px; height: 18px; display: grid; place-items: center; color: var(--azur-mid); }
+  .nav-item .badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.06em;
+    color: var(--muted);
+    background: rgba(35,87,112,0.06);
+    padding: 2px 7px; border-radius: 100px;
+  }
+  .sidebar-foot {
+    border-top: 1px solid var(--rule);
+    padding: 10px 12px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  /* Buttons */
+  .btn {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .btn:hover { background: var(--hover); }
+  .btn.primary {
+    background: var(--azur-deep);
+    color: var(--sand);
+    border-color: var(--azur-deep);
+  }
+  .btn.primary:hover { background: #1b4658; }
+
+  /* Pills, dots */
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+  .pill.draft     { background: #D7EAFF; color: #1E3A5F; }
+  .pill.qc        { background: #EFE4FE; color: #4A2A7A; }
+  .pill.review    { background: #FFEACD; color: #7A4A10; }
+  .pill.approved  { background: #CDEED8; color: #1E5A35; }
+  .pill.submitted { background: var(--azur-deep); color: var(--sand); }
+  .pill.onhold    { background: rgba(225, 230, 232, 0.7); color: #3A4A52; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; display: inline-block; }
+  .dot.active  { background: var(--azur-mid); }
+  .dot.red     { background: var(--brick); }
+  .dot.ink     { background: var(--azur-deep); }
+  .dot.muted   { background: rgba(35, 87, 112, 0.3); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--azur-deep); color: var(--sand);
+    padding: 10px 18px; border-radius: 100px;
+    font-size: 13px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    z-index: 100;
+    box-shadow: 0 6px 24px rgba(35,87,112,0.2);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Page */
+  .page {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 28px 32px 48px;
+  }
+
+  /* Breadcrumbs */
+  .crumbs {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .crumbs a {
+    color: var(--azur-mid);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .crumbs a:hover { border-bottom-color: var(--azur-mid); }
+  .crumbs .sep { opacity: 0.6; }
+  .crumbs .here { color: var(--azur-deep); }
+
+  /* Hero header */
+  .client-head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+  }
+  .client-head .titles .meta-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .client-head .code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+  .client-head h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--azur-deep);
+    text-wrap: pretty;
+    max-width: 28ch;
+  }
+  .client-head h1 em { font-style: normal; font-family: "Outfit", system-ui, sans-serif; font-weight: 300; color: var(--azur-mid); letter-spacing: -0.01em; }
+  .client-head .subtitle {
+    margin-top: 4px;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--muted);
+    letter-spacing: 0;
+    max-width: 60ch;
+  }
+  .client-head .head-side {
+    display: flex; flex-direction: column; gap: 10px;
+    align-items: stretch;
+    min-width: 240px;
+  }
+  .client-head .head-side .actions-row {
+    display: flex; gap: 8px;
+    justify-content: flex-end;
+  }
+  .client-head .head-stats {
+    display: flex; gap: 24px;
+    justify-content: flex-end;
+  }
+  .client-head .head-stats .stat { text-align: right; line-height: 1.2; }
+  .client-head .head-stats .stat .k {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .client-head .head-stats .stat .v {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* Body grid */
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 980px) {
+    .body-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .card {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .card + .card { margin-top: 24px; }
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--rule);
+    gap: 12px;
+  }
+  .card-head h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+  }
+  .card-head .h-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-head .h-meta a {
+    color: var(--azur-mid);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .card-head .h-meta a:hover { border-bottom-color: var(--azur-mid); }
+  .card-body { padding: 22px 22px 24px; }
+
+  /* Field rows */
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 32px;
+  }
+  .fields.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fields.full   { grid-template-columns: 1fr; }
+  .field-row { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .field-row .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field-row .v {
+    font-size: 14px;
+    color: var(--azur-deep);
+    font-weight: 500;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .field-row .v.mono {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+  }
+  .field-row .v a {
+    color: var(--azur-deep);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .field-row .v a:hover { color: var(--azur-mid); border-bottom-color: var(--azur-mid); }
+  .field-row .v.muted { color: var(--muted); font-weight: 400; }
+  .field-row .v.sub { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 400; }
+
+  /* Person */
+  .person {
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .person .av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--sand);
+    background: var(--azur-deep);
+    flex: 0 0 auto;
+  }
+  .person .av.alt  { background: var(--azur-mid); }
+  .person .av.tone { background: #7a8a9a; }
+  .person .av.warm { background: #a67a52; }
+  .person .av.red  { background: var(--brick); }
+  .person .av.olive{ background: #6b7a4a; }
+  .person .n { font-weight: 500; }
+  .person .r {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: block;
+    line-height: 1.2;
+    margin-top: 1px;
+  }
+
+  /* Section heading row above a card group */
+  .section-title {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 36px 0 14px;
+    gap: 12px;
+  }
+  .section-title h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+  }
+  .section-title .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Asset cards (styleguides + templates) ---------- */
+  .asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .asset {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+    display: flex; flex-direction: column;
+  }
+  .asset:hover {
+    border-color: var(--rule-strong);
+    box-shadow: 0 8px 20px rgba(35, 87, 112, 0.08);
+    transform: translateY(-1px);
+  }
+  .asset .thumb {
+    aspect-ratio: 4 / 3;
+    background: var(--sand);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .asset .thumb .paper {
+    width: 70%; height: 78%;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: 0 6px 14px -8px rgba(35,87,112,0.4);
+    padding: 10px 12px;
+    display: flex; flex-direction: column; gap: 4px;
+    position: relative;
+  }
+  .asset .thumb .paper .h {
+    height: 6px; width: 60%;
+    background: var(--azur-deep);
+    border-radius: 1px;
+  }
+  .asset .thumb .paper .l {
+    height: 3px; width: 100%;
+    background: rgba(35,87,112,0.15);
+    border-radius: 1px;
+  }
+  .asset .thumb .paper .l.short { width: 65%; }
+  .asset .thumb .paper .l.mid { width: 85%; }
+  .asset .thumb .paper .accent {
+    height: 2px; width: 30%;
+    background: var(--azur-mid);
+    border-radius: 1px;
+    margin: 2px 0 4px;
+  }
+  .asset .thumb .paper.brick .h { background: var(--brick); }
+  .asset .thumb .paper.brick .accent { background: var(--brick); }
+  .asset .thumb .badge-type {
+    position: absolute;
+    top: 10px; left: 10px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--azur-deep);
+    background: rgba(251,250,247,0.92);
+    border: 1px solid var(--rule);
+    padding: 3px 8px;
+    border-radius: 100px;
+  }
+  .asset .meta {
+    padding: 12px 14px 14px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .asset .meta .name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    line-height: 1.25;
+  }
+  .asset .meta .sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+    flex-wrap: wrap;
+  }
+  .asset .meta .sub .dot-sep { opacity: 0.5; }
+
+  /* "New asset" tile */
+  .asset.new-tile {
+    border: 1.5px dashed var(--rule-strong);
+    background: transparent;
+    align-items: center; justify-content: center;
+    min-height: 0;
+    color: var(--muted);
+    transition: all .15s;
+  }
+  .asset.new-tile:hover {
+    border-color: var(--azur-mid);
+    background: rgba(65, 142, 160, 0.04);
+    color: var(--azur-deep);
+    transform: none;
+    box-shadow: none;
+  }
+  .asset.new-tile .ring {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: grid; place-items: center;
+    margin-top: 24px;
+  }
+  .asset.new-tile .plus {
+    width: 14px; height: 14px;
+    position: relative;
+  }
+  .asset.new-tile .plus::before, .asset.new-tile .plus::after {
+    content: ""; position: absolute; background: currentColor;
+  }
+  .asset.new-tile .plus::before { left: 6px; top: 0; width: 2px; height: 14px; }
+  .asset.new-tile .plus::after  { top: 6px; left: 0; height: 2px; width: 14px; }
+  .asset.new-tile .lbl {
+    font-family: var(--font-display);
+    font-size: 14px;
+    margin: 8px 0 24px;
+  }
+
+  /* ---------- Projects table ---------- */
+  .table-wrap {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    white-space: nowrap;
+    user-select: none;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--rule);
+    transition: background .12s;
+    cursor: pointer;
+  }
+  tbody tr:last-child { border-bottom: 0; }
+  tbody tr:nth-child(even) { background: rgba(243, 233, 225, 0.45); }
+  tbody tr:hover { background: var(--hover); }
+  tbody td { padding: 16px 18px; vertical-align: middle; }
+
+  .project-cell a {
+    color: var(--azur-deep);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+  }
+  .project-cell a:hover { color: var(--azur-mid); border-bottom-color: var(--azur-mid); }
+  .project-cell .code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .indication { color: var(--azur-deep); }
+  .indication .sub {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .step { display: inline-flex; flex-direction: column; gap: 6px; min-width: 110px; }
+  .step .bar { display: flex; gap: 2px; height: 4px; }
+  .step .bar span { flex: 1; background: var(--rule); border-radius: 1px; }
+  .step .bar span.done { background: var(--azur-mid); }
+  .step .bar span.cur  { background: var(--azur-deep); }
+
+  .writer { display: flex; align-items: center; gap: 10px; }
+  .writer .av {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--azur-deep);
+    color: var(--sand);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    flex: 0 0 auto;
+  }
+  .writer .av.alt  { background: var(--azur-mid); }
+  .writer .av.tone { background: #7a8a9a; }
+  .writer .av.warm { background: #a67a52; }
+  .writer .av.red  { background: var(--brick); }
+  .writer .av.olive{ background: #6b7a4a; }
+  .writer .n { font-weight: 500; font-size: 13px; }
+
+  .date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--azur-deep);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .date.over { color: var(--brick); }
+  .date.over::after {
+    content: "OVERDUE";
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    color: var(--brick);
+    margin-top: 2px;
+    opacity: 0.85;
+  }
+
+  .row-act { display: flex; gap: 4px; justify-content: flex-end; }
+  .icon-btn {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all .12s;
+  }
+  tbody tr:hover .icon-btn { opacity: 1; }
+  .icon-btn:hover { border-color: var(--rule-strong); background: var(--bg); }
+
+  /* ---------- Side rail ---------- */
+  /* Big logo card */
+  .logo-card .logo-wrap {
+    padding: 28px 22px 22px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .logo-card .big-logo {
+    width: 120px; height: 120px;
+    border-radius: 16px;
+    background: var(--azur-deep);
+    color: var(--sand);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 44px;
+    letter-spacing: -0.01em;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 12px 28px -16px rgba(35,87,112,0.3);
+  }
+  .logo-card .big-logo svg { width: 60%; height: 60%; display: block; }
+  .logo-card .big-logo .logo-mark {
+    position: relative;
+    width: 100%; height: 100%;
+    display: grid; place-items: center;
+  }
+  .logo-card .big-logo .logo-mark::before {
+    content: "";
+    position: absolute;
+    inset: 22px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    opacity: 0.35;
+  }
+  .logo-card .big-logo .logo-mark::after {
+    content: "";
+    position: absolute;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+  }
+  .logo-card .logo-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    text-align: center;
+    line-height: 1.2;
+  }
+  .logo-card .logo-id {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .logo-card .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+  }
+  .logo-card .quick-stats .qs {
+    padding: 14px 6px;
+    border-right: 1px solid var(--rule);
+  }
+  .logo-card .quick-stats .qs:last-child { border-right: 0; }
+  .logo-card .quick-stats .qs .v {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .logo-card .quick-stats .qs .k {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* Rail list (writers / indications) */
+  .rail-list {
+    list-style: none;
+    margin: 0;
+    padding: 6px 0;
+  }
+  .rail-list li {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .rail-list li:last-child { border-bottom: 0; }
+  .rail-list li:hover { background: var(--hover); }
+  .rail-list .body {
+    display: flex; flex-direction: column;
+    line-height: 1.25;
+    min-width: 0; flex: 1;
+  }
+  .rail-list .body .n {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .rail-list .body .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .rail-list .when {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  /* Indication chip + count rows */
+  .ind-row {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 22px;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+  }
+  .ind-row:last-child { border-bottom: 0; }
+  .ind-row:hover { background: var(--hover); }
+  .ind-row .swatch {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+  }
+  .ind-row .body { min-width: 0; }
+  .ind-row .body .n {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    line-height: 1.25;
+  }
+  .ind-row .body .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .ind-row .count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--azur-deep);
+    background: rgba(35,87,112,0.06);
+    padding: 3px 9px;
+    border-radius: 100px;
+  }
+
+  /* Foot */
+  .foot {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .foot .leaf {
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--azur-mid);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+        <div class="name">Azur <em>Note</em></div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="group-label">Workspace</span>
+      <a class="nav-item" href="index.html">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5h5l1.5 1.5h6.5v8.5a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1v-10z"/></svg></span>
+        Projects
+        <span class="badge">24</span>
+      </a>
+      <a class="nav-item active" href="Clients.html">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.5V13a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1.5"/><circle cx="7" cy="6" r="2.4"/><path d="M11.5 14.5V13a2.8 2.8 0 0 0-2-2.7"/><circle cx="12.5" cy="6.5" r="2"/></svg></span>
+        Clients
+        <span class="badge">12</span>
+      </a>
+      <button class="nav-item" data-nav="members">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6.5" r="2.6"/><path d="M3.5 14.5a5.5 5.5 0 0 1 11 0"/></svg></span>
+        Members
+        <span class="badge">8</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="nav-item" data-nav="help">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><path d="M7 7.2a2 2 0 0 1 3.9.5c0 1.3-2 1.6-2 2.8"/><circle cx="9" cy="12.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
+        Help &amp; feedback
+      </button>
+      <button class="nav-item" data-nav="settings">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="2.2"/><path d="M14.5 9a5.6 5.6 0 0 0-.1-1l1.4-1-1.2-2-1.7.5a5.5 5.5 0 0 0-1.7-1l-.3-1.7H8.1L7.8 4.5a5.5 5.5 0 0 0-1.7 1l-1.7-.5-1.2 2 1.4 1a5.6 5.6 0 0 0 0 2l-1.4 1 1.2 2 1.7-.5a5.5 5.5 0 0 0 1.7 1l.3 1.7h1.8l.3-1.7a5.5 5.5 0 0 0 1.7-1l1.7.5 1.2-2-1.4-1c.07-.33.1-.66.1-1z"/></svg></span>
+        Settings
+      </button>
+    </div>
+  </aside>
+
+  <!-- Topbar -->
+  <nav class="topbar" aria-label="Primary">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 1h14M1 6h14M1 11h14"/></svg>
+    </button>
+    <div class="brand">
+      <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+      <div class="name">Azur <em>Note</em></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="divider"></div>
+    <div class="user-wrap" id="userWrap">
+      <button class="user-trigger" id="userTrigger" aria-haspopup="menu" aria-expanded="false">
+        <div class="who">
+          <div class="name">A. Moreau</div>
+          <div class="role">Medical writer</div>
+        </div>
+        <div class="avatar">A</div>
+      </button>
+      <div class="profile-menu" role="menu">
+        <div class="p-head">
+          <div class="name">Alex Moreau</div>
+          <div class="mail">alex.moreau@azurnote.co</div>
+        </div>
+        <button class="p-item" data-action="profile" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M2.5 11.5a4.5 4.5 0 0 1 9 0"/></svg>
+          Profile
+        </button>
+        <button class="p-item" data-action="settings" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="1.6"/><path d="M11.5 7a4.4 4.4 0 0 0-.1-.8l1-.8-.8-1.4-1.3.4a4.4 4.4 0 0 0-1.4-.8L8.6 2.5H6.4l-.3 1.2a4.4 4.4 0 0 0-1.4.8l-1.3-.4-.8 1.4 1 .8A4.4 4.4 0 0 0 3.5 7"/></svg>
+          Settings
+        </button>
+        <div class="p-divider"></div>
+        <button class="p-item danger" data-action="logout" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3M9 4l3 3-3 3M5 7h7"/></svg>
+          Log out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page" data-screen-label="Client information">
+
+    <div class="crumbs">
+      <a href="Clients.html">Clients</a>
+      <span class="sep">›</span>
+      <span class="here">Heliocare Pharma</span>
+    </div>
+
+    <header class="client-head">
+      <div class="titles">
+        <div class="meta-row">
+          <span class="dot active" title="Active"></span>
+          <span class="pill onhold">Active client</span>
+          <span class="code">CL-0042 · since 14 Mar 22</span>
+        </div>
+        <h1>Heliocare <em>Pharma</em></h1>
+        <p class="subtitle">European mid-cap pharma focused on cardiometabolic and rare-disease therapeutics. One of Azur Note's most active accounts since 2022.</p>
+      </div>
+      <div class="head-side">
+        <div class="actions-row">
+          <button class="btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3h8v8H3zM3 5h8M5 3v8"/></svg>Edit details</button>
+          <button class="btn primary"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg>New project</button>
+        </div>
+        <div class="head-stats">
+          <div class="stat">
+            <div class="k">Active projects</div>
+            <div class="v">4</div>
+          </div>
+          <div class="stat">
+            <div class="k">Total to date</div>
+            <div class="v">11</div>
+          </div>
+          <div class="stat">
+            <div class="k">Account owner</div>
+            <div class="v">A. Moreau</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="body-grid">
+
+      <!-- ============ MAIN COLUMN ============ -->
+      <div class="main-col">
+
+        <!-- Client info card -->
+        <section class="card">
+          <div class="card-head">
+            <h2>Client information</h2>
+            <div class="h-meta"><a href="#" data-action="edit">Edit ↗</a></div>
+          </div>
+          <div class="card-body">
+            <div class="fields">
+              <div class="field-row">
+                <span class="k">Legal name</span>
+                <span class="v">Heliocare Pharma S.A.</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Client code</span>
+                <span class="v mono">CL-0042 · HCP</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Industry</span>
+                <span class="v">Pharma — Specialty</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Account owner</span>
+                <span class="v">
+                  <span class="person">
+                    <span class="av">A</span>
+                    <span><span class="n">Alex Moreau</span><span class="r">Project lead</span></span>
+                  </span>
+                </span>
+              </div>
+              <div class="field-row" style="grid-column: 1 / -1;">
+                <span class="k">Headquarters</span>
+                <span class="v">14 rue de Rivoli, 75004 Paris, France</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Website</span>
+                <span class="v mono"><a href="#" data-action="ext">heliocare-pharma.com</a></span>
+              </div>
+              <div class="field-row">
+                <span class="k">Tax / VAT ID</span>
+                <span class="v mono">FR 42 552 081 317</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Client since</span>
+                <span class="v mono">14 Mar 22</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Last engagement</span>
+                <span class="v mono">26 Apr 26 · 2h ago</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contacts card -->
+        <section class="card">
+          <div class="card-head">
+            <h2>Contacts</h2>
+            <div class="h-meta"><a href="#" data-action="edit">Manage ↗</a></div>
+          </div>
+          <div class="card-body">
+            <div class="fields">
+              <div class="field-row">
+                <span class="k">Primary contact</span>
+                <span class="v">
+                  <span class="person">
+                    <span class="av red">E</span>
+                    <span><span class="n">Dr. Eleanor Vance</span><span class="r">VP Medical Affairs</span></span>
+                  </span>
+                </span>
+              </div>
+              <div class="field-row">
+                <span class="k">Email</span>
+                <span class="v mono"><a href="mailto:e.vance@heliocare-pharma.com">e.vance@heliocare-pharma.com</a></span>
+              </div>
+              <div class="field-row">
+                <span class="k">Phone</span>
+                <span class="v mono">+33 1 42 78 14 22</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Time zone</span>
+                <span class="v mono">CET · UTC+1</span>
+              </div>
+              <div class="field-row">
+                <span class="k">Reviewer</span>
+                <span class="v">
+                  <span class="person">
+                    <span class="av tone">P</span>
+                    <span><span class="n">Priya Ramaswamy</span><span class="r">Senior medical reviewer</span></span>
+                  </span>
+                </span>
+              </div>
+              <div class="field-row">
+                <span class="k">Observer</span>
+                <span class="v">
+                  <span class="person">
+                    <span class="av warm">T</span>
+                    <span><span class="n">Thomas Begg</span><span class="r">Regulatory affairs</span></span>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Style guides -->
+        <div class="section-title">
+          <h2>Style guides</h2>
+          <span class="meta">3 documents · last updated 12 Mar 26</span>
+        </div>
+        <div class="asset-grid">
+          <div class="asset" data-action="open-styleguide">
+            <div class="thumb">
+              <span class="badge-type">Style guide</span>
+              <div class="paper">
+                <div class="h"></div>
+                <div class="accent"></div>
+                <div class="l"></div>
+                <div class="l mid"></div>
+                <div class="l short"></div>
+                <div class="l mid"></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="name">Heliocare house style — v4.2</span>
+              <span class="sub">PDF · 38 pp <span class="dot-sep">·</span> 12 Mar 26</span>
+            </div>
+          </div>
+
+          <div class="asset" data-action="open-styleguide">
+            <div class="thumb">
+              <span class="badge-type">Style guide</span>
+              <div class="paper brick">
+                <div class="h"></div>
+                <div class="accent"></div>
+                <div class="l mid"></div>
+                <div class="l"></div>
+                <div class="l short"></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="name">CSR / clinical narrative voice</span>
+              <span class="sub">DOCX · 14 pp <span class="dot-sep">·</span> 02 Feb 26</span>
+            </div>
+          </div>
+
+          <div class="asset" data-action="open-styleguide">
+            <div class="thumb">
+              <span class="badge-type">Brand</span>
+              <div class="paper">
+                <div class="h"></div>
+                <div class="accent"></div>
+                <div class="l short"></div>
+                <div class="l mid"></div>
+                <div class="l"></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="name">Lay summary tone &amp; vocabulary</span>
+              <span class="sub">PDF · 9 pp <span class="dot-sep">·</span> 18 Nov 25</span>
+            </div>
+          </div>
+
+          <div class="asset new-tile" data-action="new-styleguide">
+            <div class="ring"><span class="plus"></span></div>
+            <span class="lbl">Add style guide</span>
+          </div>
+        </div>
+
+        <!-- Templates -->
+        <div class="section-title">
+          <h2>Templates</h2>
+          <span class="meta">5 templates · 3 active</span>
+        </div>
+        <div class="asset-grid">
+          <div class="asset" data-action="open-template">
+            <div class="thumb">
+              <span class="badge-type">CSR</span>
+              <div class="paper">
+                <div class="h"></div>
+                <div class="accent"></div>
+                <div class="l"></div>
+                <div class="l mid"></div>
+                <div class="l"></div>
+                <div class="l short"></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="name">CSR — ICH E3 (Heliocare layout)</span>
+              <span class="sub">DOCX · v3.1 <span class="dot-sep">·</span> used in 6 projects</span>
+            </div>
+          </div>
+
+          <div class="asset" data-action="open-template">
+            <div class="thumb">
+              <span class="badge-type">Protocol</span>
+              <div class="paper brick">
+                <div class="h"></div>
+                <div class="accent"></div>
+                <div class="l mid"></div>
+                <div class="l"></div>
+                <div class="l short"></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="name">Phase II / III protocol shell</span>
+              <span class="sub">DOCX · v2.0 <span class="dot-sep">·</span> used in 3 projects</span>
+            </div>
+          </div>
+
+          <div class="asset" data-action="open-template">
+            <div class="thumb">
+              <span class="badge-type">Lay summary</span>
+              <div class="paper">
+                <div class="h"></div>
+                <div class="accent"></div>
+                <div class="l short"></div>
+                <div class="l"></div>
+                <div class="l mid"></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="name">Patient brochure / lay summary</span>
+              <span class="sub">DOCX · v1.4 <span class="dot-sep">·</span> used in 2 projects</span>
+            </div>
+          </div>
+
+          <div class="asset" data-action="open-template">
+            <div class="thumb">
+              <span class="badge-type">Manuscript</span>
+              <div class="paper">
+                <div class="h"></div>
+                <div class="accent"></div>
+                <div class="l"></div>
+                <div class="l mid"></div>
+              </div>
+            </div>
+            <div class="meta">
+              <span class="name">Journal manuscript — NEJM-ready</span>
+              <span class="sub">DOCX · v1.0 <span class="dot-sep">·</span> archived</span>
+            </div>
+          </div>
+
+          <div class="asset new-tile" data-action="new-template">
+            <div class="ring"><span class="plus"></span></div>
+            <span class="lbl">Add template</span>
+          </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="section-title">
+          <h2>Projects</h2>
+          <span class="meta">11 total · 4 active · 1 overdue</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 4%;"></th>
+                <th style="width: 22%;">Project</th>
+                <th style="width: 18%;">Medical indication</th>
+                <th style="width: 14%;">Step</th>
+                <th style="width: 14%;">Lead writer</th>
+                <th style="width: 10%;">Start</th>
+                <th style="width: 10%;">End</th>
+                <th style="width: 8%; text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td><span class="dot active" title="Active"></span></td>
+                <td class="project-cell">
+                  <a href="Project Information.html">Veltrazine Phase III CSR</a>
+                  <span class="code">PRJ-2041</span>
+                </td>
+                <td class="indication">
+                  Type 2 diabetes
+                  <span class="sub">Cardiovascular outcomes</span>
+                </td>
+                <td>
+                  <div class="step">
+                    <span class="pill review">Review</span>
+                    <div class="bar"><span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="writer"><div class="av">M</div><span class="n">M. Okafor</span></div>
+                </td>
+                <td><span class="date">12 Jan 26</span></td>
+                <td><span class="date">30 May 26</span></td>
+                <td>
+                  <div class="row-act">
+                    <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                    <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="dot ink" title="Approved"></span></td>
+                <td class="project-cell">
+                  <a href="Project Information.html">Veltrazine patient brochure</a>
+                  <span class="code">PRJ-2058</span>
+                </td>
+                <td class="indication">
+                  Type 2 diabetes
+                  <span class="sub">Lay summary</span>
+                </td>
+                <td>
+                  <div class="step">
+                    <span class="pill approved">Approved</span>
+                    <div class="bar"><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="writer"><div class="av warm">E</div><span class="n">E. Petrov</span></div>
+                </td>
+                <td><span class="date">02 Feb 26</span></td>
+                <td><span class="date">28 Apr 26</span></td>
+                <td>
+                  <div class="row-act">
+                    <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                    <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="dot active" title="Active"></span></td>
+                <td class="project-cell">
+                  <a href="Project Information.html">Veltrazine — EU label update</a>
+                  <span class="code">PRJ-2071</span>
+                </td>
+                <td class="indication">
+                  Type 2 diabetes
+                  <span class="sub">EMA Type II variation</span>
+                </td>
+                <td>
+                  <div class="step">
+                    <span class="pill draft">Authoring</span>
+                    <div class="bar"><span class="cur"></span><span></span><span></span><span></span><span></span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="writer"><div class="av alt">M</div><span class="n">M. Okafor</span></div>
+                </td>
+                <td><span class="date">06 Apr 26</span></td>
+                <td><span class="date">14 Aug 26</span></td>
+                <td>
+                  <div class="row-act">
+                    <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                    <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="dot red" title="Overdue"></span></td>
+                <td class="project-cell">
+                  <a href="Project Information.html">Solivant safety summary update</a>
+                  <span class="code">PRJ-2034</span>
+                </td>
+                <td class="indication">
+                  Heart failure
+                  <span class="sub">PSUR / safety</span>
+                </td>
+                <td>
+                  <div class="step">
+                    <span class="pill qc">QC</span>
+                    <div class="bar"><span class="done"></span><span class="cur"></span><span></span><span></span><span></span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="writer"><div class="av tone">R</div><span class="n">R. Lindqvist</span></div>
+                </td>
+                <td><span class="date">10 Dec 25</span></td>
+                <td><span class="date over">22 Apr 26</span></td>
+                <td>
+                  <div class="row-act">
+                    <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                    <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="dot ink" title="Submitted"></span></td>
+                <td class="project-cell">
+                  <a href="Project Information.html">Veltrazine — NEJM manuscript</a>
+                  <span class="code">PRJ-2017</span>
+                </td>
+                <td class="indication">
+                  Type 2 diabetes
+                  <span class="sub">Phase III primary results</span>
+                </td>
+                <td>
+                  <div class="step">
+                    <span class="pill submitted">Submitted</span>
+                    <div class="bar"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="writer"><div class="av olive">J</div><span class="n">J. Vrettas</span></div>
+                </td>
+                <td><span class="date">04 Sep 25</span></td>
+                <td><span class="date">28 Feb 26</span></td>
+                <td>
+                  <div class="row-act">
+                    <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                    <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="dot active" title="Active"></span></td>
+                <td class="project-cell">
+                  <a href="Project Information.html">Caligen rare disease IB</a>
+                  <span class="code">PRJ-2079</span>
+                </td>
+                <td class="indication">
+                  Fabry disease
+                  <span class="sub">Investigator's brochure</span>
+                </td>
+                <td>
+                  <div class="step">
+                    <span class="pill draft">Authoring</span>
+                    <div class="bar"><span class="cur"></span><span></span><span></span><span></span><span></span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="writer"><div class="av">A</div><span class="n">A. Moreau</span></div>
+                </td>
+                <td><span class="date">18 Apr 26</span></td>
+                <td><span class="date">30 Sep 26</span></td>
+                <td>
+                  <div class="row-act">
+                    <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                    <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="dot muted" title="Archived"></span></td>
+                <td class="project-cell">
+                  <a href="Project Information.html">Solivant Phase II topline</a>
+                  <span class="code">PRJ-1962</span>
+                </td>
+                <td class="indication">
+                  Heart failure
+                  <span class="sub">Topline disclosure</span>
+                </td>
+                <td>
+                  <div class="step">
+                    <span class="pill onhold">Archived</span>
+                    <div class="bar"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="writer"><div class="av warm">E</div><span class="n">E. Petrov</span></div>
+                </td>
+                <td><span class="date">12 Feb 25</span></td>
+                <td><span class="date">04 Aug 25</span></td>
+                <td>
+                  <div class="row-act">
+                    <button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button>
+                    <button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- ============ RIGHT RAIL ============ -->
+      <aside class="side-rail">
+
+        <!-- Logo card -->
+        <section class="card logo-card">
+          <div class="logo-wrap">
+            <div class="big-logo">
+              <span class="logo-mark"></span>
+            </div>
+            <div class="logo-name">Heliocare Pharma</div>
+            <div class="logo-id">CL-0042 · since 14 Mar 22</div>
+          </div>
+          <div class="quick-stats">
+            <div class="qs"><div class="v">11</div><span class="k">Projects</span></div>
+            <div class="qs"><div class="v">4</div><span class="k">Active</span></div>
+            <div class="qs"><div class="v">7</div><span class="k">Writers</span></div>
+          </div>
+        </section>
+
+        <!-- Latest writers -->
+        <section class="card">
+          <div class="card-head">
+            <h2 style="font-size: 18px;">Latest writers</h2>
+            <span class="h-meta">Last 6 mo.</span>
+          </div>
+          <ul class="rail-list">
+            <li>
+              <span class="person"><span class="av">M</span></span>
+              <span class="body">
+                <span class="n">Mariam Okafor</span>
+                <span class="meta">Lead author · 3 projects</span>
+              </span>
+              <span class="when">2h ago</span>
+            </li>
+            <li>
+              <span class="person"><span class="av warm">E</span></span>
+              <span class="body">
+                <span class="n">Elena Petrov</span>
+                <span class="meta">Lay summary · 2 projects</span>
+              </span>
+              <span class="when">5d ago</span>
+            </li>
+            <li>
+              <span class="person"><span class="av tone">R</span></span>
+              <span class="body">
+                <span class="n">Rasmus Lindqvist</span>
+                <span class="meta">QC · safety</span>
+              </span>
+              <span class="when">9d ago</span>
+            </li>
+            <li>
+              <span class="person"><span class="av olive">J</span></span>
+              <span class="body">
+                <span class="n">Jonas Vrettas</span>
+                <span class="meta">Manuscript · NEJM</span>
+              </span>
+              <span class="when">3w ago</span>
+            </li>
+            <li>
+              <span class="person"><span class="av">A</span></span>
+              <span class="body">
+                <span class="n">Alex Moreau</span>
+                <span class="meta">Account owner · IB</span>
+              </span>
+              <span class="when">1mo ago</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Latest medical indications -->
+        <section class="card">
+          <div class="card-head">
+            <h2 style="font-size: 18px;">Latest indications</h2>
+            <span class="h-meta">Across projects</span>
+          </div>
+          <div class="rail-list" style="padding: 0;">
+            <div class="ind-row">
+              <span class="swatch" style="background: var(--azur-deep);"></span>
+              <span class="body">
+                <span class="n">Type 2 diabetes</span>
+                <span class="meta">Cardiovascular outcomes · lay</span>
+              </span>
+              <span class="count">4</span>
+            </div>
+            <div class="ind-row">
+              <span class="swatch" style="background: var(--azur-mid);"></span>
+              <span class="body">
+                <span class="n">Heart failure</span>
+                <span class="meta">PSUR · topline</span>
+              </span>
+              <span class="count">2</span>
+            </div>
+            <div class="ind-row">
+              <span class="swatch" style="background: var(--brick);"></span>
+              <span class="body">
+                <span class="n">Fabry disease</span>
+                <span class="meta">Rare · IB</span>
+              </span>
+              <span class="count">1</span>
+            </div>
+            <div class="ind-row">
+              <span class="swatch" style="background: #a67a52;"></span>
+              <span class="body">
+                <span class="n">Atrial fibrillation</span>
+                <span class="meta">Anticoag — concluded</span>
+              </span>
+              <span class="count">2</span>
+            </div>
+            <div class="ind-row">
+              <span class="swatch" style="background: #6b7a4a;"></span>
+              <span class="body">
+                <span class="n">Hypercholesterolemia</span>
+                <span class="meta">Manuscript</span>
+              </span>
+              <span class="count">1</span>
+            </div>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+
+    <div class="foot">
+      <div>Last opened by you · 30 Apr 26 · 09:14</div>
+      <div class="leaf">Azur Note</div>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="tweaks.js"></script>
+  <script>
+    (function(){
+      const toastEl = document.getElementById('toast');
+      let toastTimer;
+      const toast = (msg) => {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+      };
+
+      // Sidebar
+      const sidebar = document.getElementById('sidebar');
+      const scrim = document.getElementById('sidebarScrim');
+      const openSidebar = () => { sidebar.classList.add('open'); scrim.classList.add('open'); };
+      const closeSidebar = () => { sidebar.classList.remove('open'); scrim.classList.remove('open'); };
+      document.getElementById('menuBtn').addEventListener('click', openSidebar);
+      document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+      scrim.addEventListener('click', closeSidebar);
+
+      // Profile menu
+      const userWrap = document.getElementById('userWrap');
+      const userTrigger = document.getElementById('userTrigger');
+      userTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = userWrap.classList.toggle('open');
+        userTrigger.setAttribute('aria-expanded', open);
+      });
+      document.addEventListener('click', (e) => {
+        if (!userWrap.contains(e.target)) userWrap.classList.remove('open');
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          userWrap.classList.remove('open');
+          closeSidebar();
+        }
+      });
+
+      // Project rows → open Project Information
+      document.querySelectorAll('tbody tr').forEach(tr => {
+        tr.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          const a = tr.querySelector('.project-cell a');
+          if (a) window.location.href = a.getAttribute('href');
+        });
+      });
+
+      // Asset cards
+      document.querySelectorAll('[data-action="open-styleguide"]').forEach(a => a.addEventListener('click', () => toast('Opening style guide…')));
+      document.querySelectorAll('[data-action="open-template"]').forEach(a => a.addEventListener('click', () => toast('Opening template…')));
+      document.querySelectorAll('[data-action="new-styleguide"]').forEach(a => a.addEventListener('click', () => toast('Upload a new style guide…')));
+      document.querySelectorAll('[data-action="new-template"]').forEach(a => a.addEventListener('click', () => toast('Upload a new template…')));
+      document.querySelectorAll('[data-action="edit"]').forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); toast('Edit mode — coming soon'); }));
+      document.querySelectorAll('[data-action="ext"]').forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); toast('Opening website…'); }));
+
+      // Latest writers/indications click
+      document.querySelectorAll('.rail-list li, .ind-row').forEach(el => {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => toast('Filtering projects…'));
+      });
+    })();
+  </script>
+
+</body>
+</html>

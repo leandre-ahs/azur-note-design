@@ -70,7 +70,7 @@
   };
 
   // The selectors below cover every place where mono+caps is used in
-  // Projects Table.html and Project Information.html.
+  // index.html and Project Information.html.
   const TARGET_SELECTOR = [
     /* shared chrome */
     '.user .who .role',

@@ -1,0 +1,2508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azur Note — Clients</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azur-deep:  #235770;
+    --azur-mid:   #418EA0;
+    --brick:      #AC2819;
+    --sand:       #F3E9E1;
+    --hover:      rgba(35, 87, 112, 0.06);
+
+    --bg:         #FBFAF7;
+    --rule:       rgba(35, 87, 112, 0.12);
+    --rule-strong:rgba(35, 87, 112, 0.22);
+    --muted:      rgba(35, 87, 112, 0.58);
+
+    --font-display: "Outfit", system-ui, sans-serif;
+    --font-sans:    "Inter Tight", system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ---------- Top nav ---------- */
+  .topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar .menu-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--azur-deep);
+  }
+  .topbar .menu-btn svg { display:block; }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: 18px;
+  }
+  .brand .mark { width: 37px; height: 37px; display: grid; place-items: center; line-height: 1; }
+  .brand .mark .logo {
+    display: block;
+    width: 37px;
+    height: 37px;
+    background: url('assets/logo.svg') center / contain no-repeat;
+  }
+  .brand .name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .brand .name em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+
+  .topbar .spacer { flex: 1; }
+  .topbar .divider { width: 1px; height: 28px; background: var(--rule-strong); margin: 0 20px; }
+
+  .user-wrap { position: relative; }
+  .user-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 4px 6px 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-family: inherit;
+  }
+  .user-trigger:hover { background: var(--hover); border-color: var(--rule); }
+  .user .avatar, .user-trigger .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--sand);
+    color: var(--azur-deep);
+    border: 1px solid var(--rule-strong);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+  .user-trigger .who { line-height: 1.2; text-align: right; }
+  .user-trigger .who .name { font-size: 13px; font-weight: 500; }
+  .user-trigger .who .role {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .profile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 220px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(35, 87, 112, 0.14);
+    padding: 6px;
+    z-index: 60;
+    display: none;
+  }
+  .user-wrap.open .profile-menu { display: block; }
+  .profile-menu .p-head {
+    padding: 12px 12px 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 4px;
+  }
+  .profile-menu .p-head .name { font-weight: 500; font-size: 14px; color: var(--azur-deep); }
+  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .profile-menu .p-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 6px;
+    color: var(--azur-deep); font-size: 13px;
+    cursor: pointer; background: transparent; border: 0;
+    width: 100%; text-align: left; font-family: inherit;
+  }
+  .profile-menu .p-item:hover { background: var(--hover); }
+  .profile-menu .p-item.danger { color: var(--brick); }
+  .profile-menu .p-item.danger:hover { background: rgba(172, 40, 25, 0.08); }
+  .profile-menu .p-divider { height: 1px; background: var(--rule); margin: 4px 6px; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar-scrim {
+    position: fixed; inset: 0;
+    background: rgba(35, 87, 112, 0.28);
+    opacity: 0; pointer-events: none;
+    transition: opacity .24s ease;
+    z-index: 40;
+  }
+  .sidebar-scrim.open { opacity: 1; pointer-events: auto; }
+  .sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    width: 300px;
+    background: var(--bg);
+    border-right: 1px solid var(--rule-strong);
+    transform: translateX(-100%);
+    transition: transform .26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50;
+    display: flex; flex-direction: column;
+    box-shadow: 12px 0 32px rgba(35, 87, 112, 0.08);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-head .brand { display: flex; align-items: center; gap: 12px; margin: 0; }
+  .sidebar-close {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+  }
+  .sidebar-close:hover { background: var(--hover); }
+  .sidebar-nav { flex: 1; padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .sidebar-nav .group-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-size: 14px; font-weight: 500;
+    background: transparent; border: 0;
+    text-align: left; width: 100%;
+    font-family: inherit; position: relative;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: var(--hover); }
+  .nav-item.active { background: var(--hover); }
+  .nav-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3px; background: var(--azur-deep);
+    border-radius: 0 3px 3px 0;
+  }
+  .nav-item .icon { width: 18px; height: 18px; display: grid; place-items: center; color: var(--azur-mid); }
+  .nav-item .badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.06em;
+    color: var(--muted);
+    background: rgba(35,87,112,0.06);
+    padding: 2px 7px; border-radius: 100px;
+  }
+  .sidebar-foot {
+    border-top: 1px solid var(--rule);
+    padding: 10px 12px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  /* ---------- Page ---------- */
+  .page {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 40px 32px 48px;
+  }
+
+  .page-head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .welcome {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--azur-mid);
+    margin-bottom: 10px;
+  }
+  .page-head h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .page-head h1 em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+
+  .actions { display: flex; gap: 10px; }
+  .btn {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .btn:hover { background: var(--hover); }
+  .btn.primary {
+    background: var(--azur-deep);
+    color: var(--sand);
+    border-color: var(--azur-deep);
+  }
+  .btn.primary:hover { background: #1b4658; }
+  .btn .plus {
+    width: 14px; height: 14px;
+    position: relative;
+  }
+  .btn .plus::before, .btn .plus::after {
+    content: ""; position: absolute; background: currentColor;
+  }
+  .btn .plus::before { left: 6px; top: 0; width: 2px; height: 14px; }
+  .btn .plus::after  { top: 6px; left: 0; height: 2px; width: 14px; }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .seg {
+    display: flex;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    overflow: hidden;
+    background: transparent;
+  }
+  .seg button {
+    height: 34px;
+    padding: 0 14px;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule-strong);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .seg button:last-child { border-right: 0; }
+  .seg button:hover { background: var(--hover); }
+  .seg button.on { background: var(--azur-deep); color: var(--sand); }
+  .seg button .count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    opacity: 0.8;
+  }
+
+  /* Filters dropdown */
+  .filters-btn { position: relative; }
+  .filters-btn > .trigger {
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid var(--rule-strong);
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .filters-btn > .trigger:hover { background: var(--hover); }
+  .filters-btn > .trigger .badge {
+    display: inline-grid;
+    place-items: center;
+    min-width: 18px; height: 18px;
+    padding: 0 5px;
+    background: rgba(35,87,112,0.12);
+    color: var(--azur-deep);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    border-radius: 100px;
+    line-height: 1;
+  }
+  .filters-btn.has-filters > .trigger .badge {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+  .filters-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 320px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(35, 87, 112, 0.12);
+    padding: 6px;
+    z-index: 20;
+    display: none;
+  }
+  .filters-btn.open .filters-panel { display: block; }
+  .filters-btn.open > .trigger { background: var(--hover); border-color: var(--azur-mid); }
+  .filters-panel .f-row {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+  }
+  .filters-panel .f-row:hover { background: var(--hover); }
+  .filters-panel .f-row .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .filters-panel .f-row .v {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--azur-deep);
+  }
+  .filters-panel .f-row .chev { color: var(--muted); }
+  .filters-panel .f-divider { height: 1px; background: var(--rule); margin: 4px 12px; }
+  .filters-panel .f-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px 6px;
+  }
+  .filters-panel .f-foot button {
+    background: transparent;
+    border: 0;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--azur-mid);
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .filters-panel .f-foot button:hover { text-decoration: underline; }
+
+  .search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    width: 280px;
+  }
+  .search input {
+    border: 0; outline: 0; background: transparent;
+    font-family: var(--font-sans); font-size: 13px;
+    color: var(--azur-deep); width: 100%;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search svg { flex: 0 0 auto; color: var(--muted); }
+
+  /* ---------- Active filter chips ---------- */
+  .active-filters {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 14px;
+    align-items: center;
+    min-height: 24px;
+  }
+  .active-filters:empty { display: none; }
+  .active-filters .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 26px;
+    padding: 0 6px 0 10px;
+    border-radius: 100px;
+    background: var(--sand);
+    color: var(--azur-deep);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(35,87,112,0.1);
+  }
+  .chip .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .chip button {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    display: grid; place-items: center;
+    cursor: pointer;
+  }
+  .chip button:hover { background: rgba(35,87,112,0.1); color: var(--azur-deep); }
+  .clear-all {
+    background: transparent; border: 0;
+    font-family: var(--font-sans);
+    font-size: 12px; font-weight: 500;
+    color: var(--azur-mid);
+    cursor: pointer;
+    margin-left: 4px;
+    padding: 4px 6px;
+  }
+  .clear-all:hover { text-decoration: underline; }
+
+  /* ---------- Table ---------- */
+  .table-wrap {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    white-space: nowrap;
+    user-select: none;
+  }
+  thead th .sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .sort-arrow {
+    display: inline-flex;
+    flex-direction: column;
+    color: rgba(35,87,112, 0.3);
+    line-height: 0;
+  }
+  .sort-arrow svg { display: block; }
+  thead th[data-sort].active { color: var(--azur-deep); }
+  thead th[data-sort].active .sort-arrow { color: var(--azur-mid); }
+
+  tbody tr {
+    border-bottom: 1px solid var(--rule);
+    transition: background .12s;
+    cursor: pointer;
+  }
+  tbody tr:last-child { border-bottom: 0; }
+  tbody tr:nth-child(even) { background: rgba(243, 233, 225, 0.45); }
+  tbody tr:hover { background: var(--hover); }
+
+  tbody td { padding: 16px 20px; vertical-align: middle; }
+
+  /* Client cell with logo */
+  .client-cell {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 220px;
+  }
+  .client-logo {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    background: var(--sand);
+    border: 1px solid var(--rule);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--azur-deep);
+    flex: 0 0 auto;
+    overflow: hidden;
+    letter-spacing: -0.01em;
+    position: relative;
+  }
+  .client-logo svg { width: 100%; height: 100%; display: block; }
+  .client-logo.deep { background: var(--azur-deep); color: var(--sand); }
+  .client-logo.mid  { background: var(--azur-mid); color: #fff; }
+  .client-logo.brick{ background: var(--brick); color: var(--sand); }
+  .client-logo.tone { background: #5a6a72; color: var(--sand); }
+  .client-logo.warm { background: #a67a52; color: var(--sand); }
+  .client-logo.olive{ background: #6b7a4a; color: var(--sand); }
+
+  .client-cell .meta { line-height: 1.25; min-width: 0; }
+  .client-cell .name {
+    font-weight: 500;
+    color: var(--azur-deep);
+    font-size: 14px;
+  }
+  .client-cell .id {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    margin-top: 2px;
+  }
+
+  /* Industry tag */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 100px;
+    background: rgba(35,87,112,0.06);
+    color: var(--azur-deep);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Project count */
+  .count-cell {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .count-cell .num {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--azur-deep);
+    letter-spacing: -0.01em;
+  }
+  .count-cell .num.zero { color: rgba(35,87,112,0.3); }
+  .count-cell .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Contact */
+  .contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .contact .av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--sand);
+    background: var(--azur-deep);
+    flex: 0 0 auto;
+  }
+  .contact .av.alt  { background: var(--azur-mid); }
+  .contact .av.tone { background: #7a8a9a; }
+  .contact .av.warm { background: #a67a52; }
+  .contact .av.red  { background: var(--brick); }
+  .contact .av.olive{ background: #6b7a4a; }
+  .contact .who { line-height: 1.2; min-width: 0; }
+  .contact .who .n {
+    font-weight: 500;
+    color: var(--azur-deep);
+    font-size: 13px;
+  }
+  .contact .who .role {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Status dot column */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--azur-deep);
+  }
+  .status .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+  }
+  .dot.active   { background: var(--azur-mid); }
+  .dot.prospect { background: #c9a86b; }
+  .dot.dormant  { background: rgba(35,87,112,0.3); }
+
+  /* Action column */
+  .row-act {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+  .icon-btn {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all .12s;
+  }
+  tbody tr:hover .icon-btn { opacity: 1; }
+  .icon-btn:hover { border-color: var(--rule-strong); background: var(--bg); }
+
+  /* Empty state */
+  .empty {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--azur-deep);
+    margin-bottom: 6px;
+  }
+  .empty p { font-size: 13px; }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+  .summary {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .leaf-mark { display: flex; align-items: center; gap: 10px; opacity: 0.85; }
+  .leaf-mark .t {
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--azur-mid);
+    line-height: 1;
+    text-align: right;
+  }
+  .leaf-mark .t small {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-style: normal;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ---------- Submenu (filter values) ---------- */
+  .submenu {
+    position: absolute;
+    right: calc(100% + 6px);
+    top: 0;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    padding: 6px;
+    min-width: 220px;
+    box-shadow: 0 12px 32px rgba(35,87,112,0.14);
+    z-index: 30;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .submenu label {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 6px; cursor: pointer;
+    font-size: 13px; color: var(--azur-deep);
+  }
+  .submenu label:hover { background: var(--hover); }
+  .submenu input[type="checkbox"] { accent-color: var(--azur-deep); }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--azur-deep); color: var(--sand);
+    padding: 10px 18px; border-radius: 100px;
+    font-size: 13px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    z-index: 100;
+    box-shadow: 0 6px 24px rgba(35,87,112,0.2);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---------- View switcher ---------- */
+  .view-switch {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 40px;
+    background: var(--bg);
+  }
+  .view-switch button {
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule-strong);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .view-switch button:last-child { border-right: 0; }
+  .view-switch button:hover { background: var(--hover); }
+  .view-switch button.on {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+  .view-switch svg { display: block; }
+
+  .view[hidden] { display: none !important; }
+
+  /* ---------- Card grid view ---------- */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .client-card {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 22px 20px 18px;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .client-card:hover {
+    border-color: var(--rule-strong);
+    box-shadow: 0 8px 24px rgba(35, 87, 112, 0.08);
+    transform: translateY(-1px);
+  }
+  .client-card .card-status {
+    position: absolute;
+    top: 16px; right: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .client-card .card-status .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  .client-card .card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-right: 80px;
+  }
+  .client-card .card-head .client-logo {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+  .client-card .card-head .name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+    line-height: 1.15;
+  }
+  .client-card .card-head .id {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .client-card .card-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  .client-card .card-meta .field-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .client-card .card-meta .k {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .client-card .card-meta .v {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--azur-deep);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Last activity block */
+  .client-card .card-activity {
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .client-card .card-activity .k {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .client-card .card-activity .act-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .client-card .card-activity .act-proj {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--azur-deep);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    min-width: 0;
+  }
+  .client-card .card-activity .act-when {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    flex: 0 0 auto;
+  }
+  .client-card .card-activity .act-action {
+    font-size: 13px;
+    color: var(--azur-deep);
+    line-height: 1.35;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .client-card .card-activity .act-action::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--azur-mid);
+    flex: 0 0 auto;
+  }
+  .client-card .card-activity .act-empty {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .client-card .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  .client-card .card-foot .contact {
+    min-width: 0;
+    flex: 1;
+  }
+  .client-card .card-foot .contact .who { min-width: 0; }
+  .client-card .card-foot .contact .who .n,
+  .client-card .card-foot .contact .who .role {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    display: block;
+  }
+  .client-card .projects-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 10px;
+    border-radius: 100px;
+    background: var(--sand);
+    border: 1px solid rgba(35,87,112,0.1);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--azur-deep);
+    flex: 0 0 auto;
+  }
+  .client-card .projects-pill strong {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .client-card .projects-pill.zero { background: rgba(35,87,112,0.04); color: var(--muted); }
+  .client-card .projects-pill.zero strong { color: rgba(35,87,112,0.4); }
+
+  /* "New client" tile */
+  .new-card {
+    border: 1.5px dashed var(--rule-strong);
+    background: transparent;
+    border-radius: 12px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all .15s;
+  }
+  .new-card:hover {
+    border-color: var(--azur-mid);
+    background: rgba(65, 142, 160, 0.04);
+    color: var(--azur-deep);
+  }
+  .new-card .ring {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: grid; place-items: center;
+    transition: background .15s;
+  }
+  .new-card .plus { width: 16px; height: 16px; position: relative; }
+  .new-card .plus::before, .new-card .plus::after {
+    content: ""; position: absolute; background: currentColor;
+  }
+  .new-card .plus::before { left: 7px; top: 0; width: 2px; height: 16px; }
+  .new-card .plus::after  { top: 7px; left: 0; height: 2px; width: 16px; }
+  .new-card .lbl {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 400;
+  }
+  .new-card .sub {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Board view (grouped by industry) ---------- */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+  @media (max-width: 1100px) {
+    .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .board-col {
+    background: rgba(243, 233, 225, 0.4);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    min-height: 180px;
+  }
+  .board-col-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .board-col-head .col-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--azur-deep);
+    font-weight: 500;
+  }
+  .board-col-head .col-title .swatch {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    flex: 0 0 auto;
+  }
+  .board-col-head .col-count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: rgba(35,87,112,0.06);
+    padding: 2px 8px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+  .board-col-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .board-col-empty {
+    text-align: center;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 26px 8px;
+    opacity: 0.6;
+  }
+
+  .b-card {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 12px 12px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color .12s, box-shadow .12s, transform .12s;
+  }
+  .b-card:hover {
+    border-color: var(--rule-strong);
+    box-shadow: 0 6px 18px rgba(35, 87, 112, 0.08);
+    transform: translateY(-1px);
+  }
+  .b-card .b-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .b-card .b-head .client-logo {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    font-size: 12px;
+  }
+  .b-card .b-head .meta { min-width: 0; }
+  .b-card .b-head .name {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--azur-deep);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .b-card .b-head .id {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .b-card .b-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--rule);
+  }
+  .b-card .b-foot .b-contact {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+  }
+  .b-card .b-foot .b-contact .av {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 10px;
+    flex: 0 0 auto;
+    display: grid; place-items: center;
+    color: var(--sand);
+    font-family: var(--font-display);
+    background: var(--azur-deep);
+  }
+  .b-card .b-foot .b-contact .av.alt  { background: var(--azur-mid); }
+  .b-card .b-foot .b-contact .av.tone { background: #7a8a9a; }
+  .b-card .b-foot .b-contact .av.warm { background: #a67a52; }
+  .b-card .b-foot .b-contact .av.red  { background: var(--brick); }
+  .b-card .b-foot .b-contact .av.olive{ background: #6b7a4a; }
+  .b-card .b-foot .b-contact .n {
+    font-size: 11.5px;
+    color: var(--azur-deep);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    min-width: 0;
+  }
+  .b-card .b-foot .b-projects {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--azur-deep);
+    background: var(--sand);
+    border: 1px solid rgba(35,87,112,0.08);
+    padding: 2px 8px;
+    border-radius: 100px;
+    flex: 0 0 auto;
+  }
+  .b-card .b-foot .b-projects.zero {
+    background: transparent;
+    color: var(--muted);
+  }
+
+  /* ---------- Create Client dialog ---------- */
+  .dialog-scrim {
+    position: fixed; inset: 0;
+    background: rgba(35, 87, 112, 0.32);
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s ease;
+    z-index: 70;
+    display: grid;
+    place-items: start center;
+    padding: 48px 24px;
+    overflow-y: auto;
+  }
+  .dialog-scrim.open { opacity: 1; pointer-events: auto; }
+  .dialog {
+    width: min(720px, 100%);
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 12px;
+    box-shadow: 0 24px 64px rgba(35, 87, 112, 0.24);
+    transform: translateY(12px);
+    transition: transform .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+  }
+  .dialog-scrim.open .dialog { transform: translateY(0); }
+  .dialog-head {
+    background: var(--sand);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 18px 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .dialog-head .code {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--azur-deep);
+    text-transform: uppercase;
+    flex: 1;
+  }
+  .dialog-head .btn-create {
+    background: var(--azur-deep); color: var(--sand);
+    border: 0; border-radius: 6px;
+    padding: 8px 16px;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
+  .dialog-head .btn-create:hover { background: #1a4555; }
+  .dialog-head .btn-create .plus { width: 14px; height: 14px; position: relative; flex: 0 0 auto; }
+  .dialog-head .btn-create .plus::before, .dialog-head .btn-create .plus::after {
+    content: ""; position: absolute; background: currentColor;
+  }
+  .dialog-head .btn-create .plus::before { left: 6px; top: 0; width: 2px; height: 14px; }
+  .dialog-head .btn-create .plus::after  { top: 6px; left: 0; height: 2px; width: 14px; }
+  .dialog-head .close {
+    width: 32px; height: 32px;
+    background: transparent; border: 0;
+    border-radius: 6px;
+    color: var(--azur-deep);
+    cursor: pointer; display: grid; place-items: center;
+  }
+  .dialog-head .close:hover { background: rgba(35, 87, 112, 0.08); }
+
+  .dialog-body { padding: 28px 32px 32px; }
+  .dlg-section + .dlg-section { margin-top: 28px; }
+  .dlg-section h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--azur-deep);
+    margin-bottom: 16px;
+  }
+  .dlg-grid { display: grid; gap: 18px 24px; }
+  .dlg-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 12px; font-weight: 500;
+    color: var(--azur-deep);
+  }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="url"],
+  .field select,
+  .field textarea {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .12s, box-shadow .12s;
+    width: 100%;
+  }
+  .field textarea {
+    height: 80px; padding: 10px 12px;
+    resize: vertical;
+    font-family: inherit;
+  }
+  .field input::placeholder, .field textarea::placeholder { color: rgba(35, 87, 112, 0.4); }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--azur-mid);
+    box-shadow: 0 0 0 3px rgba(65, 142, 160, 0.15);
+  }
+  .field .select-wrap { position: relative; }
+  .field .select-wrap select {
+    appearance: none; -webkit-appearance: none;
+    padding-right: 34px;
+    cursor: pointer;
+  }
+  .field .select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 14px; top: 50%;
+    width: 7px; height: 7px;
+    border-right: 1.5px solid var(--azur-deep);
+    border-bottom: 1.5px solid var(--azur-deep);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  /* Logo upload */
+  .logo-upload {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border: 1px dashed var(--rule-strong);
+    border-radius: 8px;
+    background: rgba(243, 233, 225, 0.35);
+  }
+  .logo-upload .preview {
+    width: 64px; height: 64px;
+    border-radius: 10px;
+    background: var(--sand);
+    border: 1px solid var(--rule);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--azur-deep);
+    overflow: hidden;
+  }
+  .logo-upload .lu-actions {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .logo-upload .lu-actions .lu-title {
+    font-size: 13px; font-weight: 500;
+  }
+  .logo-upload .lu-actions .lu-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .logo-upload .lu-row { display: flex; gap: 8px; margin-top: 8px; }
+  .logo-upload .lu-btn {
+    height: 28px; padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid var(--rule-strong);
+    background: var(--bg); color: var(--azur-deep);
+    font-family: inherit; font-size: 12px; font-weight: 500;
+    cursor: pointer;
+  }
+  .logo-upload .lu-btn:hover { background: var(--hover); }
+</style>
+</head>
+<body>
+
+  <!-- ===================== Sidebar ===================== -->
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+        <div class="name">Azur <em>Note</em></div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="group-label">Workspace</span>
+      <a class="nav-item" href="index.html" data-nav="projects">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5h5l1.5 1.5h6.5v8.5a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1v-10z"/></svg></span>
+        Projects
+        <span class="badge">24</span>
+      </a>
+      <a class="nav-item active" href="Clients.html" data-nav="clients" aria-current="page">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.5V13a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1.5"/><circle cx="7" cy="6" r="2.4"/><path d="M11.5 14.5V13a2.8 2.8 0 0 0-2-2.7"/><circle cx="12.5" cy="6.5" r="2"/></svg></span>
+        Clients
+        <span class="badge">12</span>
+      </a>
+      <button class="nav-item" data-nav="members">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6.5" r="2.6"/><path d="M3.5 14.5a5.5 5.5 0 0 1 11 0"/></svg></span>
+        Members
+        <span class="badge">8</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="nav-item" data-nav="help">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><path d="M7 7.2a2 2 0 0 1 3.9.5c0 1.3-2 1.6-2 2.8"/><circle cx="9" cy="12.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
+        Help &amp; feedback
+      </button>
+      <button class="nav-item" data-nav="settings">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="2.2"/><path d="M14.5 9a5.6 5.6 0 0 0-.1-1l1.4-1-1.2-2-1.7.5a5.5 5.5 0 0 0-1.7-1l-.3-1.7H8.1L7.8 4.5a5.5 5.5 0 0 0-1.7 1l-1.7-.5-1.2 2 1.4 1a5.6 5.6 0 0 0 0 2l-1.4 1 1.2 2 1.7-.5a5.5 5.5 0 0 0 1.7 1l.3 1.7h1.8l.3-1.7a5.5 5.5 0 0 0 1.7-1l1.7.5 1.2-2-1.4-1c.07-.33.1-.66.1-1z"/></svg></span>
+        Settings
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===================== Top nav ===================== -->
+  <nav class="topbar" aria-label="Primary">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <path d="M1 1h14M1 6h14M1 11h14"/>
+      </svg>
+    </button>
+
+    <div class="brand">
+      <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+      <div class="name">Azur <em>Note</em></div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="divider"></div>
+
+    <div class="user-wrap" id="userWrap">
+      <button class="user-trigger" id="userTrigger" aria-haspopup="menu" aria-expanded="false">
+        <div class="who">
+          <div class="name">A. Moreau</div>
+          <div class="role">Medical writer</div>
+        </div>
+        <div class="avatar">A</div>
+      </button>
+      <div class="profile-menu" role="menu">
+        <div class="p-head">
+          <div class="name">Alex Moreau</div>
+          <div class="mail">alex.moreau@azurnote.co</div>
+        </div>
+        <button class="p-item" data-action="profile" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M2.5 11.5a4.5 4.5 0 0 1 9 0"/></svg>
+          Profile
+        </button>
+        <button class="p-item" data-action="settings" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="1.6"/><path d="M11.5 7a4.4 4.4 0 0 0-.1-.8l1-.8-.8-1.4-1.3.4a4.4 4.4 0 0 0-1.4-.8L8.6 2.5H6.4l-.3 1.2a4.4 4.4 0 0 0-1.4.8l-1.3-.4-.8 1.4 1 .8A4.4 4.4 0 0 0 3.5 7"/></svg>
+          Settings
+        </button>
+        <div class="p-divider"></div>
+        <button class="p-item danger" data-action="logout" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3M9 4l3 3-3 3M5 7h7"/></svg>
+          Log out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== Page ===================== -->
+  <main class="page">
+
+    <header class="page-head">
+      <div>
+        <div class="welcome">Welcome back, Alex</div>
+        <h1>Clients<em>.</em></h1>
+      </div>
+      <div class="actions">
+        <div class="view-switch" role="tablist" aria-label="View">
+          <button type="button" class="on" data-view="cards" aria-label="Card view" title="Cards">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="1.5" y="1.5" width="5" height="5" rx="0.8"/>
+              <rect x="7.5" y="1.5" width="5" height="5" rx="0.8"/>
+              <rect x="1.5" y="7.5" width="5" height="5" rx="0.8"/>
+              <rect x="7.5" y="7.5" width="5" height="5" rx="0.8"/>
+            </svg>
+            Cards
+          </button>
+          <button type="button" data-view="table" aria-label="Table view" title="Table">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="1.5" y="2.5" width="11" height="9" rx="1"/>
+              <path d="M1.5 5.5h11M1.5 8.5h11M5 2.5v9"/>
+            </svg>
+            Table
+          </button>
+        </div>
+        <button class="btn primary" id="createClientBtn"><span class="plus"></span>Create client</button>
+      </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="seg" role="tablist" aria-label="Status">
+        <button class="on" data-status="all">All <span class="count">12</span></button>
+        <button data-status="active">Active <span class="count">8</span></button>
+        <button data-status="prospect">Prospect <span class="count">3</span></button>
+        <button data-status="dormant">Dormant <span class="count">1</span></button>
+      </div>
+
+      <div class="filters-btn" id="filtersBtn">
+        <button class="trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M1 2h11l-4 5v4l-3 1V7L1 2Z"/>
+          </svg>
+          Filters
+          <span class="badge">0</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 4l2.5 2.5L7.5 4"/></svg>
+        </button>
+        <div class="filters-panel" role="menu">
+          <div class="f-row" data-filter="contact">
+            <span class="k">Contact</span>
+            <span class="v" data-value-for="contact">Anyone</span>
+            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+          </div>
+          <div class="f-row" data-filter="projects">
+            <span class="k">Projects</span>
+            <span class="v" data-value-for="projects">Any</span>
+            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+          </div>
+          <div class="f-divider"></div>
+          <div class="f-foot">
+            <button type="button" id="filtersClear">Clear all</button>
+            <button type="button" id="filtersDone" style="color: var(--azur-deep);">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="6" cy="6" r="4.5"/>
+          <path d="M9.5 9.5L13 13" stroke-linecap="round"/>
+        </svg>
+        <input id="searchInput" placeholder="Search clients, contacts, codes…" />
+      </div>
+    </div>
+
+    <!-- Active filters -->
+    <div class="active-filters" id="activeFilters"></div>
+
+    <!-- Table view -->
+    <div class="view view-table" data-view-pane="table" hidden>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="client" style="width: 32%;"><span class="sort">Client<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="projects" style="width: 16%;"><span class="sort">Active projects<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="contact" style="width: 32%;"><span class="sort">Main contact<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="status" style="width: 12%;"><span class="sort">Status<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th style="width: 8%; text-align: right;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="clientsTbody">
+          <!-- 1 -->
+          <tr data-client="Heliocare Pharma" data-address="14 rue de Rivoli, 75004 Paris, France" data-contact="Sandrine Aubry" data-status="active" data-projects="4" data-last-project="HC-Phase II Readout" data-last-action="Note added" data-last-when="2h ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo deep">
+                  <svg viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="6.5" fill="currentColor"/><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M19 5v4M19 29v4M5 19h4M29 19h4M9 9l2.8 2.8M26.2 26.2 29 29M29 9l-2.8 2.8M11.8 26.2 9 29"/></g></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Heliocare Pharma</div>
+                  <span class="id">CL-0042 · heliocare.com</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">4</span><span class="lbl">projects</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av alt">SA</div>
+                <div class="who"><span class="n">Sandrine Aubry</span><span class="role">Head of Medical</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 2 -->
+          <tr data-client="Northwind Bio" data-address="450 Kendall St, Cambridge, MA 02142, USA" data-contact="Theo Park" data-status="active" data-projects="3" data-last-project="NW-Investigator Brief" data-last-action="Slide deck shared" data-last-when="Yesterday">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo mid">
+                  <svg viewBox="0 0 38 38" fill="none"><path d="M8 26 L19 10 L30 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 26 L19 17 L25 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Northwind Bio</div>
+                  <span class="id">CL-0019 · northwindbio.com</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">3</span><span class="lbl">projects</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av tone">TP</div>
+                <div class="who"><span class="n">Theo Park</span><span class="role">VP Clinical Ops</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 3 — no logo, initials only -->
+          <tr data-client="Avenir Médical" data-address="32 boulevard Haussmann, 75009 Paris, France" data-contact="Léa Fontaine" data-status="active" data-projects="2" data-last-project="AM-Regulatory Pack" data-last-action="Comment from Léa" data-last-when="3d ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo">AM</div>
+                <div class="meta">
+                  <div class="name">Avenir Médical</div>
+                  <span class="id">CL-0008 · avenir-medical.fr</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">2</span><span class="lbl">projects</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av warm">LF</div>
+                <div class="who"><span class="n">Léa Fontaine</span><span class="role">Regulatory Lead</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 4 -->
+          <tr data-client="Kestrel Oncology" data-address="Friedrichstraße 68, 10117 Berlin, Germany" data-contact="Hanna Reuter" data-status="active" data-projects="2" data-last-project="KO-Trial Synopsis" data-last-action="Note revised" data-last-when="1d ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo brick">
+                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 22 C 14 14, 18 11, 24 9 C 22 13, 19 17, 14 21 Z" fill="currentColor" stroke="none"/><path d="M14 21 L23 30"/></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Kestrel Oncology</div>
+                  <span class="id">CL-0031 · kestrel-onc.eu</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">2</span><span class="lbl">projects</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av red">HR</div>
+                <div class="who"><span class="n">Hanna Reuter</span><span class="role">Director, Med Affairs</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 5 -->
+          <tr data-client="Polaris Therapeutics" data-address="1 Embarcadero Center, San Francisco, CA 94111, USA" data-contact="Marcus Hale" data-status="active" data-projects="1" data-last-project="PT-Site Selection" data-last-action="Status: In review" data-last-when="5d ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo tone">
+                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="19" cy="19" r="3" fill="currentColor"/><path d="M19 6v6M19 26v6M6 19h6M26 19h6M10 10l4 4M24 24l4 4M28 10l-4 4M14 24l-4 4"/></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Polaris Therapeutics</div>
+                  <span class="id">CL-0026 · polaristx.com</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">1</span><span class="lbl">project</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av">MH</div>
+                <div class="who"><span class="n">Marcus Hale</span><span class="role">Medical Director</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 6 -->
+          <tr data-client="Cygnus Therapeutics" data-address="Nørre Voldgade 11, 1358 København, Denmark" data-contact="Iris Sønderup" data-status="active" data-projects="3" data-last-project="CY-Protocol v3" data-last-action="Note added" data-last-when="4h ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo olive">
+                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 26c5-2 8-6 9-13 1 7 4 11 9 13" fill="none"/><path d="M19 13v15"/></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Cygnus Therapeutics</div>
+                  <span class="id">CL-0055 · cygnus-tx.dk</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">3</span><span class="lbl">projects</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av olive">IS</div>
+                <div class="who"><span class="n">Iris Sønderup</span><span class="role">Chief Medical Officer</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 7 -->
+          <tr data-client="Okapi Sciences" data-address="Researchpark Haasrode 1730, 3001 Leuven, Belgium" data-contact="Bram De Smet" data-status="active" data-projects="1" data-last-project="OS-CMC Briefing" data-last-action="Reviewed by Bram" data-last-when="2d ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo">OS</div>
+                <div class="meta">
+                  <div class="name">Okapi Sciences</div>
+                  <span class="id">CL-0061 · okapisci.be</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">1</span><span class="lbl">project</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av tone">BD</div>
+                <div class="who"><span class="n">Bram De Smet</span><span class="role">Clinical Affairs Mgr</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 8 -->
+          <tr data-client="Vireo Clinical" data-address="200 Front St W, Toronto, ON M5V 3K2, Canada" data-contact="Naomi Greene" data-status="active" data-projects="2" data-last-project="VC-Vendor RFP" data-last-action="Decision logged" data-last-when="1w ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo mid">
+                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 27c4-2 8-6 10-12 2 6 6 10 10 12" fill="none"/></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Vireo Clinical</div>
+                  <span class="id">CL-0073 · vireoclinical.com</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num">2</span><span class="lbl">projects</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av alt">NG</div>
+                <div class="who"><span class="n">Naomi Greene</span><span class="role">Sr. Project Lead</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot active"></span>Active</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 9 — Prospect -->
+          <tr data-client="Lumen Biopharma" data-address="1-1-2 Marunouchi, Chiyoda-ku, Tokyo 100-0005, Japan" data-contact="Yuki Tanaka" data-status="prospect" data-projects="0" data-last-project="LB-Intro Materials" data-last-action="Pitch shared" data-last-when="2w ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo warm">
+                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="19" cy="19" r="5"/><path d="M19 7v3M19 28v3M7 19h3M28 19h3M11 11l2 2M25 25l2 2M27 11l-2 2M13 25l-2 2"/></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Lumen Biopharma</div>
+                  <span class="id">CL-0084 · lumenbiopharma.jp</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num zero">—</span><span class="lbl">in pitch</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av tone">YT</div>
+                <div class="who"><span class="n">Yuki Tanaka</span><span class="role">Business Dev Lead</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot prospect"></span>Prospect</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 10 — Prospect -->
+          <tr data-client="Saxifrage Pharma" data-address="8 quai du Général Koenig, 67000 Strasbourg, France" data-contact="Pierre Lacombe" data-status="prospect" data-projects="0" data-last-project="SX-Scoping Note" data-last-action="Awaiting reply" data-last-when="3w ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo">SP</div>
+                <div class="meta">
+                  <div class="name">Saxifrage Pharma</div>
+                  <span class="id">CL-0091 · saxifragepharma.fr</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num zero">—</span><span class="lbl">scoping</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av warm">PL</div>
+                <div class="who"><span class="n">Pierre Lacombe</span><span class="role">Medical Affairs</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot prospect"></span>Prospect</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 11 — Prospect -->
+          <tr data-client="Trilliant Health" data-address="500 W Madison St, Chicago, IL 60661, USA" data-contact="Adele Khoury" data-status="prospect" data-projects="0" data-last-project="TH-Discovery Doc" data-last-action="Draft started" data-last-when="11d ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo deep">
+                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 8 L24 17 L19 26 L14 17 Z" fill="currentColor" stroke="none" opacity="0.85"/><path d="M19 17 L26 21 L19 30 L12 21 Z" fill="currentColor" stroke="none" opacity="0.5"/></svg>
+                </div>
+                <div class="meta">
+                  <div class="name">Trilliant Health</div>
+                  <span class="id">CL-0096 · trilliant.health</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num zero">—</span><span class="lbl">in pitch</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av red">AK</div>
+                <div class="who"><span class="n">Adele Khoury</span><span class="role">VP Strategy</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot prospect"></span>Prospect</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+
+          <!-- 12 — Dormant -->
+          <tr data-client="Marbella Pharma" data-address="Paseo de la Castellana 95, 28046 Madrid, Spain" data-contact="Carla Ruiz" data-status="dormant" data-projects="0" data-last-project="MB-Closeout Memo" data-last-action="Archived" data-last-when="2mo ago">
+            <td>
+              <div class="client-cell">
+                <div class="client-logo">MP</div>
+                <div class="meta">
+                  <div class="name">Marbella Pharma</div>
+                  <span class="id">CL-0017 · marbellapharma.es</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="count-cell"><span class="num zero">0</span><span class="lbl">last: 2024</span></span></td>
+            <td>
+              <div class="contact">
+                <div class="av tone">CR</div>
+                <div class="who"><span class="n">Carla Ruiz</span><span class="role">Head of Comms</span></div>
+              </div>
+            </td>
+            <td><span class="status"><span class="dot dormant"></span>Dormant</span></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty" id="emptyState" hidden>
+        <h3>No clients match</h3>
+        <p>Try adjusting your filters or search query.</p>
+      </div>
+    </div>
+    </div><!-- /view-table -->
+
+    <!-- Cards view (default) -->
+    <div class="view view-cards" data-view-pane="cards">
+      <div class="card-grid" id="cardGrid"></div>
+      <div class="empty" id="emptyStateCards" hidden style="margin-top:24px;">
+        <h3>No clients match</h3>
+        <p>Try adjusting your filters or search query.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="foot">
+      <div class="summary" id="summary">Showing 12 of 12 clients · 8 active · 18 active projects across portfolio</div>
+      <div class="leaf-mark" aria-hidden="true">
+        <div class="t">
+          Azur Note
+          <small>notes that grow</small>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===================== Create Client Dialog ===================== -->
+  <div class="dialog-scrim" id="createDialog" role="dialog" aria-modal="true" aria-labelledby="createDialogTitle">
+    <div class="dialog">
+      <div class="dialog-head">
+        <span class="code" id="createDialogTitle">CL-2026-NEW</span>
+        <button class="btn-create" id="createSubmit" type="button">
+          <span class="plus" aria-hidden="true"></span>
+          Create
+        </button>
+        <button class="close" id="createClose" type="button" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+        </button>
+      </div>
+      <div class="dialog-body">
+
+        <section class="dlg-section">
+          <h3>Identity</h3>
+          <div class="dlg-grid cols-2">
+            <div class="field" style="grid-column: span 2;">
+              <label>Logo</label>
+              <div class="logo-upload">
+                <div class="preview" id="lu-preview">CL</div>
+                <div class="lu-actions">
+                  <span class="lu-title">Drop a logo or upload</span>
+                  <span class="lu-sub">SVG · PNG · 1:1 · max 2 MB</span>
+                  <div class="lu-row">
+                    <button type="button" class="lu-btn">Upload</button>
+                    <button type="button" class="lu-btn">From URL</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="cl-name">Client name</label>
+              <input id="cl-name" type="text" placeholder="e.g. Heliocare Pharma" />
+            </div>
+            <div class="field">
+              <label for="cl-website">Website</label>
+              <input id="cl-website" type="url" placeholder="https://" />
+            </div>
+            <div class="field" style="grid-column: span 2;">
+              <label for="cl-address">Address</label>
+              <textarea id="cl-address" rows="2" placeholder="Street, City, Postal code, Country"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="dlg-section">
+          <h3>Main contact</h3>
+          <div class="dlg-grid cols-2">
+            <div class="field">
+              <label for="cl-contact-name">Full name</label>
+              <input id="cl-contact-name" type="text" placeholder="First Last" />
+            </div>
+            <div class="field">
+              <label for="cl-contact-role">Role</label>
+              <input id="cl-contact-role" type="text" placeholder="e.g. Head of Medical" />
+            </div>
+            <div class="field">
+              <label for="cl-contact-email">Email</label>
+              <input id="cl-contact-email" type="email" placeholder="name@company.com" />
+            </div>
+            <div class="field">
+              <label for="cl-contact-phone">Phone</label>
+              <input id="cl-contact-phone" type="text" placeholder="+33 …" />
+            </div>
+          </div>
+        </section>
+
+        <section class="dlg-section">
+          <h3>Notes</h3>
+          <div class="field">
+            <textarea id="cl-notes" placeholder="Background, prior engagements, preferences…"></textarea>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function(){
+      // ========== Toast ==========
+      const toastEl = document.getElementById('toast');
+      let toastTimer;
+      const toast = (msg) => {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+      };
+
+      // ========== Sidebar ==========
+      const sidebar = document.getElementById('sidebar');
+      const scrim = document.getElementById('sidebarScrim');
+      const openSidebar = () => { sidebar.classList.add('open'); scrim.classList.add('open'); };
+      const closeSidebar = () => { sidebar.classList.remove('open'); scrim.classList.remove('open'); };
+      document.getElementById('menuBtn').addEventListener('click', openSidebar);
+      document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+      scrim.addEventListener('click', closeSidebar);
+      document.querySelectorAll('.sidebar .nav-item').forEach(b => {
+        if (b.tagName === 'A') return; // links navigate naturally
+        b.addEventListener('click', () => {
+          const key = b.dataset.nav;
+          const labels = { members: 'Members', help: 'Help & feedback', settings: 'Settings' };
+          toast(`${labels[key] || key} — coming soon`);
+        });
+      });
+
+      // ========== Profile menu ==========
+      const userWrap = document.getElementById('userWrap');
+      const userTrigger = document.getElementById('userTrigger');
+      userTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = userWrap.classList.toggle('open');
+        userTrigger.setAttribute('aria-expanded', open);
+      });
+      document.querySelectorAll('#userWrap .p-item').forEach(b => {
+        b.addEventListener('click', () => {
+          const a = b.dataset.action;
+          userWrap.classList.remove('open');
+          if (a === 'logout') toast('Logged out');
+          else if (a === 'settings') toast('Opening Settings…');
+          else if (a === 'profile') toast('Opening Profile…');
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!userWrap.contains(e.target)) userWrap.classList.remove('open');
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          userWrap.classList.remove('open');
+          closeSidebar();
+          closeDialog();
+        }
+      });
+
+      // ========== Filters ==========
+      const fbtn = document.getElementById('filtersBtn');
+      const ftrigger = fbtn.querySelector('.trigger');
+      ftrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fbtn.classList.toggle('open');
+        ftrigger.setAttribute('aria-expanded', fbtn.classList.contains('open'));
+      });
+      document.addEventListener('click', (e) => {
+        if (!fbtn.contains(e.target)) {
+          fbtn.classList.remove('open');
+          ftrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // ========== Data ==========
+      const tbody = document.getElementById('clientsTbody');
+      const rows = Array.from(tbody.querySelectorAll('tr')).map(tr => {
+        const logoEl = tr.querySelector('.client-logo');
+        const idText = tr.querySelector('.client-cell .id')?.textContent || '';
+        const [code, website] = idText.split('·').map(s => s.trim());
+        const avEl = tr.querySelector('.contact .av');
+        const avClass = avEl?.className.replace('av', '').trim() || '';
+        const role = tr.querySelector('.contact .role')?.textContent || '';
+        const statusEl = tr.querySelector('.status');
+        const statusLabel = statusEl?.textContent.trim() || '';
+        return {
+          tr,
+          client: tr.dataset.client,
+          address: tr.dataset.address || '',
+          contact: tr.dataset.contact,
+          status: tr.dataset.status,
+          projects: parseInt(tr.dataset.projects, 10),
+          lastProject: tr.dataset.lastProject || '',
+          lastAction: tr.dataset.lastAction || '',
+          lastWhen: tr.dataset.lastWhen || '',
+          // extras for cards
+          logoHTML: logoEl ? logoEl.outerHTML : '',
+          code,
+          website,
+          avInitials: avEl?.textContent || '',
+          avClass,
+          role,
+          statusLabel,
+        };
+      });
+
+      const uniqueSorted = arr => [...new Set(arr)].filter(Boolean).sort();
+      const contacts = uniqueSorted(rows.map(r => r.contact));
+      const projectBuckets = [
+        { label: '0 projects', test: r => r.projects === 0, key: 'p0' },
+        { label: '1–2 projects', test: r => r.projects >= 1 && r.projects <= 2, key: 'p12' },
+        { label: '3+ projects', test: r => r.projects >= 3, key: 'p3' },
+      ];
+
+      // Filter state
+      const filters = {
+        status: 'all',
+        search: '',
+        contact: new Set(),
+        projects: new Set(),
+      };
+
+      const FILTER_LABELS = { contact: 'Contact', projects: 'Projects' };
+
+      const countBadge = fbtn.querySelector('.badge');
+      const updateBadge = () => {
+        const n = filters.contact.size + filters.projects.size;
+        countBadge.textContent = n;
+        fbtn.classList.toggle('has-filters', n > 0);
+      };
+
+      const updateSummaries = () => {
+        const set = (k, arr, emptyLabel, oneFn = v => v) => {
+          const el = document.querySelector(`[data-value-for="${k}"]`);
+          if (!el) return;
+          if (arr.size === 0) el.textContent = emptyLabel;
+          else if (arr.size === 1) el.textContent = oneFn([...arr][0]);
+          else el.textContent = `${arr.size} selected`;
+        };
+        set('contact', filters.contact, 'Anyone');
+        set('projects', filters.projects, 'Any', v => projectBuckets.find(b => b.key === v)?.label || v);
+      };
+
+      // Active filter chips
+      const activeBox = document.getElementById('activeFilters');
+      const renderChips = () => {
+        activeBox.innerHTML = '';
+        const chips = [];
+        const push = (key, val, displayVal) => chips.push({ key, val, displayVal: displayVal || val });
+        filters.contact.forEach(v => push('contact', v));
+        filters.projects.forEach(v => push('projects', v, projectBuckets.find(b => b.key === v)?.label));
+        if (chips.length === 0) return;
+        const lbl = document.createElement('span');
+        lbl.className = 'lbl';
+        lbl.textContent = 'Filtered by';
+        activeBox.appendChild(lbl);
+        chips.forEach(({ key, val, displayVal }) => {
+          const c = document.createElement('span');
+          c.className = 'chip';
+          c.innerHTML = `<span class="k">${FILTER_LABELS[key]}</span><span>${displayVal}</span>`;
+          const x = document.createElement('button');
+          x.setAttribute('aria-label', `Remove ${displayVal}`);
+          x.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2l-6 6"/></svg>';
+          x.addEventListener('click', () => {
+            filters[key].delete(val);
+            updateBadge(); updateSummaries(); renderChips(); apply();
+          });
+          c.appendChild(x);
+          activeBox.appendChild(c);
+        });
+        const clr = document.createElement('button');
+        clr.className = 'clear-all';
+        clr.textContent = 'Clear all';
+        clr.addEventListener('click', () => {
+          ['contact','projects'].forEach(k => filters[k].clear());
+          updateBadge(); updateSummaries(); renderChips(); apply();
+        });
+        activeBox.appendChild(clr);
+      };
+
+      // Sort state
+      let sortKey = null, sortDir = 1;
+
+      // Apply filters + sort
+      const summaryEl = document.getElementById('summary');
+      const emptyEl = document.getElementById('emptyState');
+      const totalRows = rows.length;
+
+      const apply = () => {
+        const q = filters.search.trim().toLowerCase();
+        let visible = rows.filter(r => {
+          if (filters.status !== 'all' && r.status !== filters.status) return false;
+          if (filters.contact.size && !filters.contact.has(r.contact)) return false;
+          if (filters.projects.size) {
+            const ok = [...filters.projects].some(k => projectBuckets.find(b => b.key === k)?.test(r));
+            if (!ok) return false;
+          }
+          if (q) {
+            const hay = `${r.client} ${r.address} ${r.contact}`.toLowerCase();
+            if (!hay.includes(q)) return false;
+          }
+          return true;
+        });
+
+        if (sortKey) {
+          visible = [...visible].sort((a, b) => {
+            const av = a[sortKey], bv = b[sortKey];
+            if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * sortDir;
+            return String(av || '').localeCompare(String(bv || '')) * sortDir;
+          });
+        }
+
+        const visSet = new Set(visible.map(r => r.tr));
+        rows.forEach(r => { r.tr.style.display = visSet.has(r.tr) ? '' : 'none'; });
+        visible.forEach(r => tbody.appendChild(r.tr));
+
+        emptyEl.hidden = visible.length > 0;
+        document.getElementById('emptyStateCards').hidden = visible.length > 0;
+
+        renderCards(visible);
+
+        const totalActiveProjects = visible.reduce((s, r) => s + r.projects, 0);
+        const sortLabel = sortKey ? `Sorted by ${sortKey} ${sortDir > 0 ? '↑' : '↓'}` : 'Default order';
+        summaryEl.textContent = `Showing ${visible.length} of ${totalRows} clients · ${sortLabel} · ${totalActiveProjects} active projects in view`;
+      };
+
+      // ========== Card grid renderer ==========
+      const cardGrid = document.getElementById('cardGrid');
+      const escapeHTML = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+      function renderCards(visible) {
+        cardGrid.innerHTML = '';
+        visible.forEach(r => {
+          const card = document.createElement('div');
+          card.className = 'client-card';
+          card.dataset.client = r.client;
+          const projZero = r.projects === 0 ? ' zero' : '';
+          card.innerHTML = `
+            <div class="card-status">
+              <span class="dot ${escapeHTML(r.status)}"></span>${escapeHTML(r.statusLabel)}
+            </div>
+            <div class="card-head">
+              ${r.logoHTML}
+              <div class="meta">
+                <div class="name">${escapeHTML(r.client)}</div>
+                <span class="id">${escapeHTML(r.code)}${r.website ? ' · ' + escapeHTML(r.website) : ''}</span>
+              </div>
+            </div>
+            <div class="card-activity">
+              <span class="k">Last activity</span>
+              ${r.lastProject ? `
+                <div class="act-line">
+                  <span class="act-proj">${escapeHTML(r.lastProject)}</span>
+                  <span class="act-when">${escapeHTML(r.lastWhen)}</span>
+                </div>
+                <div class="act-action">${escapeHTML(r.lastAction)}</div>
+              ` : `<div class="act-empty">No activity yet</div>`}
+            </div>
+            <div class="card-foot">
+              <div class="contact">
+                <div class="av ${escapeHTML(r.avClass)}">${escapeHTML(r.avInitials)}</div>
+                <div class="who">
+                  <span class="n">${escapeHTML(r.contact)}</span>
+                  <span class="role">${escapeHTML(r.role)}</span>
+                </div>
+              </div>
+              <div class="projects-pill${projZero}"><strong>${r.projects}</strong> ${r.projects === 1 ? 'project' : 'projects'}</div>
+            </div>
+          `;
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => {
+            const slug = encodeURIComponent(r.client || '');
+            window.location.href = `Client Information.html?client=${slug}`;
+          });
+          cardGrid.appendChild(card);
+        });
+        // Append a "new client" tile so the action stays one click away
+        if (visible.length > 0) {
+          const nc = document.createElement('div');
+          nc.className = 'new-card';
+          nc.innerHTML = `
+            <div class="ring"><span class="plus"></span></div>
+            <div class="lbl">New client</div>
+            <div class="sub">Add to portfolio</div>
+          `;
+          nc.addEventListener('click', () => document.getElementById('createClientBtn').click());
+          cardGrid.appendChild(nc);
+        }
+      }
+
+      // ========== Board renderer (grouped by industry) ==========
+      const boardGrid = document.getElementById('boardGrid');
+      const INDUSTRY_SWATCH = {
+        'Pharmaceutical': '#235770',
+        'Biotech':        '#418EA0',
+        'MedTech':        '#6b7a4a',
+        'Diagnostics':    '#a67a52',
+        'Consumer Health':'#AC2819',
+        'Public Health':  '#5a6a72',
+        'Hospital':       '#7a8a9a',
+      };
+
+      function renderBoard(visible) {
+        boardGrid.innerHTML = '';
+        // Group by industry, ordered by frequency
+        const groups = new Map();
+        visible.forEach(r => {
+          if (!groups.has(r.industry)) groups.set(r.industry, []);
+          groups.get(r.industry).push(r);
+        });
+        const sortedGroups = [...groups.entries()].sort((a, b) => b[1].length - a[1].length);
+
+        sortedGroups.forEach(([industry, list]) => {
+          const col = document.createElement('div');
+          col.className = 'board-col';
+          const swatch = INDUSTRY_SWATCH[industry] || '#5a6a72';
+          col.innerHTML = `
+            <div class="board-col-head">
+              <span class="col-title">
+                <span class="swatch" style="background:${swatch}"></span>
+                ${escapeHTML(industry)}
+              </span>
+              <span class="col-count">${list.length}</span>
+            </div>
+            <div class="board-col-body"></div>
+          `;
+          const body = col.querySelector('.board-col-body');
+          list.forEach(r => {
+            const bc = document.createElement('div');
+            bc.className = 'b-card';
+            bc.dataset.client = r.client;
+            const projZero = r.projects === 0 ? ' zero' : '';
+            bc.innerHTML = `
+              <div class="b-head">
+                ${r.logoHTML}
+                <div class="meta">
+                  <div class="name">${escapeHTML(r.client)}</div>
+                  <span class="id">${escapeHTML(r.region)} · ${escapeHTML(r.statusLabel)}</span>
+                </div>
+              </div>
+              <div class="b-foot">
+                <div class="b-contact">
+                  <div class="av ${escapeHTML(r.avClass)}">${escapeHTML(r.avInitials)}</div>
+                  <span class="n">${escapeHTML(r.contact)}</span>
+                </div>
+                <span class="b-projects${projZero}">${r.projects} ${r.projects === 1 ? 'proj' : 'projs'}</span>
+              </div>
+            `;
+            bc.style.cursor = 'pointer';
+            bc.addEventListener('click', () => {
+              const slug = encodeURIComponent(r.client || '');
+              window.location.href = `Client Information.html?client=${slug}`;
+            });
+            body.appendChild(bc);
+          });
+          boardGrid.appendChild(col);
+        });
+      }
+
+      // ========== View switcher ==========
+      const viewBtns = document.querySelectorAll('.view-switch button');
+      const viewPanes = document.querySelectorAll('[data-view-pane]');
+      viewBtns.forEach(b => {
+        b.addEventListener('click', () => {
+          viewBtns.forEach(x => x.classList.remove('on'));
+          b.classList.add('on');
+          const v = b.dataset.view;
+          viewPanes.forEach(p => { p.hidden = (p.dataset.viewPane !== v); });
+        });
+      });
+
+      // Toast helper for card/board clicks
+      function showToast(msg) {
+        let t = document.querySelector('.toast');
+        if (!t) {
+          t = document.createElement('div');
+          t.className = 'toast';
+          document.body.appendChild(t);
+        }
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(showToast._tm);
+        showToast._tm = setTimeout(() => t.classList.remove('show'), 1800);
+      }
+
+      // Status tabs
+      document.querySelectorAll('.seg button').forEach(b => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.seg button').forEach(x => x.classList.remove('on'));
+          b.classList.add('on');
+          filters.status = b.dataset.status;
+          apply();
+        });
+      });
+
+      // Search
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        filters.search = e.target.value;
+        apply();
+      });
+
+      // Filter row submenus
+      const makeSubmenu = (row, key, options, labelFn = v => v, valueFn = v => v) => {
+        let pop = row.querySelector('.submenu');
+        if (pop) { pop.remove(); return; }
+        document.querySelectorAll('.filters-panel .submenu').forEach(p => p.remove());
+        pop = document.createElement('div');
+        pop.className = 'submenu';
+        options.forEach(opt => {
+          const val = valueFn(opt);
+          const it = document.createElement('label');
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = filters[key].has(val);
+          cb.addEventListener('change', () => {
+            if (cb.checked) filters[key].add(val);
+            else filters[key].delete(val);
+            updateBadge(); updateSummaries(); renderChips(); apply();
+          });
+          const span = document.createElement('span');
+          span.textContent = labelFn(opt);
+          it.append(cb, span);
+          pop.appendChild(it);
+        });
+        row.appendChild(pop);
+        pop.addEventListener('click', e => e.stopPropagation());
+      };
+
+      document.querySelectorAll('.f-row').forEach(row => {
+        row.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const key = row.dataset.filter;
+          if (key === 'contact') makeSubmenu(row, 'contact', contacts);
+          else if (key === 'projects') makeSubmenu(row, 'projects', projectBuckets, b => b.label, b => b.key);
+        });
+      });
+
+      document.getElementById('filtersClear').addEventListener('click', () => {
+        ['contact','projects'].forEach(k => filters[k].clear());
+        updateBadge(); updateSummaries(); renderChips(); apply();
+        document.querySelectorAll('.filters-panel .submenu').forEach(p => p.remove());
+      });
+      document.getElementById('filtersDone').addEventListener('click', () => {
+        fbtn.classList.remove('open');
+        ftrigger.setAttribute('aria-expanded', 'false');
+      });
+
+      // Sorting
+      document.querySelectorAll('thead th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          const k = th.dataset.sort;
+          if (sortKey === k) sortDir = -sortDir;
+          else { sortKey = k; sortDir = 1; }
+          document.querySelectorAll('thead th[data-sort]').forEach(x => x.classList.remove('active'));
+          th.classList.add('active');
+          apply();
+        });
+      });
+
+      // Row click → open Client Information
+      tbody.addEventListener('click', (e) => {
+        const moreBtn = e.target.closest('.icon-btn[aria-label="More"]');
+        if (moreBtn) return;
+        const tr = e.target.closest('tr');
+        if (!tr) return;
+        const slug = encodeURIComponent(tr.dataset.client || '');
+        window.location.href = `Client Information.html?client=${slug}`;
+      });
+
+      // Also wrap each client name in an explicit <a> so it works as a real link
+      // (and keeps right-click → open in new tab working)
+      tbody.querySelectorAll('tr').forEach(tr => {
+        const nameEl = tr.querySelector('.client-cell .name');
+        if (!nameEl || nameEl.querySelector('a')) return;
+        const slug = encodeURIComponent(tr.dataset.client || '');
+        const a = document.createElement('a');
+        a.href = `Client Information.html?client=${slug}`;
+        a.textContent = nameEl.textContent;
+        a.style.cssText = 'color: inherit; text-decoration: none; border-bottom: 1px solid transparent;';
+        a.addEventListener('mouseenter', () => { a.style.borderBottomColor = 'var(--azur-mid)'; });
+        a.addEventListener('mouseleave', () => { a.style.borderBottomColor = 'transparent'; });
+        nameEl.textContent = '';
+        nameEl.appendChild(a);
+      });
+
+      // ========== Create Client dialog ==========
+      const dialog = document.getElementById('createDialog');
+      const openDialog = () => dialog.classList.add('open');
+      const closeDialog = () => dialog.classList.remove('open');
+      document.getElementById('createClientBtn').addEventListener('click', openDialog);
+      document.getElementById('createClose').addEventListener('click', closeDialog);
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) closeDialog(); });
+      document.getElementById('createSubmit').addEventListener('click', () => {
+        const name = document.getElementById('cl-name').value.trim();
+        if (!name) { toast('Please add a client name'); return; }
+        closeDialog();
+        toast(`Client created — ${name}`);
+      });
+
+      // Live initials in logo preview
+      document.getElementById('cl-name').addEventListener('input', (e) => {
+        const v = e.target.value.trim();
+        const initials = v ? v.split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase() : 'CL';
+        document.getElementById('lu-preview').textContent = initials;
+      });
+
+      // Init
+      updateBadge();
+      updateSummaries();
+      renderChips();
+      apply();
+    })();
+  </script>
+</body>
+</html>
