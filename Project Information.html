@@ -3,38 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <title>Azur Note — Veltrazine Phase III CSR</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system/colors_and_type.css">
 <style>
-  /* ============================================================
-     Tokens & primitives — copied verbatim from index.html
-     so the topbar / sidebar / pills / buttons / dots all match.
-     ============================================================ */
-  :root {
-    --azur-deep:  #235770;
-    --azur-mid:   #418EA0;
-    --brick:      #AC2819;
-    --sand:       #F3E9E1;
-    --hover:      rgba(35, 87, 112, 0.06);
-
-    --bg:         #FBFAF7;
-    --rule:       rgba(35, 87, 112, 0.12);
-    --rule-strong:rgba(35, 87, 112, 0.22);
-    --muted:      rgba(35, 87, 112, 0.58);
-
-    --font-display: "Outfit", system-ui, sans-serif;
-    --font-sans:    "Inter Tight", system-ui, sans-serif;
-    --font-mono:    "JetBrains Mono", ui-monospace, monospace;
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
     background: var(--bg);
     color: var(--azur-deep);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
@@ -69,7 +46,7 @@
   .brand .name em { font-style: normal; font-family: "Outfit", system-ui, sans-serif; font-weight: 300; color: var(--azur-mid); }
 
   .topbar .spacer { flex: 1; }
-  .topbar .divider { width: 1px; height: 28px; background: var(--rule-strong); margin: 0 20px; }
+  .topbar .divider { width: 1px; height: auto; align-self: stretch; background: var(--rule-strong); margin: 0 20px; }
 
   .user { display: flex; align-items: center; gap: 12px; }
   .user .avatar, .user-trigger .avatar {
@@ -83,10 +60,10 @@
     font-size: 16px;
   }
   .user .who, .user-trigger .who { line-height: 1.2; text-align: right; }
-  .user .who .name, .user-trigger .who .name { font-size: 13px; font-weight: 500; }
+  .user .who .name, .user-trigger .who .name { font-size: 14px; font-weight: 500; }
   .user .who .role, .user-trigger .who .role {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
@@ -101,7 +78,7 @@
     background: transparent;
     color: var(--azur-deep);
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     display: inline-flex;
     align-items: center;
@@ -130,7 +107,7 @@
     padding: 0 9px;
     border-radius: 100px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     width: fit-content;
@@ -197,7 +174,7 @@
   }
   .sidebar-nav .group-label {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted);
@@ -209,7 +186,7 @@
     border-radius: 8px;
     cursor: pointer;
     color: var(--azur-deep);
-    font-size: 14px; font-weight: 500;
+    font-size: 15px; font-weight: 500;
     background: transparent; border: 0;
     text-align: left; width: 100%;
     font-family: inherit;
@@ -233,7 +210,7 @@
   .nav-item .badge {
     margin-left: auto;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.06em;
     color: var(--muted);
     background: rgba(35,87,112,0.06);
@@ -276,14 +253,14 @@
     border-bottom: 1px solid var(--rule);
     margin-bottom: 4px;
   }
-  .profile-menu .p-head .name { font-weight: 500; font-size: 14px; color: var(--azur-deep); }
-  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .profile-menu .p-head .name { font-weight: 500; font-size: 15px; color: var(--azur-deep); }
+  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 2px; }
   .profile-menu .p-item {
     display: flex; align-items: center; gap: 10px;
     padding: 10px 12px;
     border-radius: 6px;
     color: var(--azur-deep);
-    font-size: 13px;
+    font-size: 14px;
     cursor: pointer;
     background: transparent; border: 0;
     width: 100%; text-align: left;
@@ -302,7 +279,7 @@
     color: var(--sand);
     padding: 10px 18px;
     border-radius: 100px;
-    font-size: 13px;
+    font-size: 14px;
     opacity: 0; pointer-events: none;
     transition: opacity .2s, transform .2s;
     z-index: 100;
@@ -325,7 +302,7 @@
     display: flex; align-items: center; gap: 8px;
     margin-bottom: 18px;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -356,13 +333,13 @@
   }
   .proj-head .code {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.14em;
     color: var(--muted);
   }
   .proj-head h1 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 600;
     font-size: 44px;
     line-height: 1.05;
     letter-spacing: -0.02em;
@@ -401,7 +378,7 @@
   }
   .proj-head .head-stats .stat .k {
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
@@ -409,7 +386,7 @@
   }
   .proj-head .head-stats .stat .v {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--azur-deep);
     letter-spacing: 0.02em;
     white-space: nowrap;
@@ -447,7 +424,7 @@
     padding: 12px 18px 14px;
     margin-bottom: -1px;
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--muted);
     cursor: pointer;
@@ -474,7 +451,7 @@
   .tab.active .tab-icon { color: var(--azur-deep); }
   .tab .tab-count {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.06em;
     color: var(--muted);
     background: rgba(35,87,112,0.06);
@@ -505,7 +482,7 @@
   }
   .tab-empty .e-sub {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -529,7 +506,7 @@
   }
   .plan-summary .ps-k {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
@@ -555,7 +532,7 @@
   .plan-summary .ps-bar-head .ps-k { line-height: 1; }
   .plan-summary .ps-bar-head .ps-days {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--azur-deep);
     letter-spacing: 0.02em;
   }
@@ -632,7 +609,7 @@
   }
   .phase-title .sub {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -640,7 +617,7 @@
 
   .phase-dates {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--azur-deep);
     letter-spacing: 0.02em;
     white-space: nowrap;
@@ -668,7 +645,7 @@
   .phase-progress .pp-fill.cur { background: var(--azur-deep); }
   .phase-progress .pp-days {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--azur-deep);
     letter-spacing: 0.04em;
     white-space: nowrap;
@@ -718,7 +695,7 @@
     box-shadow: inset 0 0 0 3px var(--azur-deep);
   }
   .subtask .st-name {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--azur-deep);
   }
@@ -726,7 +703,7 @@
   .subtask.todo .st-name { color: var(--muted); font-weight: 400; }
   .subtask .st-dates {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--azur-deep);
     letter-spacing: 0.02em;
     white-space: nowrap;
@@ -753,7 +730,7 @@
   .subtask.todo .st-fill { background: var(--rule-strong); }
   .subtask .st-days {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.04em;
     color: var(--azur-deep);
     white-space: nowrap;
@@ -769,7 +746,7 @@
     color: var(--sand);
     display: grid; place-items: center;
     font-family: var(--font-display);
-    font-size: 11px;
+    font-size: 12px;
     flex: 0 0 auto;
   }
   .subtask .st-owner.alt { background: var(--azur-mid); }
@@ -797,7 +774,7 @@
     background: var(--sand);
     border: 1px solid var(--rule-strong);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--azur-deep);
@@ -807,7 +784,7 @@
     flex: 1;
     display: flex; align-items: center; gap: 4px;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--azur-deep);
     min-width: 0;
     overflow: hidden;
@@ -839,7 +816,7 @@
     background: var(--bg);
     padding: 0 10px 0 30px;
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--azur-deep);
     outline: none;
     transition: border-color .15s;
@@ -870,7 +847,7 @@
     padding: 0 12px;
     gap: 6px;
     display: inline-flex; align-items: center;
-    font-size: 12px;
+    font-size: 13px;
     font-family: var(--font-sans);
     font-weight: 500;
   }
@@ -893,7 +870,7 @@
   }
   .tree-pane .tree-label {
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted);
@@ -905,7 +882,7 @@
     border-radius: 6px;
     cursor: pointer;
     color: var(--azur-deep);
-    font-size: 13px;
+    font-size: 14px;
     user-select: none;
   }
   .tree-node:hover { background: var(--hover); }
@@ -943,7 +920,7 @@
   }
   .tree-node .tcount {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--muted);
   }
   .tree-children {
@@ -966,7 +943,7 @@
     padding: 10px 18px;
     border-bottom: 1px solid var(--rule);
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1008,7 +985,7 @@
     min-width: 0;
   }
   .file-row .fname .n {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--azur-deep);
     white-space: nowrap;
@@ -1017,7 +994,7 @@
   }
   .file-row .fname .meta {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.06em;
     color: var(--muted);
   }
@@ -1030,7 +1007,7 @@
   .file-row .fmod,
   .file-row .fowner {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--azur-deep);
     letter-spacing: 0.02em;
     white-space: nowrap;
@@ -1047,7 +1024,7 @@
     color: var(--sand);
     display: grid; place-items: center;
     font-family: var(--font-display);
-    font-size: 11px;
+    font-size: 12px;
     flex: 0 0 auto;
   }
   .file-row .fowner .av.alt { background: var(--azur-mid); }
@@ -1055,7 +1032,7 @@
   .file-row .fowner .av.warm { background: #a67a52; }
   .file-row .fowner .nm {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--azur-deep);
     font-weight: 500;
     white-space: nowrap;
@@ -1079,7 +1056,7 @@
     padding: 12px 18px;
     border-top: 1px solid var(--rule);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1136,7 +1113,7 @@
   }
   .card-head .h-meta {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1167,13 +1144,13 @@
   }
   .field-row .k {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
   }
   .field-row .v {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--azur-deep);
     font-weight: 500;
     line-height: 1.4;
@@ -1181,14 +1158,14 @@
   }
   .field-row .v.mono {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.02em;
     font-weight: 400;
   }
   .field-row .v.muted { color: var(--muted); font-weight: 400; font-family: "Outfit", system-ui, sans-serif; }
   .field-row .v.sub {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     margin-top: 2px;
     font-weight: 400;
@@ -1203,7 +1180,7 @@
     border-radius: 50%;
     display: grid; place-items: center;
     font-family: var(--font-display);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--sand);
     background: var(--azur-deep);
     flex: 0 0 auto;
@@ -1215,7 +1192,7 @@
   .person .n { font-weight: 500; }
   .person .r {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.06em;
     color: var(--muted);
     text-transform: uppercase;
@@ -1230,7 +1207,7 @@
     padding: 3px 10px;
     border-radius: 100px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     border: 1px solid var(--rule-strong);
@@ -1250,7 +1227,7 @@
   }
   .yn.no::before {
     content: "—";
-    font-size: 14px;
+    font-size: 15px;
     margin-right: 0;
     margin-top: -2px;
   }
@@ -1263,7 +1240,7 @@
     border-radius: 100px;
     border: 1px solid var(--rule-strong);
     background: var(--sand);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--azur-deep);
     font-weight: 500;
   }
@@ -1312,14 +1289,14 @@
   }
   .preview .paper .ph-h {
     font-family: var(--font-display);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--azur-deep);
     line-height: 1.2;
     margin-bottom: 4px;
   }
   .preview .paper .ph-sub {
     font-family: var(--font-mono);
-    font-size: 8px;
+    font-size: 9px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1343,7 +1320,7 @@
   .preview .paper .ph-line.mid { width: 84%; }
   .preview .paper .ph-h2 {
     font-family: var(--font-display);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--azur-deep);
     margin: 8px 0 4px;
   }
@@ -1367,7 +1344,7 @@
     display: flex; align-items: center; justify-content: space-between;
     margin-top: 12px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.06em;
     color: var(--muted);
     text-transform: uppercase;
@@ -1399,7 +1376,7 @@
   }
   .status-block .row .k {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1422,7 +1399,7 @@
     justify-content: space-between;
     margin-top: 8px;
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1435,7 +1412,7 @@
     padding-top: 14px;
     border-top: 1px solid var(--rule);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1443,7 +1420,7 @@
   .status-block .next strong {
     display: block;
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--azur-deep);
     text-transform: none;
     letter-spacing: normal;
@@ -1458,7 +1435,7 @@
   .people-mini .person .body { display: flex; flex-direction: column; }
   .people-mini .person .body .role-line {
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1513,13 +1490,13 @@
     min-width: 0;
   }
   .member-row .person .body .n {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--azur-deep);
   }
   .member-row .person .body .email {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     letter-spacing: 0.02em;
     white-space: nowrap;
@@ -1536,7 +1513,7 @@
     background: rgba(35, 87, 112, 0.06);
     border: 1px solid var(--rule-strong);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--azur-deep);
@@ -1558,7 +1535,7 @@
   .role-tag.client::before { background: var(--brick); }
 
   .member-meta {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--azur-deep);
     font-weight: 400;
     white-space: nowrap;
@@ -1571,9 +1548,11 @@
     align-items: center;
     gap: 7px;
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    font-variant: small-caps;
+    font-variant-caps: small-caps;
+    text-transform: none;
     color: var(--muted);
     white-space: nowrap;
   }
@@ -1611,14 +1590,14 @@
     border-top: 1px solid var(--rule);
     display: flex; justify-content: space-between; align-items: center;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.08em;
     color: var(--muted);
   }
   .foot .leaf {
     font-family: "Outfit", system-ui, sans-serif;
     font-weight: 300;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--azur-mid);
     text-transform: none;
     letter-spacing: 0;
@@ -1626,6 +1605,9 @@
 
   /* ---------- end styles ---------- */
 </style>
+
+  <!-- Lucide icons (auto-converts [data-lucide] elements) -->
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -1637,52 +1619,54 @@
         <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
         <div class="name">Azur <em>Note</em></div>
       </div>
-      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu" style="border-style: none">
+        <i data-lucide="x" width="14" height="14" stroke-width="2.25"></i>
       </button>
     </div>
     <nav class="sidebar-nav">
       <span class="group-label">Workspace</span>
-      <a class="nav-item active" href="index.html" data-nav="projects">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5h5l1.5 1.5h6.5v8.5a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1v-10z"/></svg></span>
+      <a class="nav-item" href="index.html" data-nav="dashboard">
+        <span class="icon"><i data-lucide="layout-grid" width="18" height="18" stroke-width="2.25"></i></span>
+        Dashboard
+      </a>
+      <a class="nav-item active" href="projects.html" data-nav="projects" aria-current="page">
+        <span class="icon"><i data-lucide="folder" width="18" height="18" stroke-width="2.25"></i></span>
         Projects
         <span class="badge">24</span>
       </a>
       <a class="nav-item" href="Clients.html" data-nav="clients">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.5V13a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1.5"/><circle cx="7" cy="6" r="2.4"/><path d="M11.5 14.5V13a2.8 2.8 0 0 0-2-2.7"/><circle cx="12.5" cy="6.5" r="2"/></svg></span>
+        <span class="icon"><i data-lucide="briefcase" width="18" height="18" stroke-width="2.25"></i></span>
         Clients
         <span class="badge">12</span>
       </a>
       <button class="nav-item" data-nav="members">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6.5" r="2.6"/><path d="M3.5 14.5a5.5 5.5 0 0 1 11 0"/></svg></span>
+        <span class="icon"><i data-lucide="users-round" width="18" height="18" stroke-width="2.25"></i></span>
         Members
         <span class="badge">8</span>
       </button>
     </nav>
     <div class="sidebar-foot">
       <button class="nav-item" data-nav="help">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><path d="M7 7.2a2 2 0 0 1 3.9.5c0 1.3-2 1.6-2 2.8"/><circle cx="9" cy="12.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
+        <span class="icon"><i data-lucide="help-circle" width="18" height="18" stroke-width="2.25"></i></span>
         Help &amp; feedback
       </button>
-      <button class="nav-item" data-nav="settings">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="2.2"/><path d="M14.5 9a5.6 5.6 0 0 0-.1-1l1.4-1-1.2-2-1.7.5a5.5 5.5 0 0 0-1.7-1l-.3-1.7H8.1L7.8 4.5a5.5 5.5 0 0 0-1.7 1l-1.7-.5-1.2 2 1.4 1a5.6 5.6 0 0 0 0 2l-1.4 1 1.2 2 1.7-.5a5.5 5.5 0 0 0 1.7 1l.3 1.7h1.8l.3-1.7a5.5 5.5 0 0 0 1.7-1l1.7.5 1.2-2-1.4-1c.07-.33.1-.66.1-1z"/></svg></span>
+      <a class="nav-item" href="Settings.html" data-nav="settings">
+        <span class="icon"><i data-lucide="settings" width="18" height="18" stroke-width="2.25"></i></span>
         Settings
-      </button>
+      </a>
     </div>
   </aside>
 
   <!-- ===================== Top nav ===================== -->
   <nav class="topbar" aria-label="Primary">
     <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-        <path d="M1 1h14M1 6h14M1 11h14"/>
-      </svg>
+      <i data-lucide="menu" width="16" height="12" stroke-width="1.5"></i>
     </button>
 
-    <div class="brand">
+    <a class="brand" href="index.html" aria-label="Go to dashboard" style="color: inherit; text-decoration: none; cursor: pointer; border: 0;">
       <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
       <div class="name">Azur <em>Note</em></div>
-    </div>
+    </a>
 
     <div class="spacer"></div>
 
@@ -1702,16 +1686,16 @@
           <div class="mail">alex.moreau@azurnote.co</div>
         </div>
         <button class="p-item" data-action="profile" role="menuitem">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M2.5 11.5a4.5 4.5 0 0 1 9 0"/></svg>
+          <i data-lucide="user-round" width="14" height="14" stroke-width="1.5"></i>
           Profile
         </button>
         <button class="p-item" data-action="settings" role="menuitem">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="1.6"/><path d="M11.5 7a4.4 4.4 0 0 0-.1-.8l1-.8-.8-1.4-1.3.4a4.4 4.4 0 0 0-1.4-.8L8.6 2.5H6.4l-.3 1.2a4.4 4.4 0 0 0-1.4.8l-1.3-.4-.8 1.4 1 .8A4.4 4.4 0 0 0 3.5 7"/></svg>
+          <i data-lucide="settings" width="14" height="14" stroke-width="1.5"></i>
           Settings
         </button>
         <div class="p-divider"></div>
         <button class="p-item danger" data-action="logout" role="menuitem">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3M9 4l3 3-3 3M5 7h7"/></svg>
+          <i data-lucide="log-out" width="14" height="14" stroke-width="1.5"></i>
           Log out
         </button>
       </div>
@@ -1735,7 +1719,6 @@
       <div class="titles">
         <div class="meta-row">
           <span class="pill review">Review</span>
-          <span class="dot active" title="Active"></span>
           <span class="code">PRJ-2041 · HCP-2026-04</span>
         </div>
         <h1>Veltrazine Phase III</h1>
@@ -1744,11 +1727,11 @@
       <div class="head-side">
         <div class="actions-row">
           <button class="btn" id="downloadBtn">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1.5v8M3.5 6.5l3.5 3.5 3.5-3.5M2 12.5h10"/></svg>
+            <i data-lucide="download" width="14" height="14" stroke-width="1.5"></i>
             Download
           </button>
           <button class="btn primary" id="reviewBtn">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7l3 3 7-7"/></svg>
+            <i data-lucide="check" width="14" height="14" stroke-width="1.5"></i>
             Continue review
           </button>
         </div>
@@ -1758,7 +1741,7 @@
             <div class="v">04 Sep 25</div>
           </div>
           <div class="stat">
-            <div class="k">Updated</div>
+            <div class="k">Last updated</div>
             <div class="v">26 Apr 26</div>
           </div>
           <div class="stat">
@@ -1772,19 +1755,19 @@
     <!-- Tabs -->
     <div class="tabs" role="tablist" aria-label="Project sections">
       <button class="tab active" role="tab" aria-selected="true" data-tab="information">
-        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 6.2v3.6M7 4.2v.2"/></svg></span>
+        <span class="tab-icon"><i data-lucide="info" width="14" height="14" stroke-width="1.5"></i></span>
         Information
       </button>
       <button class="tab" role="tab" aria-selected="false" data-tab="planning">
-        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2.8" width="10" height="9.5" rx="1.2"/><path d="M2 5.5h10M4.5 1.5v2M9.5 1.5v2"/></svg></span>
+        <span class="tab-icon"><i data-lucide="calendar" width="14" height="14" stroke-width="1.5"></i></span>
         Planning
       </button>
       <button class="tab" role="tab" aria-selected="false" data-tab="storage">
-        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="7" cy="3.5" rx="4.8" ry="1.8"/><path d="M2.2 3.5v7c0 1 2.15 1.8 4.8 1.8s4.8-.8 4.8-1.8v-7M2.2 7c0 1 2.15 1.8 4.8 1.8s4.8-.8 4.8-1.8"/></svg></span>
+        <span class="tab-icon"><i data-lucide="database" width="14" height="14" stroke-width="1.5"></i></span>
         Data storage
       </button>
       <button class="tab" role="tab" aria-selected="false" data-tab="members">
-        <span class="tab-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="5.5" r="2.2"/><path d="M1.5 11.5a4 4 0 0 1 8 0"/><circle cx="10" cy="5" r="1.6"/><path d="M10 8a3 3 0 0 1 2.5 3.5"/></svg></span>
+        <span class="tab-icon"><i data-lucide="users" width="14" height="14" stroke-width="1.5"></i></span>
         Members
         <span class="tab-count">6</span>
       </button>
@@ -1807,7 +1790,7 @@
           <div class="card-body">
             <div class="fields">
               <div class="field-row">
-                <span class="k">Document type</span>
+                <span class="k" style="font-family: IBM Plex Sans">Document type</span>
                 <span class="v">Clinical Study Report (CSR)</span>
               </div>
               <div class="field-row">
@@ -1821,7 +1804,7 @@
                     <span class="av alt">L</span>
                     <span class="body">
                       <span class="n">L. Sørensen</span>
-                      <span class="role-line" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Senior PM</span>
+                      <span class="role-line" style="font-family:var(--font-mono);font-size: 10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Senior PM</span>
                     </span>
                   </span>
                 </span>
@@ -1833,7 +1816,7 @@
                     <span class="av">M</span>
                     <span class="body">
                       <span class="n">M. Okafor</span>
-                      <span class="role-line" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Medical writer III</span>
+                      <span class="role-line" style="font-family:var(--font-mono);font-size: 10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Medical writer III</span>
                     </span>
                   </span>
                 </span>
@@ -1871,7 +1854,7 @@
                     <span class="av tone">D</span>
                     <span class="body">
                       <span class="n">Dr. D. Halberg</span>
-                      <span class="role-line" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Director, Medical Affairs</span>
+                      <span class="role-line" style="font-family:var(--font-mono);font-size: 10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Director, Medical Affairs</span>
                     </span>
                   </span>
                 </span>
@@ -1894,7 +1877,7 @@
                 <span class="v">
                   <div class="chips">
                     <span class="chip">
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 1.5h5l1.5 1.5v6h-7v-7.5z M7 1.5v1.5h1.5"/></svg>
+                      <i data-lucide="file" width="10" height="10" stroke-width="1.5"></i>
                       Heliocare Style v3.2
                     </span>
                   </div>
@@ -1963,7 +1946,7 @@
             <div class="ps-cell ps-bar-wrap">
               <div class="ps-bar-head">
                 <span class="ps-k">Project progress</span>
-                <span class="ps-days"><strong>168</strong> <span class="total">/ 268 days</span></span>
+                <span class="ps-days"><strong>1,344</strong> <span class="total">/ 2,144 hours</span></span>
               </div>
               <div class="ps-bar deep"><div class="ps-bar-fill" style="width: 62.6%;"></div></div>
             </div>
@@ -1976,7 +1959,7 @@
             <div class="phase">
               <button class="phase-head" aria-expanded="false">
                 <span class="chev">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5l4 3.5-4 3.5"/></svg>
+                  <i data-lucide="chevron-right" width="12" height="12" stroke-width="1.5"></i>
                 </span>
                 <span class="phase-title">
                   <span class="name">Draft 1</span>
@@ -1985,55 +1968,55 @@
                 <span class="phase-dates">04 Sep 25 <span class="arr">→</span> 18 Dec 25</span>
                 <span class="phase-progress">
                   <span class="pp-bar"><span class="pp-fill done" style="width:100%;"></span></span>
-                  <span class="pp-days"><strong>105</strong><span class="t"> / 105</span></span>
+                  <span class="pp-days"><strong>840</strong><span class="t"> / 840 h</span></span>
                 </span>
                 <span class="phase-status"><span class="pill approved">Complete</span></span>
               </button>
               <div class="phase-body">
                 <div class="subtask done">
                   <span class="st-mark">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                    <i data-lucide="check" width="8" height="8" stroke-width="1.5"></i>
                   </span>
                   <span class="st-name">Outline &amp; data lock</span>
                   <span class="st-dates">04 Sep 25 <span class="arr">→</span> 22 Sep 25</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
-                  <span class="st-days"><strong>18</strong><span class="t"> / 18 d</span></span>
+                  <span class="st-days"><strong>144</strong><span class="t"> / 144 h</span></span>
                 </div>
                 <div class="subtask done">
                   <span class="st-mark">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                    <i data-lucide="check" width="8" height="8" stroke-width="1.5"></i>
                   </span>
                   <span class="st-name">Authoring</span>
                   <span class="st-dates">23 Sep 25 <span class="arr">→</span> 14 Nov 25</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
-                  <span class="st-days"><strong>53</strong><span class="t"> / 53 d</span></span>
+                  <span class="st-days"><strong>424</strong><span class="t"> / 424 h</span></span>
                 </div>
                 <div class="subtask done">
                   <span class="st-mark">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                    <i data-lucide="check" width="8" height="8" stroke-width="1.5"></i>
                   </span>
                   <span class="st-name">Internal QC</span>
                   <span class="st-dates">15 Nov 25 <span class="arr">→</span> 28 Nov 25</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
-                  <span class="st-days"><strong>14</strong><span class="t"> / 14 d</span></span>
+                  <span class="st-days"><strong>112</strong><span class="t"> / 112 h</span></span>
                 </div>
                 <div class="subtask done">
                   <span class="st-mark">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                    <i data-lucide="check" width="8" height="8" stroke-width="1.5"></i>
                   </span>
                   <span class="st-name">Senior writer review</span>
                   <span class="st-dates">29 Nov 25 <span class="arr">→</span> 06 Dec 25</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
-                  <span class="st-days"><strong>8</strong><span class="t"> / 8 d</span></span>
+                  <span class="st-days"><strong>64</strong><span class="t"> / 64 h</span></span>
                 </div>
                 <div class="subtask done">
                   <span class="st-mark">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                    <i data-lucide="check" width="8" height="8" stroke-width="1.5"></i>
                   </span>
                   <span class="st-name">Send to client</span>
                   <span class="st-dates">15 Dec 25 <span class="arr">→</span> 18 Dec 25</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
-                  <span class="st-days"><strong>4</strong><span class="t"> / 4 d</span></span>
+                  <span class="st-days"><strong>32</strong><span class="t"> / 32 h</span></span>
                 </div>
               </div>
             </div>
@@ -2042,7 +2025,7 @@
             <div class="phase open">
               <button class="phase-head" aria-expanded="true">
                 <span class="chev">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5l4 3.5-4 3.5"/></svg>
+                  <i data-lucide="chevron-right" width="12" height="12" stroke-width="1.5"></i>
                 </span>
                 <span class="phase-title">
                   <span class="name">Draft 2</span>
@@ -2051,42 +2034,42 @@
                 <span class="phase-dates">19 Dec 25 <span class="arr">→</span> 30 May 26</span>
                 <span class="phase-progress">
                   <span class="pp-bar"><span class="pp-fill cur" style="width:38%;"></span></span>
-                  <span class="pp-days"><strong>61</strong><span class="t"> / 162</span></span>
+                  <span class="pp-days"><strong>488</strong><span class="t"> / 1,296 h</span></span>
                 </span>
                 <span class="phase-status"><span class="pill review">Review</span></span>
               </button>
               <div class="phase-body">
                 <div class="subtask done">
                   <span class="st-mark">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                    <i data-lucide="check" width="8" height="8" stroke-width="1.5"></i>
                   </span>
                   <span class="st-name">Client review — round 1</span>
                   <span class="st-dates">19 Dec 25 <span class="arr">→</span> 28 Jan 26</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
-                  <span class="st-days"><strong>41</strong><span class="t"> / 41 d</span></span>
+                  <span class="st-days"><strong>328</strong><span class="t"> / 328 h</span></span>
                 </div>
                 <div class="subtask done">
                   <span class="st-mark">
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4l1.7 1.8L6.5 2.4"/></svg>
+                    <i data-lucide="check" width="8" height="8" stroke-width="1.5"></i>
                   </span>
                   <span class="st-name">Comment resolution</span>
                   <span class="st-dates">29 Jan 26 <span class="arr">→</span> 12 Mar 26</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:100%;"></span></span></span>
-                  <span class="st-days"><strong>43</strong><span class="t"> / 43 d</span></span>
+                  <span class="st-days"><strong>344</strong><span class="t"> / 344 h</span></span>
                 </div>
                 <div class="subtask cur">
                   <span class="st-mark"></span>
                   <span class="st-name">Client review — round 2</span>
                   <span class="st-dates">29 Mar 26 <span class="arr">→</span> 30 May 26</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:48%;"></span></span></span>
-                  <span class="st-days"><strong>30</strong><span class="t"> / 63 d</span></span>
+                  <span class="st-days"><strong>240</strong><span class="t"> / 504 h</span></span>
                 </div>
                 <div class="subtask todo">
                   <span class="st-mark"></span>
                   <span class="st-name">Final QC pass</span>
                   <span class="st-dates">25 May 26 <span class="arr">→</span> 30 May 26</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
-                  <span class="st-days"><strong>0</strong><span class="t"> / 6 d</span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 48 h</span></span>
                 </div>
               </div>
             </div>
@@ -2095,7 +2078,7 @@
             <div class="phase">
               <button class="phase-head" aria-expanded="false">
                 <span class="chev">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5l4 3.5-4 3.5"/></svg>
+                  <i data-lucide="chevron-right" width="12" height="12" stroke-width="1.5"></i>
                 </span>
                 <span class="phase-title">
                   <span class="name">Final version</span>
@@ -2104,7 +2087,7 @@
                 <span class="phase-dates">01 Jun 26 <span class="arr">→</span> 26 Jun 26</span>
                 <span class="phase-progress">
                   <span class="pp-bar"><span class="pp-fill" style="width:0%;"></span></span>
-                  <span class="pp-days"><strong>0</strong><span class="t"> / 26</span></span>
+                  <span class="pp-days"><strong>0</strong><span class="t"> / 208 h</span></span>
                 </span>
                 <span class="phase-status"><span class="pill onhold">Upcoming</span></span>
               </button>
@@ -2114,21 +2097,21 @@
                   <span class="st-name">Sponsor sign-off</span>
                   <span class="st-dates">01 Jun 26 <span class="arr">→</span> 10 Jun 26</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
-                  <span class="st-days"><strong>0</strong><span class="t"> / 10 d</span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 80 h</span></span>
                 </div>
                 <div class="subtask todo">
                   <span class="st-mark"></span>
                   <span class="st-name">PDF finalisation &amp; eCTD prep</span>
                   <span class="st-dates">11 Jun 26 <span class="arr">→</span> 20 Jun 26</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
-                  <span class="st-days"><strong>0</strong><span class="t"> / 10 d</span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 80 h</span></span>
                 </div>
                 <div class="subtask todo">
                   <span class="st-mark"></span>
                   <span class="st-name">Submission to regulator</span>
                   <span class="st-dates">22 Jun 26 <span class="arr">→</span> 26 Jun 26</span>
                   <span class="st-bar-wrap"><span class="st-bar"><span class="st-fill" style="width:0%;"></span></span></span>
-                  <span class="st-days"><strong>0</strong><span class="t"> / 5 d</span></span>
+                  <span class="st-days"><strong>0</strong><span class="t"> / 40 h</span></span>
                 </div>
               </div>
             </div>
@@ -2151,14 +2134,14 @@
               <button class="seg here">CSR</button>
             </div>
             <div class="search-wrap">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="5.5" cy="5.5" r="3.6"/><path d="M8.4 8.4l3 3"/></svg>
+              <i data-lucide="search" width="13" height="13" stroke-width="1.5"></i>
               <input type="text" placeholder="Search this folder…" />
             </div>
             <button class="ico-btn" title="Refresh">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 4.5A4.5 4.5 0 1 0 12 9M11.5 1.8v2.7H8.8"/></svg>
+              <i data-lucide="rotate-ccw" width="14" height="14" stroke-width="1.5"></i>
             </button>
             <button class="ico-btn primary" title="Upload">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.5 9V2M3.5 5l3-3 3 3M2 11.5h9"/></svg>
+              <i data-lucide="upload" width="13" height="13" stroke-width="1.5"></i>
               Upload
             </button>
           </div>
@@ -2171,62 +2154,62 @@
               <div class="tree-label">Folders</div>
 
               <div class="tree-node expanded">
-                <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
-                <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                <span class="tcaret"><i data-lucide="chevron-right" width="9" height="9" stroke-width="1.5"></i></span>
+                <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                 <span class="tname">Veltrazine Phase III</span>
               </div>
               <div class="tree-children" style="display:block;">
                 <div class="tree-node">
-                  <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
-                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tcaret"><i data-lucide="chevron-right" width="9" height="9" stroke-width="1.5"></i></span>
+                  <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                   <span class="tname">Protocol</span>
                 </div>
                 <div class="tree-node active">
-                  <span class="tcaret expanded"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
-                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tcaret expanded"><i data-lucide="chevron-right" width="9" height="9" stroke-width="1.5"></i></span>
+                  <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                   <span class="tname">CSR</span>
                   <span class="tcount">42</span>
                 </div>
                 <div class="tree-children" style="display:block; margin-left: 28px;">
                   <div class="tree-node">
                     <span class="tcaret empty"></span>
-                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                     <span class="tname">01 Drafts</span>
                   </div>
                   <div class="tree-node">
                     <span class="tcaret empty"></span>
-                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                     <span class="tname">02 QC</span>
                   </div>
                   <div class="tree-node">
                     <span class="tcaret empty"></span>
-                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                     <span class="tname">03 Client review</span>
                   </div>
                   <div class="tree-node">
                     <span class="tcaret empty"></span>
-                    <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                    <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                     <span class="tname">04 Final</span>
                   </div>
                 </div>
                 <div class="tree-node">
-                  <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
-                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tcaret"><i data-lucide="chevron-right" width="9" height="9" stroke-width="1.5"></i></span>
+                  <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                   <span class="tname">Statistical analysis</span>
                 </div>
                 <div class="tree-node">
-                  <span class="tcaret"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1.5l3 3-3 3"/></svg></span>
-                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="tcaret"><i data-lucide="chevron-right" width="9" height="9" stroke-width="1.5"></i></span>
+                  <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                   <span class="tname">Source data</span>
                 </div>
                 <div class="tree-node">
                   <span class="tcaret empty"></span>
-                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                   <span class="tname">Correspondence</span>
                 </div>
                 <div class="tree-node">
                   <span class="tcaret empty"></span>
-                  <span class="ticon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" stroke="none"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="ticon"><i data-lucide="folder" width="14" height="14" stroke-width="1.5"></i></span>
                   <span class="tname">Archive</span>
                 </div>
               </div>
@@ -2245,76 +2228,76 @@
 
                 <!-- Sub-folders -->
                 <div class="file-row folder-row">
-                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="ficon folder"><i data-lucide="folder" width="12" height="12" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">01 Drafts</span><span class="meta">12 files</span></span>
                   <span class="fsize muted">—</span>
                   <span class="fmod">14 Nov 25</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row folder-row">
-                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="ficon folder"><i data-lucide="folder" width="12" height="12" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">02 QC</span><span class="meta">8 files</span></span>
                   <span class="fsize muted">—</span>
                   <span class="fmod">28 Nov 25</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row folder-row">
-                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="ficon folder"><i data-lucide="folder" width="12" height="12" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">03 Client review</span><span class="meta">17 files · shared with Heliocare</span></span>
                   <span class="fsize muted">—</span>
                   <span class="fmod">22 Apr 26</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row folder-row">
-                  <span class="ficon folder"><svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M1.5 3.5a1 1 0 0 1 1-1h3l1.2 1.2h4.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="ficon folder"><i data-lucide="folder" width="12" height="12" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">04 Final</span><span class="meta">empty</span></span>
                   <span class="fsize muted">—</span>
                   <span class="fmod muted">—</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
 
                 <!-- Files -->
                 <div class="file-row">
-                  <span class="ficon docx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3.4" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">W</text></svg></span>
+                  <span class="ficon docx"><i data-lucide="file-text" width="11" height="11" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">VLZ-CSR_v3-draft_round2.docx</span><span class="meta"><span class="lock">● Locked by M. Okafor</span> · checked out 26 Apr</span></span>
                   <span class="fsize">4.8 MB</span>
                   <span class="fmod">26 Apr 26</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row">
-                  <span class="ficon pdf"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">P</text></svg></span>
+                  <span class="ficon pdf"><i data-lucide="presentation" width="11" height="11" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">VLZ-CSR_v2-clientcomments.pdf</span><span class="meta">received from Heliocare · 14 Apr</span></span>
                   <span class="fsize">7.2 MB</span>
                   <span class="fmod">14 Apr 26</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row">
-                  <span class="ficon xlsx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">X</text></svg></span>
+                  <span class="ficon xlsx"><i data-lucide="file-spreadsheet" width="11" height="11" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">Efficacy_TLF_v3.xlsx</span><span class="meta">linked into §3.2</span></span>
                   <span class="fsize">12.4 MB</span>
                   <span class="fmod">02 Apr 26</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row">
-                  <span class="ficon docx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3.4" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">W</text></svg></span>
+                  <span class="ficon docx"><i data-lucide="file-text" width="11" height="11" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">VLZ-CSR_v2_with-track-changes.docx</span><span class="meta">archived</span></span>
                   <span class="fsize">5.1 MB</span>
                   <span class="fmod">12 Mar 26</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row">
-                  <span class="ficon pptx"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1h5l3 3v7H2z" opacity=".25"/><path d="M2 1h5l3 3v7H2zM7 1v3h3" fill="none" stroke="currentColor" stroke-width="1"/><text x="6" y="9.5" font-size="3" font-family="JetBrains Mono" font-weight="700" text-anchor="middle" fill="currentColor">P</text></svg></span>
+                  <span class="ficon pptx"><i data-lucide="presentation" width="11" height="11" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">CSR_kickoff_deck.pptx</span><span class="meta">internal</span></span>
                   <span class="fsize">3.6 MB</span>
                   <span class="fmod">04 Sep 25</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
                 <div class="file-row">
-                  <span class="ficon img"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="2" width="8" height="8" rx="1"/><circle cx="4.5" cy="5" r=".7" fill="currentColor"/><path d="M2.4 9l2-2.5 2 2 1.5-1.2 1.7 1.7"/></svg></span>
+                  <span class="ficon img"><i data-lucide="image" width="11" height="11" stroke-width="1.5"></i></span>
                   <span class="fname"><span class="n">forest-plot-primary.png</span><span class="meta">figure 14.2</span></span>
                   <span class="fsize">920 KB</span>
                   <span class="fmod">28 Mar 26</span>
-                  <button class="fmore" aria-label="More"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="2" cy="6" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="10" cy="6" r="1"/></svg></button>
+                  <button class="fmore" aria-label="More"><i data-lucide="more-horizontal" width="12" height="12" stroke-width="1.5"></i></button>
                 </div>
 
               </div>
@@ -2332,7 +2315,7 @@
           <!-- Manage members CTA -->
           <div class="members-actions members-actions-top">
             <button class="btn primary" id="manageMembersBtn">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="5" r="2.2"/><path d="M1.5 12a4 4 0 0 1 8 0"/><path d="M11 5.5v3M9.5 7h3"/></svg>
+              <i data-lucide="user-plus" width="14" height="14" stroke-width="1.5"></i>
               Manage members
             </button>
           </div>
@@ -2452,11 +2435,43 @@
       <!-- ============== RIGHT RAIL ============== -->
       <aside class="side-rail">
 
+        <!-- Status & next step -->
+        <section class="card">
+          <div class="card-head">
+            <h2 style="font-size: 18px;">Status</h2>
+            <span class="h-meta">26 Apr 26</span>
+          </div>
+          <div class="status-block">
+            <div class="row">
+              <span class="k">Stage</span>
+              <span class="pill review">Review</span>
+            </div>
+            <div class="row" style="margin-bottom: 4px;">
+              <span class="k">Progress</span>
+              <span style="font-family:var(--font-mono);font-size: 12px;color:var(--azur-deep);">3 / 5</span>
+            </div>
+            <div class="progress-line">
+              <span class="seg done"></span>
+              <span class="seg done"></span>
+              <span class="seg cur"></span>
+              <span class="seg"></span>
+              <span class="seg"></span>
+            </div>
+            <div class="progress-labels">
+              <span class="done">Authoring</span>
+              <span class="done">QC</span>
+              <span class="cur">Review</span>
+              <span>Approval</span>
+              <span>Submitted</span>
+            </div>
+          </div>
+        </section>
+
         <!-- Document preview -->
         <section class="card">
           <div class="card-head">
             <h2 style="font-size: 18px;">Document</h2>
-            <div class="h-meta"><a href="#" data-action="open">Open ↗</a></div>
+            <div class="h-meta"><a href="Editor.html" data-action="open">Open ↗</a></div>
           </div>
           <div class="preview">
             <div class="paper" id="docPreview">
@@ -2483,50 +2498,12 @@
                 <div class="ph-line mid"></div>
               </div>
               <button class="open-btn" aria-label="Open document">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 2h6v6M10 2L5 7M5 2H2v8h8V7"/></svg>
+                <i data-lucide="external-link" width="12" height="12" stroke-width="1.5"></i>
               </button>
             </div>
             <div class="meta">
               <span>v3 · DRAFT</span>
               <span class="v">142 pages</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- Status & next step -->
-        <section class="card">
-          <div class="card-head">
-            <h2 style="font-size: 18px;">Status</h2>
-            <span class="h-meta">26 Apr 26</span>
-          </div>
-          <div class="status-block">
-            <div class="row">
-              <span class="k">Stage</span>
-              <span class="pill review">Review</span>
-            </div>
-            <div class="row" style="margin-bottom: 4px;">
-              <span class="k">Progress</span>
-              <span style="font-family:var(--font-mono);font-size:11px;color:var(--azur-deep);">3 / 5</span>
-            </div>
-            <div class="progress-line">
-              <span class="seg done"></span>
-              <span class="seg done"></span>
-              <span class="seg cur"></span>
-              <span class="seg"></span>
-              <span class="seg"></span>
-            </div>
-            <div class="progress-labels">
-              <span class="done">Authoring</span>
-              <span class="done">QC</span>
-              <span class="cur">Review</span>
-              <span>Approval</span>
-              <span>Submitted</span>
-            </div>
-
-            <div class="next">
-              Next milestone
-              <strong>Client review round 2</strong>
-              <span class="due">Due 30 May 26 — in 32 days</span>
             </div>
           </div>
         </section>
@@ -2537,14 +2514,13 @@
 
     <div class="foot">
       <div>Last opened by you · 26 Apr 26 · 14:22</div>
-      <div class="leaf">Azur Note</div>
     </div>
 
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="tweaks.js"></script>
+
   <script>
     (function(){
       // Toast
@@ -2566,16 +2542,10 @@
       document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
       scrim.addEventListener('click', closeSidebar);
       document.querySelectorAll('.sidebar .nav-item').forEach(b => {
+        if (b.tagName === 'A') return; // links navigate naturally
         b.addEventListener('click', () => {
-          const key = b.dataset.nav;
-          document.querySelectorAll('.sidebar .nav-item').forEach(x => x.classList.remove('active'));
-          b.classList.add('active');
-          const labels = { projects: 'Projects', clients: 'Clients', members: 'Members', help: 'Help & feedback', settings: 'Settings' };
-          if (key === 'projects') {
-            window.location.href = 'index.html';
-            return;
-          }
-          toast(`${labels[key] || key} — coming soon`);
+          const labels = { members: 'Members', help: 'Help & feedback', settings: 'Settings' };
+          toast(`${labels[b.dataset.nav] || b.dataset.nav} — coming soon`);
         });
       });
 
@@ -2592,8 +2562,8 @@
           const a = b.dataset.action;
           userWrap.classList.remove('open');
           if (a === 'logout') toast('Logged out');
-          else if (a === 'settings') toast('Opening Settings…');
-          else if (a === 'profile') toast('Opening Profile…');
+          else if (a === 'settings') window.location.href = 'Settings.html';
+          else if (a === 'profile') window.location.href = 'Profile.html';
         });
       });
       document.addEventListener('click', (e) => {
@@ -2655,17 +2625,184 @@
 
       // Page-level CTAs
       document.getElementById('manageMembersBtn')?.addEventListener('click', () => toast('Opening member management…'));
-      document.getElementById('reviewBtn')?.addEventListener('click', () => toast('Opening review workspace…'));
+      document.getElementById('reviewBtn')?.addEventListener('click', () => { window.location.href = 'Editor.html'; });
       document.getElementById('downloadBtn')?.addEventListener('click', () => toast('Preparing download…'));
-      document.getElementById('docPreview')?.addEventListener('click', () => toast('Opening document…'));
+      document.getElementById('docPreview')?.addEventListener('click', () => { window.location.href = 'Editor.html'; });
       document.querySelectorAll('[data-action="edit"]').forEach(a => {
         a.addEventListener('click', (e) => { e.preventDefault(); toast('Edit mode — coming soon'); });
       });
       document.querySelectorAll('[data-action="open"]').forEach(a => {
-        a.addEventListener('click', (e) => { e.preventDefault(); toast('Opening document…'); });
+        a.addEventListener('click', () => { window.location.href = 'Editor.html'; });
       });
     })();
   </script>
 
+
+  <script>
+    (function () {
+      var pending = false;
+      var obs;
+      function refresh() {
+        if (!window.lucide) return;
+        if (!document.querySelector('[data-lucide]')) return;
+        if (obs) obs.disconnect();
+        try { window.lucide.createIcons(); } catch (e) { console.error(e); }
+        if (obs) obs.observe(document.documentElement, { childList: true, subtree: true });
+      }
+      function schedule() {
+        if (pending) return;
+        if (!document.querySelector('[data-lucide]')) return;
+        pending = true;
+        requestAnimationFrame(function () {
+          pending = false;
+          refresh();
+        });
+      }
+      obs = new MutationObserver(schedule);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          refresh();
+          obs.observe(document.documentElement, { childList: true, subtree: true });
+        });
+      } else {
+        refresh();
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+      }
+    })();
+  </script>
+
+
+  <!-- ===================== Persistent icon rail (collapsed sidebar) ===================== -->
+  <style id="__azur-rail">
+    :root { --rail-w: 76px; --rail-w-open: 280px; }
+    /* reserve the left gutter for the always-visible rail (topbar + content shift right);
+       when the sidebar expands, the whole page shifts further right and reflows into the
+       narrower remaining width — it pushes content rather than overlaying it. */
+    body {
+      padding-left: var(--rail-w);
+      transition: padding-left .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    body.nav-open { padding-left: var(--rail-w-open); }
+    /* the expanded sidebar sits flush against (not over) the content, so no scrim / dim */
+    .sidebar-scrim { display: none; }
+    /* the rail owns the olive-tree mark; the topbar wordmark + close-X + group label are dropped */
+    .topbar .brand { display: none; }
+    .sidebar-head .sidebar-close { display: none; }
+    .group-label { display: none; }
+    /* full-height topbar divider */
+    .topbar .divider { height: auto; align-self: stretch; }
+
+    /* rail: always visible, icon-only, expands to full sidebar when .open */
+    .sidebar {
+      top: 0; bottom: 0; left: 0;
+      width: var(--rail-w);
+      transform: none;
+      transition: width .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 30;
+      box-shadow: none;
+      border-right: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .sidebar.open {
+      width: var(--rail-w-open);
+      z-index: 50;
+      border-right: 1px solid var(--rule-strong);
+    }
+
+    /* head: centered mark when collapsed, full brand when open */
+    .sidebar-head {
+      height: 64px;
+      padding: 0 16px 0 19.5px;
+      flex: none;
+      justify-content: flex-start;
+      border-bottom: 1px solid var(--rule);
+    }
+    .sidebar-head .brand { gap: 12px; flex-wrap: nowrap; }
+    .sidebar-head .name { white-space: nowrap; }
+    .sidebar:not(.open) .sidebar-head .name { display: none; }
+    .sidebar.open .sidebar-head {
+      justify-content: flex-start;
+      padding: 0 16px 0 19.5px;
+    }
+    /* keep the icon column on the rail center axis (x~38) in both states */
+    .sidebar.open .sidebar-nav,
+    .sidebar.open .sidebar-foot { padding-left: 15px; }
+    .sidebar.open .rail-toggle { margin-left: 14px; }
+
+    /* nav: labels hidden, icons centered when collapsed */
+    .nav-item { white-space: nowrap; line-height: 1.2; }
+    /* normalize vertical padding so row pitch is identical collapsed vs open across all pages */
+    .sidebar .nav-item { padding-top: 10px; padding-bottom: 10px; }
+    .sidebar:not(.open) .sidebar-nav { padding: 14px 0 14px 14px; align-items: flex-start; }
+    .sidebar:not(.open) .sidebar-foot { padding: 10px 0 14px 14px; align-items: flex-start; }
+    .sidebar:not(.open) .nav-item {
+      width: 48px;
+      justify-content: center;
+      padding: 10px 0;
+      gap: 0;
+      font-size: 0;            /* hides the bare text node next to the icon */
+    }
+    .sidebar:not(.open) .nav-item .badge { display: none; }
+    .sidebar:not(.open) .nav-item.active::before { display: none; }
+    .sidebar:not(.open) .nav-item.active { background: rgba(35, 87, 112, 0.10); }
+    .sidebar:not(.open) .nav-item.active .icon { color: var(--azur-deep); }
+
+    /* opening control lives in the rail's foot; the topbar menu button is gone */
+    .topbar #menuBtn { display: none; }
+    .rail-toggle {
+      display: flex; align-items: center; gap: 12px;
+      margin: 6px 12px 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--azur-deep);
+      font-family: inherit; font-size: 15px; font-weight: 500;
+      cursor: pointer; white-space: nowrap; text-align: left;
+    }
+    .rail-toggle:hover { background: var(--hover); }
+    .rail-toggle .icon {
+      width: 18px; height: 18px;
+      display: inline-flex; align-items: center;
+      color: var(--azur-mid);
+    }
+    .sidebar:not(.open) .rail-toggle {
+      width: 48px; margin: 6px 0 14px 14px; align-self: flex-start;
+      justify-content: center; padding: 11px 0; gap: 0; font-size: 0;
+    }
+    .rail-sep { height: 1px; background: var(--rule); margin: 0 0 6px; }
+  </style>
+  <script>
+  (function () {
+    var sb = document.getElementById('sidebar');
+    if (!sb || document.getElementById('railToggle')) return;
+    var btn = document.createElement('button');
+    btn.id = 'railToggle';
+    btn.className = 'rail-toggle';
+    btn.type = 'button';
+    function render() {
+      var open = sb.classList.contains('open');
+      btn.setAttribute('aria-label', open ? 'Collapse menu' : 'Open menu');
+      btn.innerHTML = '<span class="icon"><i data-lucide="' + (open ? 'chevrons-left' : 'chevrons-right') +
+        '" width="18" height="18" stroke-width="2.25"></i></span><span class="rt-label">Collapse menu</span>';
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+    }
+    function sync() {
+      document.body.classList.toggle('nav-open', sb.classList.contains('open'));
+      render();
+    }
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      sb.classList.toggle('open');
+    });
+    var sep = document.createElement('div');
+    sep.className = 'rail-sep';
+    sb.appendChild(sep);
+    sb.appendChild(btn);
+    new MutationObserver(sync).observe(sb, { attributes: true, attributeFilter: ['class'] });
+    sync();
+    window.addEventListener('load', render);
+  })();
+  </script>
 </body>
 </html>

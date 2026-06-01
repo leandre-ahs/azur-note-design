@@ -3,34 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <title>Azur Note — Clients</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system/colors_and_type.css">
 <style>
-  :root {
-    --azur-deep:  #235770;
-    --azur-mid:   #418EA0;
-    --brick:      #AC2819;
-    --sand:       #F3E9E1;
-    --hover:      rgba(35, 87, 112, 0.06);
-
-    --bg:         #FBFAF7;
-    --rule:       rgba(35, 87, 112, 0.12);
-    --rule-strong:rgba(35, 87, 112, 0.22);
-    --muted:      rgba(35, 87, 112, 0.58);
-
-    --font-display: "Outfit", system-ui, sans-serif;
-    --font-sans:    "Inter Tight", system-ui, sans-serif;
-    --font-mono:    "JetBrains Mono", ui-monospace, monospace;
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
     background: var(--bg);
     color: var(--azur-deep);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
@@ -114,10 +95,10 @@
     font-size: 16px;
   }
   .user-trigger .who { line-height: 1.2; text-align: right; }
-  .user-trigger .who .name { font-size: 13px; font-weight: 500; }
+  .user-trigger .who .name { font-size: 14px; font-weight: 500; }
   .user-trigger .who .role {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
@@ -142,12 +123,12 @@
     border-bottom: 1px solid var(--rule);
     margin-bottom: 4px;
   }
-  .profile-menu .p-head .name { font-weight: 500; font-size: 14px; color: var(--azur-deep); }
-  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .profile-menu .p-head .name { font-weight: 500; font-size: 15px; color: var(--azur-deep); }
+  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 2px; }
   .profile-menu .p-item {
     display: flex; align-items: center; gap: 10px;
     padding: 10px 12px; border-radius: 6px;
-    color: var(--azur-deep); font-size: 13px;
+    color: var(--azur-deep); font-size: 14px;
     cursor: pointer; background: transparent; border: 0;
     width: 100%; text-align: left; font-family: inherit;
   }
@@ -195,7 +176,7 @@
   .sidebar-close:hover { background: var(--hover); }
   .sidebar-nav { flex: 1; padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }
   .sidebar-nav .group-label {
-    font-family: var(--font-mono); font-size: 10px;
+    font-family: var(--font-mono); font-size: 11px;
     letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--muted);
     padding: 10px 14px 6px;
@@ -206,7 +187,7 @@
     border-radius: 8px;
     cursor: pointer;
     color: var(--azur-deep);
-    font-size: 14px; font-weight: 500;
+    font-size: 15px; font-weight: 500;
     background: transparent; border: 0;
     text-align: left; width: 100%;
     font-family: inherit; position: relative;
@@ -225,7 +206,7 @@
   .nav-item .badge {
     margin-left: auto;
     font-family: var(--font-mono);
-    font-size: 10px; letter-spacing: 0.06em;
+    font-size: 11px; letter-spacing: 0.06em;
     color: var(--muted);
     background: rgba(35,87,112,0.06);
     padding: 2px 7px; border-radius: 100px;
@@ -252,7 +233,7 @@
   }
   .welcome {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--azur-mid);
@@ -260,7 +241,7 @@
   }
   .page-head h1 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 600;
     font-size: 52px;
     line-height: 1;
     letter-spacing: -0.02em;
@@ -281,7 +262,7 @@
     background: transparent;
     color: var(--azur-deep);
     font-family: var(--font-sans);
-    font-size: 13px; font-weight: 500;
+    font-size: 14px; font-weight: 500;
     display: inline-flex; align-items: center; gap: 8px;
     cursor: pointer;
     transition: background .15s, color .15s, border-color .15s;
@@ -325,7 +306,7 @@
     border: 0;
     border-right: 1px solid var(--rule-strong);
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--azur-deep);
     cursor: pointer;
@@ -338,7 +319,7 @@
   .seg button.on { background: var(--azur-deep); color: var(--sand); }
   .seg button .count {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     opacity: 0.8;
   }
 
@@ -352,7 +333,7 @@
     background: var(--bg);
     color: var(--azur-deep);
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     display: inline-flex;
     align-items: center;
@@ -368,7 +349,7 @@
     background: rgba(35,87,112,0.12);
     color: var(--azur-deep);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     border-radius: 100px;
     line-height: 1;
   }
@@ -404,13 +385,13 @@
   .filters-panel .f-row:hover { background: var(--hover); }
   .filters-panel .f-row .k {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
   }
   .filters-panel .f-row .v {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--azur-deep);
   }
@@ -426,7 +407,7 @@
     background: transparent;
     border: 0;
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--azur-mid);
     cursor: pointer;
     font-weight: 500;
@@ -446,7 +427,7 @@
   }
   .search input {
     border: 0; outline: 0; background: transparent;
-    font-family: var(--font-sans); font-size: 13px;
+    font-family: var(--font-sans); font-size: 14px;
     color: var(--azur-deep); width: 100%;
   }
   .search input::placeholder { color: var(--muted); }
@@ -462,7 +443,7 @@
   .active-filters:empty { display: none; }
   .active-filters .lbl {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -477,13 +458,13 @@
     border-radius: 100px;
     background: var(--sand);
     color: var(--azur-deep);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     border: 1px solid rgba(35,87,112,0.1);
   }
   .chip .k {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
@@ -501,7 +482,7 @@
   .clear-all {
     background: transparent; border: 0;
     font-family: var(--font-sans);
-    font-size: 12px; font-weight: 500;
+    font-size: 13px; font-weight: 500;
     color: var(--azur-mid);
     cursor: pointer;
     margin-left: 4px;
@@ -519,12 +500,12 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
   }
   thead th {
     text-align: left;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
@@ -557,7 +538,7 @@
     cursor: pointer;
   }
   tbody tr:last-child { border-bottom: 0; }
-  tbody tr:nth-child(even) { background: rgba(243, 233, 225, 0.45); }
+  tbody tr:nth-child(even) { background: rgba(35, 87, 112, 0.045); }
   tbody tr:hover { background: var(--hover); }
 
   tbody td { padding: 16px 20px; vertical-align: middle; }
@@ -597,12 +578,12 @@
   .client-cell .name {
     font-weight: 500;
     color: var(--azur-deep);
-    font-size: 14px;
+    font-size: 15px;
   }
   .client-cell .id {
     display: block;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--muted);
     letter-spacing: 0.03em;
     margin-top: 2px;
@@ -618,7 +599,7 @@
     background: rgba(35,87,112,0.06);
     color: var(--azur-deep);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -640,7 +621,7 @@
   .count-cell .num.zero { color: rgba(35,87,112,0.3); }
   .count-cell .lbl {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
@@ -658,7 +639,7 @@
     display: grid;
     place-items: center;
     font-family: var(--font-display);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--sand);
     background: var(--azur-deep);
     flex: 0 0 auto;
@@ -672,12 +653,12 @@
   .contact .who .n {
     font-weight: 500;
     color: var(--azur-deep);
-    font-size: 13px;
+    font-size: 14px;
   }
   .contact .who .role {
     display: block;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.04em;
     color: var(--muted);
     margin-top: 1px;
@@ -689,7 +670,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--azur-deep);
   }
   .status .dot {
@@ -734,7 +715,7 @@
     color: var(--azur-deep);
     margin-bottom: 6px;
   }
-  .empty p { font-size: 13px; }
+  .empty p { font-size: 14px; }
 
   /* ---------- Footer ---------- */
   .foot {
@@ -746,7 +727,7 @@
   }
   .summary {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.08em;
     color: var(--muted);
   }
@@ -762,7 +743,7 @@
   .leaf-mark .t small {
     display: block;
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     font-style: normal;
@@ -788,7 +769,7 @@
   .submenu label {
     display: flex; align-items: center; gap: 10px;
     padding: 8px 10px; border-radius: 6px; cursor: pointer;
-    font-size: 13px; color: var(--azur-deep);
+    font-size: 14px; color: var(--azur-deep);
   }
   .submenu label:hover { background: var(--hover); }
   .submenu input[type="checkbox"] { accent-color: var(--azur-deep); }
@@ -799,7 +780,7 @@
     transform: translateX(-50%) translateY(20px);
     background: var(--azur-deep); color: var(--sand);
     padding: 10px 18px; border-radius: 100px;
-    font-size: 13px;
+    font-size: 14px;
     opacity: 0; pointer-events: none;
     transition: opacity .2s, transform .2s;
     z-index: 100;
@@ -823,7 +804,7 @@
     border-right: 1px solid var(--rule-strong);
     color: var(--azur-deep);
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     padding: 0 14px;
     display: inline-flex;
@@ -872,7 +853,7 @@
     align-items: center;
     gap: 6px;
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
@@ -901,7 +882,7 @@
   .client-card .card-head .id {
     display: block;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.04em;
     color: var(--muted);
     margin-top: 3px;
@@ -922,13 +903,13 @@
   }
   .client-card .card-meta .k {
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
   }
   .client-card .card-meta .v {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--azur-deep);
     overflow: hidden;
@@ -946,7 +927,7 @@
   }
   .client-card .card-activity .k {
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
@@ -960,7 +941,7 @@
   }
   .client-card .card-activity .act-proj {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--azur-deep);
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -969,12 +950,12 @@
   }
   .client-card .card-activity .act-when {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--muted);
     flex: 0 0 auto;
   }
   .client-card .card-activity .act-action {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--azur-deep);
     line-height: 1.35;
     display: flex;
@@ -989,7 +970,7 @@
     flex: 0 0 auto;
   }
   .client-card .card-activity .act-empty {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     font-style: italic;
   }
@@ -1021,7 +1002,7 @@
     background: var(--sand);
     border: 1px solid rgba(35,87,112,0.1);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--azur-deep);
@@ -1077,7 +1058,7 @@
   }
   .new-card .sub {
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
   }
@@ -1113,7 +1094,7 @@
     align-items: center;
     gap: 8px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--azur-deep);
@@ -1126,7 +1107,7 @@
   }
   .board-col-head .col-count {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--muted);
     background: rgba(35,87,112,0.06);
     padding: 2px 8px;
@@ -1143,7 +1124,7 @@
     text-align: center;
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 26px 8px;
@@ -1174,19 +1155,19 @@
   .b-card .b-head .client-logo {
     width: 32px; height: 32px;
     border-radius: 7px;
-    font-size: 12px;
+    font-size: 13px;
   }
   .b-card .b-head .meta { min-width: 0; }
   .b-card .b-head .name {
     font-weight: 500;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--azur-deep);
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .b-card .b-head .id {
     display: block;
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.04em;
     color: var(--muted);
     margin-top: 1px;
@@ -1209,7 +1190,7 @@
   .b-card .b-foot .b-contact .av {
     width: 22px; height: 22px;
     border-radius: 50%;
-    font-size: 10px;
+    font-size: 11px;
     flex: 0 0 auto;
     display: grid; place-items: center;
     color: var(--sand);
@@ -1222,14 +1203,14 @@
   .b-card .b-foot .b-contact .av.red  { background: var(--brick); }
   .b-card .b-foot .b-contact .av.olive{ background: #6b7a4a; }
   .b-card .b-foot .b-contact .n {
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: var(--azur-deep);
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     min-width: 0;
   }
   .b-card .b-foot .b-projects {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.06em;
     color: var(--azur-deep);
     background: var(--sand);
@@ -1268,14 +1249,14 @@
   }
   .dialog-scrim.open .dialog { transform: translateY(0); }
   .dialog-head {
-    background: var(--sand);
+    background: #F2F7F9;
     border-bottom: 1px solid var(--rule);
     padding: 14px 18px 14px 24px;
     display: flex; align-items: center; gap: 16px;
   }
   .dialog-head .code {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     letter-spacing: 0.08em;
     color: var(--azur-deep);
@@ -1286,7 +1267,7 @@
     background: var(--azur-deep); color: var(--sand);
     border: 0; border-radius: 6px;
     padding: 8px 16px;
-    font-family: inherit; font-size: 13px; font-weight: 500;
+    font-family: inherit; font-size: 14px; font-weight: 500;
     display: inline-flex; align-items: center; gap: 8px;
     cursor: pointer;
   }
@@ -1321,7 +1302,7 @@
 
   .field { display: flex; flex-direction: column; gap: 6px; }
   .field label {
-    font-size: 12px; font-weight: 500;
+    font-size: 13px; font-weight: 500;
     color: var(--azur-deep);
   }
   .field input[type="text"],
@@ -1336,7 +1317,7 @@
     background: var(--bg);
     color: var(--azur-deep);
     font-family: inherit;
-    font-size: 13px;
+    font-size: 14px;
     outline: none;
     transition: border-color .12s, box-shadow .12s;
     width: 100%;
@@ -1396,11 +1377,11 @@
     display: flex; flex-direction: column; gap: 4px;
   }
   .logo-upload .lu-actions .lu-title {
-    font-size: 13px; font-weight: 500;
+    font-size: 14px; font-weight: 500;
   }
   .logo-upload .lu-actions .lu-sub {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     color: var(--muted);
     text-transform: uppercase;
@@ -1411,11 +1392,14 @@
     border-radius: 6px;
     border: 1px solid var(--rule-strong);
     background: var(--bg); color: var(--azur-deep);
-    font-family: inherit; font-size: 12px; font-weight: 500;
+    font-family: inherit; font-size: 13px; font-weight: 500;
     cursor: pointer;
   }
   .logo-upload .lu-btn:hover { background: var(--hover); }
 </style>
+
+  <!-- Lucide icons (auto-converts [data-lucide] elements) -->
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -1427,52 +1411,54 @@
         <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
         <div class="name">Azur <em>Note</em></div>
       </div>
-      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu" style="border-style: none">
+        <i data-lucide="x" width="14" height="14" stroke-width="2.25"></i>
       </button>
     </div>
     <nav class="sidebar-nav">
       <span class="group-label">Workspace</span>
-      <a class="nav-item" href="index.html" data-nav="projects">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5h5l1.5 1.5h6.5v8.5a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1v-10z"/></svg></span>
+      <a class="nav-item" href="index.html" data-nav="dashboard">
+        <span class="icon"><i data-lucide="layout-grid" width="18" height="18" stroke-width="2.25"></i></span>
+        Dashboard
+      </a>
+      <a class="nav-item" href="projects.html" data-nav="projects">
+        <span class="icon"><i data-lucide="folder" width="18" height="18" stroke-width="2.25"></i></span>
         Projects
         <span class="badge">24</span>
       </a>
       <a class="nav-item active" href="Clients.html" data-nav="clients" aria-current="page">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.5V13a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1.5"/><circle cx="7" cy="6" r="2.4"/><path d="M11.5 14.5V13a2.8 2.8 0 0 0-2-2.7"/><circle cx="12.5" cy="6.5" r="2"/></svg></span>
+        <span class="icon"><i data-lucide="briefcase" width="18" height="18" stroke-width="2.25"></i></span>
         Clients
         <span class="badge">12</span>
       </a>
       <button class="nav-item" data-nav="members">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6.5" r="2.6"/><path d="M3.5 14.5a5.5 5.5 0 0 1 11 0"/></svg></span>
+        <span class="icon"><i data-lucide="users-round" width="18" height="18" stroke-width="2.25"></i></span>
         Members
         <span class="badge">8</span>
       </button>
     </nav>
     <div class="sidebar-foot">
       <button class="nav-item" data-nav="help">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><path d="M7 7.2a2 2 0 0 1 3.9.5c0 1.3-2 1.6-2 2.8"/><circle cx="9" cy="12.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
+        <span class="icon"><i data-lucide="help-circle" width="18" height="18" stroke-width="2.25"></i></span>
         Help &amp; feedback
       </button>
-      <button class="nav-item" data-nav="settings">
-        <span class="icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="2.2"/><path d="M14.5 9a5.6 5.6 0 0 0-.1-1l1.4-1-1.2-2-1.7.5a5.5 5.5 0 0 0-1.7-1l-.3-1.7H8.1L7.8 4.5a5.5 5.5 0 0 0-1.7 1l-1.7-.5-1.2 2 1.4 1a5.6 5.6 0 0 0 0 2l-1.4 1 1.2 2 1.7-.5a5.5 5.5 0 0 0 1.7 1l.3 1.7h1.8l.3-1.7a5.5 5.5 0 0 0 1.7-1l1.7.5 1.2-2-1.4-1c.07-.33.1-.66.1-1z"/></svg></span>
+      <a class="nav-item" href="Settings.html" data-nav="settings">
+        <span class="icon"><i data-lucide="settings" width="18" height="18" stroke-width="2.25"></i></span>
         Settings
-      </button>
+      </a>
     </div>
   </aside>
 
   <!-- ===================== Top nav ===================== -->
   <nav class="topbar" aria-label="Primary">
     <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-        <path d="M1 1h14M1 6h14M1 11h14"/>
-      </svg>
+      <i data-lucide="menu" width="16" height="12" stroke-width="1.5"></i>
     </button>
 
-    <div class="brand">
+    <a class="brand" href="index.html" aria-label="Go to dashboard" style="color: inherit; text-decoration: none; cursor: pointer; border: 0;">
       <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
       <div class="name">Azur <em>Note</em></div>
-    </div>
+    </a>
 
     <div class="spacer"></div>
     <div class="divider"></div>
@@ -1491,16 +1477,16 @@
           <div class="mail">alex.moreau@azurnote.co</div>
         </div>
         <button class="p-item" data-action="profile" role="menuitem">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="5" r="2"/><path d="M2.5 11.5a4.5 4.5 0 0 1 9 0"/></svg>
+          <i data-lucide="user-round" width="14" height="14" stroke-width="1.5"></i>
           Profile
         </button>
         <button class="p-item" data-action="settings" role="menuitem">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="1.6"/><path d="M11.5 7a4.4 4.4 0 0 0-.1-.8l1-.8-.8-1.4-1.3.4a4.4 4.4 0 0 0-1.4-.8L8.6 2.5H6.4l-.3 1.2a4.4 4.4 0 0 0-1.4.8l-1.3-.4-.8 1.4 1 .8A4.4 4.4 0 0 0 3.5 7"/></svg>
+          <i data-lucide="settings" width="14" height="14" stroke-width="1.5"></i>
           Settings
         </button>
         <div class="p-divider"></div>
         <button class="p-item danger" data-action="logout" role="menuitem">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3M9 4l3 3-3 3M5 7h7"/></svg>
+          <i data-lucide="log-out" width="14" height="14" stroke-width="1.5"></i>
           Log out
         </button>
       </div>
@@ -1518,19 +1504,11 @@
       <div class="actions">
         <div class="view-switch" role="tablist" aria-label="View">
           <button type="button" class="on" data-view="cards" aria-label="Card view" title="Cards">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
-              <rect x="1.5" y="1.5" width="5" height="5" rx="0.8"/>
-              <rect x="7.5" y="1.5" width="5" height="5" rx="0.8"/>
-              <rect x="1.5" y="7.5" width="5" height="5" rx="0.8"/>
-              <rect x="7.5" y="7.5" width="5" height="5" rx="0.8"/>
-            </svg>
+            <i data-lucide="layout-grid" width="14" height="14" stroke-width="1.5"></i>
             Cards
           </button>
           <button type="button" data-view="table" aria-label="Table view" title="Table">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
-              <rect x="1.5" y="2.5" width="11" height="9" rx="1"/>
-              <path d="M1.5 5.5h11M1.5 8.5h11M5 2.5v9"/>
-            </svg>
+            <i data-lucide="table" width="14" height="14" stroke-width="1.5"></i>
             Table
           </button>
         </div>
@@ -1549,23 +1527,21 @@
 
       <div class="filters-btn" id="filtersBtn">
         <button class="trigger" type="button" aria-haspopup="menu" aria-expanded="false">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-            <path d="M1 2h11l-4 5v4l-3 1V7L1 2Z"/>
-          </svg>
+          <i data-lucide="filter" width="13" height="13" stroke-width="1.5"></i>
           Filters
           <span class="badge">0</span>
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 4l2.5 2.5L7.5 4"/></svg>
+          <i data-lucide="chevron-down" width="10" height="10" stroke-width="1.5"></i>
         </button>
         <div class="filters-panel" role="menu">
           <div class="f-row" data-filter="contact">
             <span class="k">Contact</span>
             <span class="v" data-value-for="contact">Anyone</span>
-            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+            <i data-lucide="chevron-right" class="chev" width="10" height="10" stroke-width="1.5"></i>
           </div>
           <div class="f-row" data-filter="projects">
             <span class="k">Projects</span>
             <span class="v" data-value-for="projects">Any</span>
-            <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 2l3 3-3 3"/></svg>
+            <i data-lucide="chevron-right" class="chev" width="10" height="10" stroke-width="1.5"></i>
           </div>
           <div class="f-divider"></div>
           <div class="f-foot">
@@ -1576,10 +1552,7 @@
       </div>
 
       <div class="search">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="6" cy="6" r="4.5"/>
-          <path d="M9.5 9.5L13 13" stroke-linecap="round"/>
-        </svg>
+        <i data-lucide="search" width="14" height="14" stroke-width="1.5"></i>
         <input id="searchInput" placeholder="Search clients, contacts, codes…" />
       </div>
     </div>
@@ -1593,10 +1566,10 @@
       <table>
         <thead>
           <tr>
-            <th data-sort="client" style="width: 32%;"><span class="sort">Client<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
-            <th data-sort="projects" style="width: 16%;"><span class="sort">Active projects<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
-            <th data-sort="contact" style="width: 32%;"><span class="sort">Main contact<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
-            <th data-sort="status" style="width: 12%;"><span class="sort">Status<span class="sort-arrow"><svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v8M1 4l3-3 3 3M1 6l3 3 3-3"/></svg></span></span></th>
+            <th data-sort="client" style="width: 32%;"><span class="sort">Client<span class="sort-arrow"><i data-lucide="chevrons-up-down" width="8" height="10" stroke-width="1.5"></i></span></span></th>
+            <th data-sort="projects" style="width: 16%;"><span class="sort">Active projects<span class="sort-arrow"><i data-lucide="chevrons-up-down" width="8" height="10" stroke-width="1.5"></i></span></span></th>
+            <th data-sort="contact" style="width: 32%;"><span class="sort">Main contact<span class="sort-arrow"><i data-lucide="chevrons-up-down" width="8" height="10" stroke-width="1.5"></i></span></span></th>
+            <th data-sort="status" style="width: 12%;"><span class="sort">Status<span class="sort-arrow"><i data-lucide="chevrons-up-down" width="8" height="10" stroke-width="1.5"></i></span></span></th>
             <th style="width: 8%; text-align: right;">Action</th>
           </tr>
         </thead>
@@ -1606,7 +1579,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo deep">
-                  <svg viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="6.5" fill="currentColor"/><g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M19 5v4M19 29v4M5 19h4M29 19h4M9 9l2.8 2.8M26.2 26.2 29 29M29 9l-2.8 2.8M11.8 26.2 9 29"/></g></svg>
+                  <i data-lucide="sun" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Heliocare Pharma</div>
@@ -1622,7 +1595,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 2 -->
@@ -1630,7 +1603,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo mid">
-                  <svg viewBox="0 0 38 38" fill="none"><path d="M8 26 L19 10 L30 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 26 L19 17 L25 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                  <i data-lucide="triangle" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Northwind Bio</div>
@@ -1646,7 +1619,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 3 — no logo, initials only -->
@@ -1668,7 +1641,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 4 -->
@@ -1676,7 +1649,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo brick">
-                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 22 C 14 14, 18 11, 24 9 C 22 13, 19 17, 14 21 Z" fill="currentColor" stroke="none"/><path d="M14 21 L23 30"/></svg>
+                  <i data-lucide="leaf" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Kestrel Oncology</div>
@@ -1692,7 +1665,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 5 -->
@@ -1700,7 +1673,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo tone">
-                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="19" cy="19" r="3" fill="currentColor"/><path d="M19 6v6M19 26v6M6 19h6M26 19h6M10 10l4 4M24 24l4 4M28 10l-4 4M14 24l-4 4"/></svg>
+                  <i data-lucide="sun" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Polaris Therapeutics</div>
@@ -1716,7 +1689,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 6 -->
@@ -1724,7 +1697,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo olive">
-                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 26c5-2 8-6 9-13 1 7 4 11 9 13" fill="none"/><path d="M19 13v15"/></svg>
+                  <i data-lucide="trending-up" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Cygnus Therapeutics</div>
@@ -1740,7 +1713,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 7 -->
@@ -1762,7 +1735,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 8 -->
@@ -1770,7 +1743,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo mid">
-                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 27c4-2 8-6 10-12 2 6 6 10 10 12" fill="none"/></svg>
+                  <i data-lucide="mountain" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Vireo Clinical</div>
@@ -1786,7 +1759,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot active"></span>Active</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 9 — Prospect -->
@@ -1794,7 +1767,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo warm">
-                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="19" cy="19" r="5"/><path d="M19 7v3M19 28v3M7 19h3M28 19h3M11 11l2 2M25 25l2 2M27 11l-2 2M13 25l-2 2"/></svg>
+                  <i data-lucide="sun" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Lumen Biopharma</div>
@@ -1810,7 +1783,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot prospect"></span>Prospect</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 10 — Prospect -->
@@ -1832,7 +1805,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot prospect"></span>Prospect</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 11 — Prospect -->
@@ -1840,7 +1813,7 @@
             <td>
               <div class="client-cell">
                 <div class="client-logo deep">
-                  <svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 8 L24 17 L19 26 L14 17 Z" fill="currentColor" stroke="none" opacity="0.85"/><path d="M19 17 L26 21 L19 30 L12 21 Z" fill="currentColor" stroke="none" opacity="0.5"/></svg>
+                  <i data-lucide="gem" width="38" height="38" stroke-width="1.5"></i>
                 </div>
                 <div class="meta">
                   <div class="name">Trilliant Health</div>
@@ -1856,7 +1829,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot prospect"></span>Prospect</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
 
           <!-- 12 — Dormant -->
@@ -1878,7 +1851,7 @@
               </div>
             </td>
             <td><span class="status"><span class="dot dormant"></span>Dormant</span></td>
-            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7h8M8 4l3 3-3 3"/></svg></button><button class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></button></div></td>
+            <td><div class="row-act"><button class="icon-btn" aria-label="Open"><i data-lucide="arrow-right" width="14" height="14" stroke-width="1.5"></i></button><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal" width="14" height="14" stroke-width="1.5"></i></button></div></td>
           </tr>
         </tbody>
       </table>
@@ -1901,12 +1874,6 @@
     <!-- Footer -->
     <div class="foot">
       <div class="summary" id="summary">Showing 12 of 12 clients · 8 active · 18 active projects across portfolio</div>
-      <div class="leaf-mark" aria-hidden="true">
-        <div class="t">
-          Azur Note
-          <small>notes that grow</small>
-        </div>
-      </div>
     </div>
 
   </main>
@@ -1921,7 +1888,7 @@
           Create
         </button>
         <button class="close" id="createClose" type="button" aria-label="Close">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+          <i data-lucide="x" width="14" height="14" stroke-width="1.5"></i>
         </button>
       </div>
       <div class="dialog-body">
@@ -2035,8 +2002,8 @@
           const a = b.dataset.action;
           userWrap.classList.remove('open');
           if (a === 'logout') toast('Logged out');
-          else if (a === 'settings') toast('Opening Settings…');
-          else if (a === 'profile') toast('Opening Profile…');
+          else if (a === 'settings') window.location.href = 'Settings.html';
+          else if (a === 'profile') window.location.href = 'Profile.html';
         });
       });
       document.addEventListener('click', (e) => {
@@ -2153,7 +2120,7 @@
           c.innerHTML = `<span class="k">${FILTER_LABELS[key]}</span><span>${displayVal}</span>`;
           const x = document.createElement('button');
           x.setAttribute('aria-label', `Remove ${displayVal}`);
-          x.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l6 6M8 2l-6 6"/></svg>';
+          x.innerHTML = '<i data-lucide="x" width="10" height="10" stroke-width="1.5"></i>';
           x.addEventListener('click', () => {
             filters[key].delete(val);
             updateBadge(); updateSummaries(); renderChips(); apply();
@@ -2503,6 +2470,173 @@
       renderChips();
       apply();
     })();
+  </script>
+
+  <script>
+    (function () {
+      var pending = false;
+      var obs;
+      function refresh() {
+        if (!window.lucide) return;
+        if (!document.querySelector('[data-lucide]')) return;
+        if (obs) obs.disconnect();
+        try { window.lucide.createIcons(); } catch (e) { console.error(e); }
+        if (obs) obs.observe(document.documentElement, { childList: true, subtree: true });
+      }
+      function schedule() {
+        if (pending) return;
+        if (!document.querySelector('[data-lucide]')) return;
+        pending = true;
+        requestAnimationFrame(function () {
+          pending = false;
+          refresh();
+        });
+      }
+      obs = new MutationObserver(schedule);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          refresh();
+          obs.observe(document.documentElement, { childList: true, subtree: true });
+        });
+      } else {
+        refresh();
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+      }
+    })();
+  </script>
+
+
+  <!-- ===================== Persistent icon rail (collapsed sidebar) ===================== -->
+  <style id="__azur-rail">
+    :root { --rail-w: 76px; --rail-w-open: 280px; }
+    /* reserve the left gutter for the always-visible rail (topbar + content shift right);
+       when the sidebar expands, the whole page shifts further right and reflows into the
+       narrower remaining width — it pushes content rather than overlaying it. */
+    body {
+      padding-left: var(--rail-w);
+      transition: padding-left .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    body.nav-open { padding-left: var(--rail-w-open); }
+    /* the expanded sidebar sits flush against (not over) the content, so no scrim / dim */
+    .sidebar-scrim { display: none; }
+    /* the rail owns the olive-tree mark; the topbar wordmark + close-X + group label are dropped */
+    .topbar .brand { display: none; }
+    .sidebar-head .sidebar-close { display: none; }
+    .group-label { display: none; }
+    /* full-height topbar divider */
+    .topbar .divider { height: auto; align-self: stretch; }
+
+    /* rail: always visible, icon-only, expands to full sidebar when .open */
+    .sidebar {
+      top: 0; bottom: 0; left: 0;
+      width: var(--rail-w);
+      transform: none;
+      transition: width .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 30;
+      box-shadow: none;
+      border-right: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .sidebar.open {
+      width: var(--rail-w-open);
+      z-index: 50;
+      border-right: 1px solid var(--rule-strong);
+    }
+
+    /* head: centered mark when collapsed, full brand when open */
+    .sidebar-head {
+      height: 64px;
+      padding: 0 16px 0 19.5px;
+      flex: none;
+      justify-content: flex-start;
+      border-bottom: 1px solid var(--rule);
+    }
+    .sidebar-head .brand { gap: 12px; flex-wrap: nowrap; }
+    .sidebar-head .name { white-space: nowrap; }
+    .sidebar:not(.open) .sidebar-head .name { display: none; }
+    .sidebar.open .sidebar-head {
+      justify-content: flex-start;
+      padding: 0 16px 0 19.5px;
+    }
+    /* keep the icon column on the rail center axis (x~38) in both states */
+    .sidebar.open .sidebar-nav,
+    .sidebar.open .sidebar-foot { padding-left: 15px; }
+    .sidebar.open .rail-toggle { margin-left: 14px; }
+
+    /* nav: labels hidden, icons centered when collapsed */
+    .nav-item { white-space: nowrap; line-height: 1.2; }
+    /* normalize vertical padding so row pitch is identical collapsed vs open across all pages */
+    .sidebar .nav-item { padding-top: 10px; padding-bottom: 10px; }
+    .sidebar:not(.open) .sidebar-nav { padding: 14px 0 14px 14px; align-items: flex-start; }
+    .sidebar:not(.open) .sidebar-foot { padding: 10px 0 14px 14px; align-items: flex-start; }
+    .sidebar:not(.open) .nav-item {
+      width: 48px;
+      justify-content: center;
+      padding: 10px 0;
+      gap: 0;
+      font-size: 0;            /* hides the bare text node next to the icon */
+    }
+    .sidebar:not(.open) .nav-item .badge { display: none; }
+    .sidebar:not(.open) .nav-item.active::before { display: none; }
+    .sidebar:not(.open) .nav-item.active { background: rgba(35, 87, 112, 0.10); }
+    .sidebar:not(.open) .nav-item.active .icon { color: var(--azur-deep); }
+
+    /* opening control lives in the rail's foot; the topbar menu button is gone */
+    .topbar #menuBtn { display: none; }
+    .rail-toggle {
+      display: flex; align-items: center; gap: 12px;
+      margin: 6px 12px 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--azur-deep);
+      font-family: inherit; font-size: 15px; font-weight: 500;
+      cursor: pointer; white-space: nowrap; text-align: left;
+    }
+    .rail-toggle:hover { background: var(--hover); }
+    .rail-toggle .icon {
+      width: 18px; height: 18px;
+      display: inline-flex; align-items: center;
+      color: var(--azur-mid);
+    }
+    .sidebar:not(.open) .rail-toggle {
+      width: 48px; margin: 6px 0 14px 14px; align-self: flex-start;
+      justify-content: center; padding: 11px 0; gap: 0; font-size: 0;
+    }
+    .rail-sep { height: 1px; background: var(--rule); margin: 0 0 6px; }
+  </style>
+  <script>
+  (function () {
+    var sb = document.getElementById('sidebar');
+    if (!sb || document.getElementById('railToggle')) return;
+    var btn = document.createElement('button');
+    btn.id = 'railToggle';
+    btn.className = 'rail-toggle';
+    btn.type = 'button';
+    function render() {
+      var open = sb.classList.contains('open');
+      btn.setAttribute('aria-label', open ? 'Collapse menu' : 'Open menu');
+      btn.innerHTML = '<span class="icon"><i data-lucide="' + (open ? 'chevrons-left' : 'chevrons-right') +
+        '" width="18" height="18" stroke-width="2.25"></i></span><span class="rt-label">Collapse menu</span>';
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+    }
+    function sync() {
+      document.body.classList.toggle('nav-open', sb.classList.contains('open'));
+      render();
+    }
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      sb.classList.toggle('open');
+    });
+    var sep = document.createElement('div');
+    sep.className = 'rail-sep';
+    sb.appendChild(sep);
+    sb.appendChild(btn);
+    new MutationObserver(sync).observe(sb, { attributes: true, attributeFilter: ['class'] });
+    sync();
+    window.addEventListener('load', render);
+  })();
   </script>
 </body>
 </html>

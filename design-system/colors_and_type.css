@@ -1,0 +1,260 @@
+/* ============================================================
+   Azur Note — Colors & Type
+   Authoritative CSS variables for the Azur Note product (and
+   the broader Azur Health Science brand it lives inside).
+   Pair with: assets/logo.svg, fonts loaded from Google Fonts.
+
+   The shipped product uses Google-hosted fonts; no local TTFs
+   are required. If you mirror locally, drop them in fonts/.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+:root {
+  /* ----------------------------------------------------------
+     CORE PALETTE — the four brand tints from the Brandbook.
+     The brandbook lists the four CMYK/RGB values; the product
+     uses very slightly warmed hex values (kept here verbatim
+     from Azur Note's tokens.css so what you build matches
+     the running product exactly).
+
+     NOTE: a fifth swatch — mint #E5F3E7 — appears in the
+     brandbook but is EXCLUDED from Azur Note. Do not use it.
+     ---------------------------------------------------------- */
+  --azur-deep: #235770;   /* Bleu 3  — ink, primary, deep blue       */
+  --azur-mid:  #418EA0;   /* Bleu 2  — accent, link, mid teal        */
+  --azur-pale: #8FD0DE;   /* Bleu 1  — pale, illustrative, on-deep   */
+  --brick:     #AC2819;   /* Ocre rouge — alert, highlight only      */
+  --sand:      #F3E9E1;   /* surface / paper / on-deep text          */
+
+  /* ----------------------------------------------------------
+     SURFACES — derived neutrals tuned for the warm sand paper.
+     ---------------------------------------------------------- */
+  --bg:           #FBFAF7;  /* App background — warm off-white       */
+  --paper:        var(--sand);
+
+  /* ----------------------------------------------------------
+     RULES, HOVERS, MUTED INK — all derived from --azur-deep
+     so opacity blends keep the same warm undertone everywhere.
+     ---------------------------------------------------------- */
+  --hover:        rgba(35, 87, 112, 0.06);
+  --rule:         rgba(35, 87, 112, 0.12);
+  --rule-strong:  rgba(35, 87, 112, 0.22);
+  --muted:        rgba(35, 87, 112, 0.58);
+  --muted-soft:   rgba(35, 87, 112, 0.42);
+  --muted-faint:  rgba(35, 87, 112, 0.30);
+
+  /* ----------------------------------------------------------
+     SEMANTIC ALIASES — use these in product code; they remap
+     to the brand palette without leaking palette names into
+     component CSS.
+     ---------------------------------------------------------- */
+  --color-ink:      var(--azur-deep);
+  --color-accent:   var(--azur-mid);
+  --color-surface:  var(--bg);
+  --color-paper:    var(--sand);
+  --color-alert:    var(--brick);
+  --color-on-ink:   var(--sand);          /* text on deep blue */
+
+  /* ----------------------------------------------------------
+     STATUS / STEP COLOR FAMILIES — used by project status
+     pills, timeline bars, and the matching client-dot borders.
+     Background is the pill fill; foreground is the label color.
+     These are intentionally muted pastels — never sat to 100%.
+     ---------------------------------------------------------- */
+  --step-authoring-bg: #D7EAFF; --step-authoring-fg: #1E3A5F;
+  --step-qc-bg:        #EFE4FE; --step-qc-fg:        #4A2A7A;
+  --step-review-bg:    #FFEACD; --step-review-fg:    #7A4A10;
+  --step-approval-bg:  #CDEED8; --step-approval-fg:  #1E5A35;
+  --step-submitted-bg: var(--azur-deep);
+  --step-submitted-fg: var(--sand);
+  --step-archived-bg:  rgba(225, 230, 232, 0.7);
+  --step-archived-fg:  #3A4A52;
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY — three families, three roles. Do not mix.
+       READ    : Inter Tight     — everything you read
+       DISPLAY : Outfit          — hierarchy, brand voice
+       LABEL   : IBM Plex Sans   — metadata, codes, eyebrows
+     ---------------------------------------------------------- */
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-sans:    "Inter Tight", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Sans", system-ui, sans-serif;  /* used as label/code, not true monospace */
+
+  /* Base reading size + line height for body copy */
+  --font-size-base: 15px;
+  --line-height-base: 1.5;
+
+  /* ----------------------------------------------------------
+     TYPE SCALE — sizes used in the product. Display family
+     runs 16–52px (tight tracking); Read family is 13–15px;
+     Label family is 10–13px (wide tracking + uppercase).
+     ---------------------------------------------------------- */
+  --type-display-xl: 52px;   /* H1 / page title          */
+  --type-display-lg: 26px;   /* Dialog / section title   */
+  --type-display-md: 22px;   /* Card title / H2          */
+  --type-display-sm: 18px;   /* Inline display           */
+  --type-display-xs: 16px;   /* Brand wordmark inline    */
+
+  --type-read-lg:    15px;   /* Body, default            */
+  --type-read-md:    14px;   /* Compact body, button     */
+  --type-read-sm:    13px;   /* Secondary body           */
+
+  --type-label-md:   12px;   /* Eyebrow                  */
+  --type-label-sm:   11px;   /* Pill, table header       */
+  --type-label-xs:   10.5px; /* IDs, codes               */
+
+  /* Tracking — Outfit is tight, IBM Plex labels are wide. */
+  --tracking-display:    -0.01em;
+  --tracking-display-xl: -0.02em;
+  --tracking-label:       0.10em;
+  --tracking-label-wide:  0.16em;
+
+  /* ----------------------------------------------------------
+     RADII — capsule pills, soft cards, square inputs.
+     ---------------------------------------------------------- */
+  --radius-xs:  4px;
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  10px;
+  --radius-xl:  12px;
+  --radius-pill: 100px;
+
+  /* ----------------------------------------------------------
+     SPACING — 4px base.
+     ---------------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+
+  /* ----------------------------------------------------------
+     ELEVATION — subtle, warm-tinted. We almost never use a
+     pure-black shadow; everything is mixed with --azur-deep.
+     ---------------------------------------------------------- */
+  --shadow-sm: 0 2px 6px rgba(35, 87, 112, 0.06);
+  --shadow-md: 0 6px 24px rgba(35, 87, 112, 0.10);
+  --shadow-lg: 0 12px 32px rgba(35, 87, 112, 0.14);
+  --shadow-xl: 0 24px 64px rgba(35, 87, 112, 0.24);
+
+  /* ----------------------------------------------------------
+     MOTION — calm, never bouncy. Standard ease is a slow-out.
+     ---------------------------------------------------------- */
+  --ease-out:    cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:    .12s;
+  --dur-base:    .2s;
+  --dur-slow:    .26s;
+}
+
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES — drop these on a page and h1/h2/
+   .eyebrow/.code/etc come out branded by default.
+   ============================================================ */
+
+html, body {
+  background: var(--bg);
+  color: var(--azur-deep);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--type-display-xl);
+  line-height: 1;
+  letter-spacing: var(--tracking-display-xl);
+  color: var(--azur-deep);
+}
+/* Soft accent — the trailing italic-but-not-italic em in
+   "Projects." or "Azur Note." */
+h1 em, .h1 em,
+h2 em, .h2 em,
+h3 em, .h3 em {
+  font-style: normal;
+  font-family: var(--font-display);
+  font-weight: 300;
+  color: var(--azur-mid);
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-display-md);
+  line-height: 1.15;
+  letter-spacing: var(--tracking-display);
+  color: var(--azur-deep);
+}
+
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-display-sm);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-display);
+  color: var(--azur-deep);
+}
+
+p, .p {
+  font-family: var(--font-sans);
+  font-size: var(--type-read-lg);
+  line-height: 1.55;
+  color: var(--azur-deep);
+}
+
+a, .link {
+  color: var(--azur-mid);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast);
+}
+a:hover, .link:hover { border-bottom-color: var(--azur-mid); }
+
+/* The wide-tracked uppercase eyebrow / metadata caps that
+   appear above page titles and on table headers. */
+.eyebrow, .label-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-label-md);
+  letter-spacing: var(--tracking-label-wide);
+  text-transform: uppercase;
+  color: var(--azur-mid);
+}
+.table-header, .label-cap {
+  font-family: var(--font-mono);
+  font-size: var(--type-label-sm);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* IDs, project codes, dates — IBM Plex Sans (not true mono
+   but used in the product wherever code-like data appears). */
+.code, code {
+  font-family: var(--font-mono);
+  font-size: var(--type-label-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-soft);
+}
+.date, .num {
+  font-family: var(--font-mono);
+  font-size: var(--type-read-sm);
+  letter-spacing: 0.02em;
+  color: var(--azur-deep);
+}
+
+::selection {
+  background: rgba(65, 142, 160, 0.25);
+  color: var(--azur-deep);
+}

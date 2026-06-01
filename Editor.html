@@ -1,0 +1,1758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azur Note — Veltrazine Phase III CSR · Editor</title>
+<link rel="stylesheet" href="design-system/colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    height: 100vh;
+    overflow: hidden;
+  }
+  body { display: flex; flex-direction: column; }
+
+  /* =================== Top nav (verbatim from product) =================== */
+  .topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    flex: 0 0 auto;
+    z-index: 30;
+  }
+  .topbar .menu-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: transparent;
+    display: grid; place-items: center;
+    cursor: pointer;
+    color: var(--azur-deep);
+    text-decoration: none;
+    transition: background .12s, border-color .12s;
+  }
+  .topbar .menu-btn:hover { background: var(--hover); border-color: var(--azur-mid); border-bottom-color: var(--azur-mid); }
+  .topbar .menu-btn svg { display: block; }
+  .brand { display: flex; align-items: center; gap: 14px; margin-left: 18px; }
+  .brand .mark { width: 37px; height: 37px; display: grid; place-items: center; line-height: 1; }
+  .brand .mark .logo { display: block; width: 37px; height: 37px; background: url('assets/logo.svg') center / contain no-repeat; }
+  .brand .name { font-family: var(--font-display); font-size: 20px; letter-spacing: -0.01em; }
+  .brand .name em { font-style: normal; font-family: "Outfit", system-ui, sans-serif; font-weight: 300; color: var(--azur-mid); }
+
+  /* Doc identity centered in topbar */
+  .topbar-doc {
+    margin-left: 26px;
+    padding-left: 26px;
+    border-left: 1px solid var(--rule-strong);
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+    min-width: 0;
+  }
+  .topbar-doc .dt {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--azur-deep);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 360px;
+  }
+  .topbar-doc .ds {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar-doc .save-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #2a8a4a;
+  }
+
+  .topbar .spacer { flex: 1; }
+  .topbar .divider { width: 1px; height: auto; align-self: stretch; background: var(--rule-strong); margin: 0 20px; }
+
+  .user-wrap { position: relative; }
+  .user-trigger {
+    display: flex; align-items: center; gap: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 4px 6px 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-family: inherit;
+  }
+  .user-trigger:hover { background: var(--hover); border-color: var(--rule); }
+  .user-trigger .who { line-height: 1.2; text-align: right; }
+  .user-trigger .who .name { font-size: 14px; font-weight: 500; }
+  .user-trigger .who .role {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .user-trigger .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--sand);
+    color: var(--azur-deep);
+    border: 1px solid var(--rule-strong);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+  .profile-menu {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    min-width: 220px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(35, 87, 112, 0.14);
+    padding: 6px;
+    z-index: 60;
+    display: none;
+  }
+  .user-wrap.open .profile-menu { display: block; }
+  .profile-menu .p-head { padding: 12px 12px 10px; border-bottom: 1px solid var(--rule); margin-bottom: 4px; }
+  .profile-menu .p-head .name { font-weight: 500; font-size: 15px; color: var(--azur-deep); }
+  .profile-menu .p-head .mail { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .profile-menu .p-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 6px;
+    color: var(--azur-deep); font-size: 14px;
+    cursor: pointer; background: transparent; border: 0;
+    width: 100%; text-align: left; font-family: inherit;
+  }
+  .profile-menu .p-item:hover { background: var(--hover); }
+  .profile-menu .p-item.danger { color: var(--brick); }
+  .profile-menu .p-item.danger:hover { background: rgba(172, 40, 25, 0.08); }
+  .profile-menu .p-divider { height: 1px; background: var(--rule); margin: 4px 6px; }
+
+  /* =================== Sidebar (verbatim) =================== */
+  .sidebar-scrim {
+    position: fixed; inset: 0;
+    background: rgba(35, 87, 112, 0.28);
+    opacity: 0; pointer-events: none;
+    transition: opacity .24s ease;
+    z-index: 80;
+  }
+  .sidebar-scrim.open { opacity: 1; pointer-events: auto; }
+  .sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    width: 300px;
+    background: var(--bg);
+    border-right: 1px solid var(--rule-strong);
+    transform: translateX(-100%);
+    transition: transform .26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 90;
+    display: flex; flex-direction: column;
+    box-shadow: 12px 0 32px rgba(35, 87, 112, 0.08);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px 20px; border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-head .brand { margin: 0; }
+  .sidebar-close {
+    width: 32px; height: 32px; border-radius: 6px;
+    border: 1px solid var(--rule-strong); background: transparent;
+    color: var(--azur-deep); display: grid; place-items: center; cursor: pointer;
+  }
+  .sidebar-close:hover { background: var(--hover); }
+  .sidebar-nav { flex: 1; padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .sidebar-nav .group-label {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); padding: 10px 14px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; border-radius: 8px; cursor: pointer;
+    color: var(--azur-deep); font-size: 15px; font-weight: 500;
+    background: transparent; border: 0; text-align: left; width: 100%;
+    font-family: inherit; position: relative; text-decoration: none;
+  }
+  .nav-item:hover { background: var(--hover); }
+  .nav-item.active { background: var(--hover); }
+  .nav-item.active::before {
+    content: ""; position: absolute; left: 0; top: 20%; bottom: 20%;
+    width: 3px; background: var(--azur-deep); border-radius: 0 3px 3px 0;
+  }
+  .nav-item .icon { width: 18px; height: 18px; display: grid; place-items: center; color: var(--azur-mid); }
+  .nav-item .badge {
+    margin-left: auto; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.06em; color: var(--muted);
+    background: rgba(35,87,112,0.06); padding: 2px 7px; border-radius: 100px;
+  }
+  .sidebar-foot { border-top: 1px solid var(--rule); padding: 10px 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+
+  /* =================== Sub-header (doc context + mode + action) =================== */
+  .subbar {
+    flex: 0 0 auto;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    z-index: 22;
+  }
+  .crumbs {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .crumbs a { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  .crumbs a:hover { color: var(--azur-mid); border-bottom-color: var(--azur-mid); }
+  .crumbs .sep { opacity: 0.5; }
+  .crumbs .here { color: var(--azur-deep); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 22px; padding: 0 9px; border-radius: 100px;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.07em; text-transform: uppercase; width: fit-content;
+  }
+  .pill.qc       { background: #EFE4FE; color: #4A2A7A; }
+  .pill.review   { background: #FFEACD; color: #7A4A10; }
+
+  /* document pipeline stepper */
+  .docstep { display: flex; align-items: center; gap: 0; white-space: nowrap; }
+  .docstep .ds-circle {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: grid; place-items: center; flex: 0 0 auto;
+    background: rgba(35, 87, 112, 0.06); color: var(--muted-soft);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  }
+  .docstep .ds-circle svg { display: block; }
+  .docstep .ds-connect { width: 12px; height: 2px; background: var(--rule-strong); flex: 0 0 auto; }
+  .docstep .ds-connect.done { background: var(--muted); }
+  .docstep .ds-circle.done { background: var(--muted); color: #fff; }
+  .docstep .ds-active {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 24px; padding: 0 11px 0 9px; border-radius: 100px;
+    font-family: var(--font-display); font-size: 14px; letter-spacing: -0.005em;
+    flex: 0 0 auto;
+  }
+  .docstep .ds-active .ds-ic { display: grid; place-items: center; }
+  .docstep .ds-active .ds-ic svg { display: block; }
+  .docstep .ds-active .ds-draft { font-weight: 500; }
+  .docstep .ds-active .ds-div { width: 1px; height: 13px; background: currentColor; opacity: 0.4; }
+  .docstep .ds-active .ds-stage { font-weight: 400; }
+  .docstep .ds-active.st-authoring { background: var(--step-authoring-bg); color: var(--step-authoring-fg); }
+  .docstep .ds-active.st-qc        { background: var(--step-qc-bg);        color: var(--step-qc-fg); }
+  .docstep .ds-active.st-review    { background: var(--step-review-bg);    color: var(--step-review-fg); }
+  .docstep .ds-active.st-approved  { background: var(--step-approval-bg);  color: var(--step-approval-fg); }
+
+  .subbar .spacer { flex: 1; }
+
+  /* collaborator stack */
+  .collab { display: flex; align-items: center; }
+  .collab .av {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-size: 12px;
+    color: var(--sand); border: 2px solid var(--bg);
+    margin-left: -8px;
+  }
+  .collab .av:first-child { margin-left: 0; }
+  .collab .av.deep { background: var(--azur-deep); }
+  .collab .av.mid  { background: var(--azur-mid); }
+  .collab .av.warm { background: #a67a52; }
+  .collab .av.red  { background: var(--brick); }
+  .collab .more {
+    margin-left: 10px; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase;
+  }
+
+  /* mode toggle */
+  .mode-switch {
+    display: inline-flex; border: 1px solid var(--rule-strong);
+    border-radius: 8px; overflow: hidden; height: 36px;
+  }
+  .mode-switch button {
+    height: 100%; padding: 0 14px; border: 0;
+    border-right: 1px solid var(--rule-strong);
+    background: transparent; color: var(--azur-deep);
+    font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .mode-switch button:last-child { border-right: 0; }
+  .mode-switch button:hover { background: var(--hover); }
+  .mode-switch button.on { background: var(--azur-deep); color: var(--sand); }
+  .mode-switch svg { display: block; }
+
+  .ed-action {
+    height: 36px; padding: 0 16px; border-radius: 8px;
+    background: var(--azur-deep); color: var(--sand);
+    border: 1px solid var(--azur-deep);
+    font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
+    transition: background .15s;
+  }
+  .ed-action:hover { background: #1b4658; }
+  .ed-action svg { display: block; }
+
+  .ghost-btn {
+    height: 36px; width: 36px; border-radius: 8px;
+    border: 1px solid var(--rule-strong); background: transparent;
+    color: var(--azur-deep); display: grid; place-items: center; cursor: pointer;
+  }
+  .ghost-btn:hover { background: var(--hover); }
+  .ghost-btn svg { display: block; }
+
+  /* =================== Formatting toolbar =================== */
+  .ftoolbar {
+    flex: 0 0 auto;
+    height: 52px;
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 18px;
+    border-bottom: 1px solid var(--rule);
+    background: rgba(35, 87, 112, 0.025);
+    z-index: 21;
+  }
+  .ftoolbar .tdiv { width: 1px; height: 24px; background: var(--rule-strong); margin: 0 6px; flex: 0 0 auto; }
+  .ftoolbar .grow { flex: 1; }
+
+  /* generic icon tool button */
+  .tbtn {
+    height: 34px; min-width: 34px; padding: 0 8px;
+    border: 1px solid transparent; border-radius: 7px;
+    background: transparent; color: var(--azur-deep);
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+    transition: background .12s, border-color .12s;
+  }
+  .tbtn:hover { background: var(--hover); }
+  .tbtn.on { background: rgba(65,142,160,0.16); color: var(--azur-mid); }
+  .tbtn svg { display: block; }
+  .tbtn .chev { opacity: 0.55; }
+
+  /* text-type dropdown trigger has a fixed width label */
+  .tbtn.ttype { min-width: 132px; justify-content: space-between; padding: 0 10px; border-color: var(--rule-strong); }
+  .tbtn.ttype .lbl { font-weight: 500; }
+
+  /* align segmented group */
+  .talign { display: inline-flex; }
+  .talign .tbtn { border-radius: 0; }
+  .talign .tbtn:first-child { border-radius: 7px 0 0 7px; }
+  .talign .tbtn:last-child { border-radius: 0 7px 7px 0; }
+
+  /* insert button */
+  .tbtn.insert {
+    border-color: var(--rule-strong);
+    padding: 0 12px 0 10px;
+  }
+
+  /* toolbar search */
+  .tsearch {
+    display: flex; align-items: center; gap: 8px;
+    height: 34px; padding: 0 12px; width: 232px;
+    border: 1px solid var(--rule-strong); border-radius: 8px;
+    background: var(--bg);
+  }
+  .tsearch svg { color: var(--muted); flex: 0 0 auto; }
+  .tsearch input {
+    border: 0; outline: 0; background: transparent;
+    font-family: var(--font-sans); font-size: 14px; color: var(--azur-deep); width: 100%;
+  }
+  .tsearch input::placeholder { color: var(--muted); }
+  .tsearch .count {
+    font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.04em; white-space: nowrap;
+  }
+
+  /* dropdown menu (shared) */
+  .menu {
+    position: absolute; z-index: 70;
+    background: var(--bg); border: 1px solid var(--rule-strong);
+    border-radius: 10px; box-shadow: 0 12px 32px rgba(35,87,112,0.16);
+    padding: 6px; min-width: 200px; display: none;
+  }
+  .menu.open { display: block; }
+  .menu .mi {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: 6px; cursor: pointer;
+    color: var(--azur-deep); font-size: 14px;
+    background: transparent; border: 0; width: 100%; text-align: left; font-family: inherit;
+  }
+  .menu .mi:hover { background: var(--hover); }
+  .menu .mi .k {
+    margin-left: auto; font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.06em; color: var(--muted-faint);
+  }
+  .menu .mi svg { display: block; color: var(--azur-mid); }
+  .menu .mdiv { height: 1px; background: var(--rule); margin: 4px 6px; }
+  .menu .mlabel {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); padding: 8px 12px 4px;
+  }
+  /* text-type menu previews */
+  .menu .mi.tt-h1 .lbl { font-family: var(--font-display); font-size: 21px; font-weight: 600; }
+  .menu .mi.tt-h2 .lbl { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+  .menu .mi.tt-h3 .lbl { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+  .menu .mi.tt-p .lbl  { font-size: 14px; }
+
+  /* =================== Insert menu (multi-section grid) =================== */
+  .menu.insert-menu {
+    width: 528px;
+    padding: 14px 16px 16px;
+    max-height: calc(100vh - 188px);
+    overflow-y: auto;
+  }
+  .insert-menu .ins-group { margin-top: 16px; }
+  .insert-menu .ins-group:first-child { margin-top: 2px; }
+  .insert-menu .ins-label {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 0 6px; margin-bottom: 7px;
+  }
+  .insert-menu .ins-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 8px;
+  }
+  .insert-menu .ins-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 8px 9px; border-radius: 7px; cursor: pointer;
+    background: transparent; border: 0; width: 100%; text-align: left;
+    font-family: var(--font-sans); font-size: 13.5px; font-weight: 500;
+    color: var(--azur-deep);
+    transition: background .12s;
+    min-width: 0;
+  }
+  .insert-menu .ins-item:hover { background: var(--hover); }
+  .insert-menu .ins-item.active { background: rgba(65,142,160,0.14); }
+  .insert-menu .ins-item .ic {
+    width: 18px; height: 18px; flex: 0 0 18px;
+    display: grid; place-items: center; color: var(--azur-mid);
+  }
+  .insert-menu .ins-item.active .ic { color: var(--azur-deep); }
+  .insert-menu .ins-item .ic svg { display: block; }
+  .insert-menu .ins-item .lbl {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* inserted page-break rule inside the document */
+  .doc-page hr.page-break {
+    border: 0; border-top: 1px dashed var(--rule-strong);
+    margin: 26px 0; height: 0; position: relative;
+  }
+  .doc-page hr.page-break::after {
+    content: "Page break"; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    background: #fff; padding: 0 10px; color: var(--muted-faint);
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+
+  /* link popover */
+  .linkpop {
+    position: absolute; z-index: 70; display: none;
+    background: var(--bg); border: 1px solid var(--rule-strong);
+    border-radius: 10px; box-shadow: 0 12px 32px rgba(35,87,112,0.16);
+    padding: 12px; width: 300px;
+  }
+  .linkpop.open { display: block; }
+  .linkpop label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .linkpop input {
+    width: 100%; height: 36px; margin-top: 6px; padding: 0 10px;
+    border: 1px solid var(--rule-strong); border-radius: 6px; background: var(--bg);
+    font-family: var(--font-sans); font-size: 14px; color: var(--azur-deep); outline: none;
+  }
+  .linkpop input:focus { border-color: var(--azur-mid); box-shadow: 0 0 0 3px rgba(65,142,160,0.15); }
+  .linkpop .row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+  .linkpop .row button {
+    height: 32px; padding: 0 14px; border-radius: 6px; font-family: inherit;
+    font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--rule-strong);
+    background: transparent; color: var(--azur-deep);
+  }
+  .linkpop .row button.primary { background: var(--azur-deep); color: var(--sand); border-color: var(--azur-deep); }
+
+  /* =================== Editor body =================== */
+  .ed-body { flex: 1; display: flex; min-height: 0; }
+
+  /* --- Left: document outline --- */
+  .toc {
+    flex: 0 0 256px;
+    border-right: 1px solid var(--rule);
+    background: var(--bg);
+    overflow-y: auto;
+    padding: 22px 16px 40px;
+  }
+  .toc .toc-head {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted); padding: 0 10px 12px;
+  }
+  .toc a {
+    display: block; padding: 7px 10px; border-radius: 6px;
+    color: var(--muted); font-size: 13.5px; text-decoration: none;
+    line-height: 1.35; border-left: 2px solid transparent;
+    transition: background .12s, color .12s;
+  }
+  .toc a:hover { background: var(--hover); color: var(--azur-deep); }
+  .toc a.lvl-1 { font-weight: 600; color: var(--azur-deep); margin-top: 6px; }
+  .toc a.lvl-2 { padding-left: 24px; }
+  .toc a.lvl-3 { padding-left: 38px; font-size: 13px; }
+  .toc a.active { color: var(--azur-deep); background: var(--hover); border-left-color: var(--azur-mid); border-radius: 0; }
+  .toc a .num { font-family: var(--font-mono); font-size: 11px; color: var(--muted-soft); margin-right: 8px; letter-spacing: 0.02em; }
+  .toc a.lvl-1.active .num, .toc a.active .num { color: var(--azur-mid); }
+
+  /* --- Center+right scroll canvas --- */
+  .ed-scroll {
+    flex: 1; overflow-y: auto; min-width: 0;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(35,87,112,0.05) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  .canvas {
+    display: flex; align-items: flex-start; justify-content: safe center;
+    gap: 28px; padding: 36px 40px 120px;
+    min-height: 100%;
+    width: max-content;
+    margin-inline: auto;
+  }
+
+  /* the paper page */
+  .doc-page {
+    flex: 0 0 760px;
+    width: 760px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(35,87,112,0.06), 0 18px 50px rgba(35,87,112,0.07);
+    padding: 76px 88px 96px;
+    color: var(--azur-deep);
+  }
+  .doc-page .doc-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--azur-mid); margin-bottom: 10px;
+  }
+  .doc-page .doc-title {
+    font-family: var(--font-display); font-weight: 600; font-size: 30px;
+    letter-spacing: -0.015em; line-height: 1.12; margin-bottom: 6px;
+  }
+  .doc-page .doc-sub {
+    font-size: 14px; color: var(--muted); margin-bottom: 30px;
+    padding-bottom: 24px; border-bottom: 1px solid var(--rule);
+  }
+  .doc-page h1.sec {
+    font-family: var(--font-display); font-weight: 600; font-size: 22px;
+    letter-spacing: -0.01em; margin: 34px 0 12px; line-height: 1.2;
+    scroll-margin-top: 24px;
+  }
+  .doc-page h2.sec {
+    font-family: var(--font-display); font-weight: 600; font-size: 17px;
+    letter-spacing: -0.005em; margin: 24px 0 10px; line-height: 1.25;
+    scroll-margin-top: 24px;
+  }
+  .doc-page h3.sec {
+    font-weight: 700; font-size: 14.5px; margin: 20px 0 8px; line-height: 1.3;
+    scroll-margin-top: 24px;
+  }
+  .doc-page .sec .n { color: var(--azur-mid); font-weight: 500; margin-right: 12px; }
+  .doc-page p { font-size: 15px; line-height: 1.75; margin-bottom: 14px; text-align: justify; }
+  .doc-page ul, .doc-page ol { margin: 0 0 14px 26px; }
+  .doc-page li { font-size: 15px; line-height: 1.7; margin-bottom: 6px; }
+  .doc-page a { color: var(--azur-mid); border-bottom: 1px solid rgba(65,142,160,0.4); text-decoration: none; }
+  .doc-page table.dt { width: 100%; border-collapse: collapse; margin: 6px 0 18px; font-size: 13.5px; }
+  .doc-page table.dt th, .doc-page table.dt td { border: 1px solid var(--rule); padding: 8px 10px; text-align: left; }
+  .doc-page table.dt th {
+    background: rgba(35,87,112,0.04); font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500;
+  }
+  .doc-page:focus-visible { outline: none; }
+
+  /* comment-anchored text */
+  .cmt-anchor {
+    background: rgba(122, 74, 16, 0.12);
+    border-bottom: 1.5px solid rgba(122, 74, 16, 0.5);
+    border-radius: 2px; padding: 0 1px; cursor: pointer;
+    transition: background .12s;
+  }
+  .cmt-anchor:hover, .cmt-anchor.active { background: rgba(122, 74, 16, 0.24); }
+
+  /* tracked changes */
+  .ins { color: #1E5A35; background: rgba(30,90,53,0.10); text-decoration: underline; text-decoration-color: rgba(30,90,53,0.6); border-radius: 2px; padding: 0 1px; cursor: pointer; }
+  .del { color: var(--brick); text-decoration: line-through; text-decoration-color: rgba(172,40,25,0.7); background: rgba(172,40,25,0.07); border-radius: 2px; padding: 0 1px; cursor: pointer; }
+  .ins.active, .del.active { outline: 1.5px solid var(--azur-mid); outline-offset: 1px; }
+  /* when track changes is hidden, accepted look */
+  body[data-track="off"] .ins { color: inherit; background: transparent; text-decoration: none; }
+  body[data-track="off"] .del { display: none; }
+
+  /* --- Right: markup rail --- */
+  .markup-rail {
+    flex: 0 0 296px;
+    width: 296px;
+    position: relative;
+    align-self: stretch;
+  }
+  .markup-rail .rail-empty {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted-faint); padding-top: 8px;
+  }
+  .mk-card {
+    position: absolute; left: 0; right: 0;
+    background: #fff; border: 1px solid var(--rule);
+    border-radius: 10px; padding: 13px 14px;
+    box-shadow: 0 2px 6px rgba(35,87,112,0.06);
+    transition: box-shadow .15s, border-color .15s, top .2s cubic-bezier(0.2,0.8,0.2,1);
+    cursor: pointer;
+  }
+  .mk-card:hover { border-color: var(--rule-strong); }
+  .mk-card.active { border-color: var(--azur-mid); box-shadow: 0 8px 24px rgba(35,87,112,0.14); }
+  .mk-card .mk-top { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+  .mk-card .mk-av {
+    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    display: grid; place-items: center; font-family: var(--font-display);
+    font-size: 12px; color: var(--sand);
+  }
+  .mk-av.deep { background: var(--azur-deep); }
+  .mk-av.mid  { background: var(--azur-mid); }
+  .mk-av.warm { background: #a67a52; }
+  .mk-card .mk-who { line-height: 1.2; min-width: 0; }
+  .mk-card .mk-who .nm { font-size: 13px; font-weight: 600; color: var(--azur-deep); }
+  .mk-card .mk-who .tm { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--muted); margin-top: 1px; }
+  .mk-card .mk-kind {
+    margin-left: auto; font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 7px; border-radius: 100px;
+  }
+  .mk-kind.comment { background: rgba(122,74,16,0.12); color: #7A4A10; }
+  .mk-kind.change  { background: rgba(30,90,53,0.12); color: #1E5A35; }
+  .mk-card .mk-body { font-size: 13.5px; line-height: 1.5; color: var(--azur-deep); }
+  .mk-card .mk-quote {
+    font-size: 12.5px; color: var(--muted); border-left: 2px solid var(--rule-strong);
+    padding-left: 9px; margin: 8px 0; line-height: 1.45;
+  }
+  .mk-card .mk-quote .q-del { color: var(--brick); text-decoration: line-through; }
+  .mk-card .mk-quote .q-ins { color: #1E5A35; }
+  .mk-card .mk-reply {
+    margin-top: 10px; display: flex; align-items: center; gap: 8px;
+    border-top: 1px solid var(--rule); padding-top: 10px;
+  }
+  .mk-card .mk-reply input {
+    flex: 1; height: 30px; border: 1px solid var(--rule-strong); border-radius: 100px;
+    padding: 0 12px; font-family: var(--font-sans); font-size: 12.5px; color: var(--azur-deep);
+    outline: none; background: var(--bg);
+  }
+  .mk-card .mk-reply input:focus { border-color: var(--azur-mid); }
+  /* change-card actions */
+  .mk-actions { display: flex; gap: 8px; margin-top: 11px; }
+  .mk-actions button {
+    flex: 1; height: 31px; border-radius: 7px; font-family: var(--font-sans);
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    transition: background .12s, border-color .12s;
+  }
+  .mk-actions button svg { display: block; }
+  .mk-actions .accept { background: #CDEED8; color: #1E5A35; border: 1px solid rgba(30,90,53,0.25); }
+  .mk-actions .accept:hover { background: #BBE6C9; }
+  .mk-actions .reject { background: transparent; color: var(--azur-deep); border: 1px solid var(--rule-strong); }
+  .mk-actions .reject:hover { background: var(--hover); border-color: var(--brick); color: var(--brick); }
+  /* in authoring mode change cards are read-only suggestions */
+  body[data-mode="author"] .mk-actions { display: none; }
+  body[data-mode="author"] .mk-card.change .mk-readonly { display: block; }
+  .mk-card.change .mk-readonly { display: none; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 10px; border-top: 1px solid var(--rule); padding-top: 9px; }
+
+  /* =================== Status bar =================== */
+  .statusbar {
+    flex: 0 0 auto;
+    height: 38px;
+    display: flex; align-items: center; gap: 18px;
+    padding: 0 20px;
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+    font-family: var(--font-mono); font-size: 11.5px;
+    letter-spacing: 0.06em; color: var(--muted);
+    z-index: 22;
+  }
+  .statusbar .sb { display: inline-flex; align-items: center; gap: 7px; }
+  .statusbar .sb svg { display: block; opacity: 0.7; }
+  .statusbar .sb-btn { background: transparent; border: 0; color: inherit; cursor: pointer; font: inherit; display: inline-flex; align-items: center; gap: 5px; padding: 3px 5px; border-radius: 5px; }
+  .statusbar .sb-btn:hover { background: var(--hover); color: var(--azur-deep); }
+  .statusbar .grow { flex: 1; }
+  .statusbar .sb-mode { color: var(--azur-mid); text-transform: uppercase; letter-spacing: 0.12em; }
+  .statusbar .zoom { display: inline-flex; align-items: center; gap: 2px; }
+  .statusbar .zoom button {
+    width: 24px; height: 24px; border: 0; background: transparent; color: var(--azur-deep);
+    border-radius: 5px; cursor: pointer; display: grid; place-items: center;
+  }
+  .statusbar .zoom button:hover { background: var(--hover); }
+  .statusbar .zoom .zval { min-width: 42px; text-align: center; color: var(--azur-deep); }
+  .statusbar .track-toggle { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+  .statusbar .track-toggle .sw {
+    width: 30px; height: 16px; border-radius: 100px; background: var(--rule-strong);
+    position: relative; transition: background .15s; flex: 0 0 auto;
+  }
+  .statusbar .track-toggle .sw::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--bg); transition: transform .15s;
+  }
+  body[data-track="on"] .statusbar .track-toggle .sw { background: var(--azur-mid); }
+  body[data-track="on"] .statusbar .track-toggle .sw::after { transform: translateX(14px); }
+
+  /* search highlight via CSS Custom Highlight API */
+  ::highlight(doc-search) { background: rgba(65,142,160,0.32); color: var(--azur-deep); }
+  ::highlight(doc-search-current) { background: #FFEACD; color: #7A4A10; }
+
+  /* =================== Toast (verbatim) =================== */
+  .toast {
+    position: fixed; bottom: 52px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--azur-deep); color: var(--sand);
+    padding: 10px 18px; border-radius: 100px; font-size: 14px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s, transform .2s; z-index: 200;
+    box-shadow: 0 6px 24px rgba(35,87,112,0.2);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body data-mode="author" data-track="on">
+
+  <!-- ===================== Sidebar ===================== -->
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+        <div class="name">Azur <em>Note</em></div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu" style="border-style: none">
+        <i data-lucide="x" width="14" height="14" stroke-width="2.25"></i>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="group-label">Workspace</span>
+      <a class="nav-item" href="index.html" data-nav="dashboard">
+        <span class="icon"><i data-lucide="layout-grid" width="18" height="18" stroke-width="2.25"></i></span>
+        Dashboard
+      </a>
+      <a class="nav-item" href="projects.html" data-nav="projects">
+        <span class="icon"><i data-lucide="folder" width="18" height="18" stroke-width="2.25"></i></span>
+        Projects
+        <span class="badge">24</span>
+      </a>
+      <a class="nav-item" href="Clients.html" data-nav="clients">
+        <span class="icon"><i data-lucide="briefcase" width="18" height="18" stroke-width="2.25"></i></span>
+        Clients
+        <span class="badge">12</span>
+      </a>
+      <button class="nav-item" data-nav="members">
+        <span class="icon"><i data-lucide="users-round" width="18" height="18" stroke-width="2.25"></i></span>
+        Members
+        <span class="badge">8</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="nav-item" data-nav="help">
+        <span class="icon"><i data-lucide="help-circle" width="18" height="18" stroke-width="2.25"></i></span>
+        Help &amp; feedback
+      </button>
+      <a class="nav-item" href="Settings.html" data-nav="settings">
+        <span class="icon"><i data-lucide="settings" width="18" height="18" stroke-width="2.25"></i></span>
+        Settings
+      </a>
+    </div>
+  </aside>
+
+  <!-- ===================== Top nav ===================== -->
+  <nav class="topbar" aria-label="Primary">
+    <a class="menu-btn" id="backBtn" href="Project Information.html" aria-label="Back to project" title="Back to project">
+      <i data-lucide="arrow-left" width="17" height="17" stroke-width="2.25"></i>
+    </a>
+
+    <div class="brand">
+      <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+      <div class="name">Azur <em>Note</em></div>
+    </div>
+
+    <div class="topbar-doc">
+      <div class="dt">Veltrazine Phase III — Clinical Study Report</div>
+      <div class="ds">PRJ-2041<span id="saveState" hidden></span></div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="divider"></div>
+
+    <div class="user-wrap" id="userWrap">
+      <button class="user-trigger" id="userTrigger" aria-haspopup="menu" aria-expanded="false">
+        <div class="who">
+          <div class="name">A. Moreau</div>
+          <div class="role">Medical writer</div>
+        </div>
+        <div class="avatar">A</div>
+      </button>
+      <div class="profile-menu" role="menu">
+        <div class="p-head">
+          <div class="name">Alex Moreau</div>
+          <div class="mail">alex.moreau@azurnote.co</div>
+        </div>
+        <button class="p-item" data-action="profile" role="menuitem">
+          <i data-lucide="user-round" width="14" height="14" stroke-width="2.25"></i>
+          Profile
+        </button>
+        <button class="p-item" data-action="settings" role="menuitem">
+          <i data-lucide="settings" width="14" height="14" stroke-width="2.25"></i>
+          Settings
+        </button>
+        <div class="p-divider"></div>
+        <button class="p-item danger" data-action="logout" role="menuitem">
+          <i data-lucide="log-out" width="14" height="14" stroke-width="2.25"></i>
+          Log out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== Sub-header ===================== -->
+  <div class="subbar">
+    <div class="crumbs">
+      <a href="projects.html">Projects</a>
+      <span class="sep">/</span>
+      <a href="Project Information.html">Veltrazine Phase III CSR</a>
+      <span class="sep">/</span>
+      <span class="here">Editor</span>
+    </div>
+    <div class="docstep" id="docStep" aria-label="Document status"></div>
+
+    <div class="spacer"></div>
+
+    <div class="collab" title="Collaborators">
+      <span class="av deep">AM</span>
+      <span class="av mid">SV</span>
+      <span class="av warm">MO</span>
+      <span class="more">+2</span>
+    </div>
+
+    <button class="ed-action" id="edAction">
+      <i data-lucide="send" width="15" height="15" stroke-width="2.25"></i>
+      <span class="lbl">Submit for review</span>
+    </button>
+  </div>
+
+  <!-- ===================== Formatting toolbar ===================== -->
+  <div class="ftoolbar" id="ftoolbar">
+    <!-- Text type -->
+    <button class="tbtn ttype" id="ttypeBtn" title="Text style">
+      <span class="lbl" id="ttypeLbl">Paragraph</span>
+      <i data-lucide="chevron-down" width="15" height="15" stroke-width="2" class="chev"></i>
+    </button>
+    <!-- List style -->
+    <button class="tbtn" id="listBtn" title="Lists">
+      <i data-lucide="list" width="17" height="17" stroke-width="2"></i>
+      <i data-lucide="chevron-down" width="14" height="14" stroke-width="2" class="chev"></i>
+    </button>
+
+    <span class="tdiv"></span>
+
+    <!-- Align -->
+    <div class="talign" role="group" aria-label="Alignment">
+      <button class="tbtn" data-align="justifyLeft" title="Align left">
+        <i data-lucide="align-left" width="17" height="17" stroke-width="2"></i>
+      </button>
+      <button class="tbtn" data-align="justifyCenter" title="Align center">
+        <i data-lucide="align-center" width="17" height="17" stroke-width="2"></i>
+      </button>
+      <button class="tbtn" data-align="justifyRight" title="Align right">
+        <i data-lucide="align-right" width="17" height="17" stroke-width="2"></i>
+      </button>
+    </div>
+
+    <span class="tdiv"></span>
+
+    <!-- Bold / Italic / Link -->
+    <button class="tbtn" data-cmd="bold" title="Bold (Ctrl+B)">
+      <i data-lucide="bold" width="17" height="17" stroke-width="2.25"></i>
+    </button>
+    <button class="tbtn" data-cmd="italic" title="Italic (Ctrl+I)">
+      <i data-lucide="italic" width="17" height="17" stroke-width="2.25"></i>
+    </button>
+    <button class="tbtn" id="linkBtn" title="Insert link">
+      <i data-lucide="link" width="16" height="16" stroke-width="2"></i>
+    </button>
+
+    <span class="tdiv"></span>
+
+    <!-- More -->
+    <button class="tbtn" id="moreBtn" title="More formatting">
+      <i data-lucide="more-vertical" width="18" height="18" stroke-width="2.25"></i>
+    </button>
+
+    <span class="grow"></span>
+
+    <!-- Insert -->
+    <button class="tbtn insert" id="insertBtn" title="Insert">
+      <i data-lucide="wand-sparkles" width="16" height="16" stroke-width="2.25"></i>
+      Insert
+      <i data-lucide="chevron-down" width="14" height="14" stroke-width="2" class="chev"></i>
+    </button>
+
+    <span class="tdiv"></span>
+
+    <!-- Undo / redo -->
+    <button class="tbtn" data-cmd="undo" title="Undo (Ctrl+Z)">
+      <i data-lucide="undo-2" width="17" height="17" stroke-width="2"></i>
+    </button>
+    <button class="tbtn" data-cmd="redo" title="Redo (Ctrl+Y)">
+      <i data-lucide="redo-2" width="17" height="17" stroke-width="2"></i>
+    </button>
+
+    <span class="tdiv"></span>
+
+    <!-- Search -->
+    <div class="tsearch">
+      <i data-lucide="search" width="15" height="15" stroke-width="2"></i>
+      <input type="text" id="docSearch" placeholder="Find in document" aria-label="Find in document" />
+      <span class="count" id="searchCount"></span>
+    </div>
+  </div>
+
+  <!-- ===================== Editor body ===================== -->
+  <div class="ed-body">
+
+    <!-- Outline -->
+    <nav class="toc" id="toc" aria-label="Document outline">
+      <div class="toc-head">Contents</div>
+      <a href="#s-synopsis" class="lvl-1" data-target="s-synopsis"><span class="num">1</span>Synopsis</a>
+      <a href="#s-intro" class="lvl-1" data-target="s-intro"><span class="num">2</span>Introduction</a>
+      <a href="#s-obj" class="lvl-1" data-target="s-obj"><span class="num">3</span>Study objectives</a>
+      <a href="#s-obj-primary" class="lvl-2" data-target="s-obj-primary"><span class="num">3.1</span>Primary objective</a>
+      <a href="#s-obj-secondary" class="lvl-2" data-target="s-obj-secondary"><span class="num">3.2</span>Secondary objectives</a>
+      <a href="#s-plan" class="lvl-1" data-target="s-plan"><span class="num">4</span>Investigational plan</a>
+      <a href="#s-plan-design" class="lvl-2" data-target="s-plan-design"><span class="num">4.1</span>Overall study design</a>
+      <a href="#s-plan-pop" class="lvl-2" data-target="s-plan-pop"><span class="num">4.2</span>Study population</a>
+      <a href="#s-plan-elig" class="lvl-3" data-target="s-plan-elig"><span class="num">4.2.1</span>Eligibility criteria</a>
+      <a href="#s-eff" class="lvl-1" data-target="s-eff"><span class="num">5</span>Efficacy evaluation</a>
+      <a href="#s-saf" class="lvl-1" data-target="s-saf"><span class="num">6</span>Safety evaluation</a>
+    </nav>
+
+    <!-- Scroll canvas: page + markup rail -->
+    <div class="ed-scroll" id="edScroll">
+      <div class="canvas" id="canvas">
+
+        <!-- The document -->
+        <article class="doc-page" id="docPage" contenteditable="true" spellcheck="false">
+          <div class="doc-eyebrow" contenteditable="false">Clinical Study Report · ICH E3</div>
+          <div class="doc-title">A Randomized, Double-Blind, Placebo-Controlled Phase III Study of Veltrazine in Treatment-Resistant Hypertension</div>
+          <div class="doc-sub" contenteditable="false">Protocol HEL-VLZ-301 · Sponsor: Heliocare Pharma · Report version 0.7 (draft)</div>
+
+          <h1 class="sec" id="s-synopsis"><span class="n">1</span>Synopsis</h1>
+          <p>This Phase III study evaluated the efficacy and safety of veltrazine, an oral once-daily aldosterone synthase inhibitor, in adults with <span class="cmt-anchor" id="anc-1">treatment-resistant hypertension</span> inadequately controlled on three or more antihypertensive agents. A total of 642 participants were randomized 1:1 to veltrazine or matching placebo for 24 weeks.</p>
+          <p>The primary endpoint was the change from baseline in mean seated automated office systolic blood pressure at Week 12. Veltrazine demonstrated a statistically significant reduction relative to placebo, with a favourable tolerability profile consistent with earlier Phase II findings.</p>
+
+          <h1 class="sec" id="s-intro"><span class="n">2</span>Introduction</h1>
+          <p>Resistant hypertension affects an estimated 10&ndash;15% of treated hypertensive adults and is associated with substantially elevated cardiovascular risk. Despite the availability of multiple drug classes, a meaningful proportion of patients do not achieve guideline-recommended blood-pressure targets, motivating the development of agents with <span class="ins" id="chg-1">novel mechanisms of action</span><span class="del" id="chg-2"> new approaches</span>.</p>
+          <p>Veltrazine selectively inhibits aldosterone synthase (CYP11B2), reducing aldosterone production while sparing cortisol synthesis. This report presents the full results of the pivotal HEL-VLZ-301 study conducted across 84 sites in 11 countries between March 2024 and February 2026.</p>
+
+          <h1 class="sec" id="s-obj"><span class="n">3</span>Study objectives</h1>
+          <h2 class="sec" id="s-obj-primary"><span class="n">3.1</span>Primary objective</h2>
+          <p>To compare the effect of veltrazine versus placebo on the change from baseline in mean seated automated office systolic blood pressure (SBP) at Week 12 in adults with treatment-resistant hypertension.</p>
+          <h2 class="sec" id="s-obj-secondary"><span class="n">3.2</span>Secondary objectives</h2>
+          <ul>
+            <li>Change from baseline in mean seated office diastolic blood pressure at Week 12 and Week 24.</li>
+            <li>Proportion of participants achieving SBP &lt; 130 mmHg at Week 24.</li>
+            <li>Change from baseline in 24-hour ambulatory systolic blood pressure at Week 12.</li>
+            <li>Safety and tolerability, including incidence of hyperkalaemia and changes in serum potassium.</li>
+          </ul>
+
+          <h1 class="sec" id="s-plan"><span class="n">4</span>Investigational plan</h1>
+          <h2 class="sec" id="s-plan-design"><span class="n">4.1</span>Overall study design</h2>
+          <p>This was a multicentre, randomized, double-blind, placebo-controlled, parallel-group study comprising a 4-week single-blind placebo run-in followed by a 24-week double-blind treatment period. Eligible participants were randomized 1:1 to veltrazine 50 mg once daily or matching placebo, stratified by baseline SBP and number of background agents.</p>
+          <table class="dt" contenteditable="false">
+            <thead>
+              <tr><th>Period</th><th>Duration</th><th>Key assessments</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Screening</td><td>Up to 2 weeks</td><td>Eligibility, washout review</td></tr>
+              <tr><td>Run-in</td><td>4 weeks</td><td>Adherence, baseline ABPM</td></tr>
+              <tr><td>Treatment</td><td>24 weeks</td><td>Office BP, ABPM, safety labs</td></tr>
+            </tbody>
+          </table>
+
+          <h2 class="sec" id="s-plan-pop"><span class="n">4.2</span>Study population</h2>
+          <p>The study enrolled adults aged 18 to 80 years with a documented diagnosis of resistant hypertension, defined as seated office SBP &ge; 140 mmHg despite stable doses of at least three antihypertensive agents, one of which was a diuretic.</p>
+          <h3 class="sec" id="s-plan-elig"><span class="n">4.2.1</span>Eligibility criteria</h3>
+          <p>Participants were required to have an estimated glomerular filtration rate &ge; 45 mL/min/1.73m² and a serum potassium &le; 4.8 mmol/L at randomization. Key exclusions included secondary hypertension, recent cardiovascular events, and <span class="ins" id="chg-3">pregnancy or breastfeeding</span>.</p>
+
+          <h1 class="sec" id="s-eff"><span class="n">5</span>Efficacy evaluation</h1>
+          <p>At Week 12, veltrazine reduced mean seated office SBP by 14.2 mmHg compared with 5.1 mmHg for placebo, a placebo-adjusted difference of 9.1 mmHg (95% CI 6.8 to 11.4; p &lt; 0.001). Reductions were sustained through Week 24 and were consistent across prespecified subgroups, including <span class="cmt-anchor" id="anc-2">participants aged 65 years and older</span>.</p>
+
+          <h1 class="sec" id="s-saf"><span class="n">6</span>Safety evaluation</h1>
+          <p>Veltrazine was generally well tolerated. The most frequently reported adverse event was mild hyperkalaemia, occurring in 6.4% of veltrazine-treated participants versus 1.9% on placebo; no events were serious and all resolved with dose adjustment or dietary measures. No deaths were considered related to study treatment.</p>
+        </article>
+
+        <!-- Markup rail -->
+        <div class="markup-rail" id="markupRail">
+
+          <div class="mk-card comment" data-anchor="anc-1" data-id="m1">
+            <div class="mk-top">
+              <span class="mk-av mid">SV</span>
+              <div class="mk-who">
+                <div class="nm">S. Varga</div>
+                <div class="tm">QC reviewer · 2h ago</div>
+              </div>
+              <span class="mk-kind comment">Comment</span>
+            </div>
+            <div class="mk-body">Please confirm this matches the indication wording in the approved protocol synopsis — Section 1.2 uses "resistant hypertension" without "treatment-".</div>
+            <div class="mk-reply">
+              <input type="text" placeholder="Reply…" />
+            </div>
+          </div>
+
+          <div class="mk-card change" data-anchor="chg-1" data-id="c1">
+            <div class="mk-top">
+              <span class="mk-av warm">MO</span>
+              <div class="mk-who">
+                <div class="nm">M. Okafor</div>
+                <div class="tm">Lead writer · 1h ago</div>
+              </div>
+              <span class="mk-kind change">Edit</span>
+            </div>
+            <div class="mk-body">Tightened the phrasing for clarity.</div>
+            <div class="mk-quote">
+              <span class="q-del">new approaches</span> <span class="q-ins">novel mechanisms of action</span>
+            </div>
+            <div class="mk-actions">
+              <button class="accept"><i data-lucide="check" width="13" height="13" stroke-width="2.5"></i>Accept</button>
+              <button class="reject"><i data-lucide="x" width="13" height="13" stroke-width="2.5"></i>Reject</button>
+            </div>
+            <div class="mk-readonly">Pending review</div>
+          </div>
+
+          <div class="mk-card change" data-anchor="chg-3" data-id="c2">
+            <div class="mk-top">
+              <span class="mk-av warm">MO</span>
+              <div class="mk-who">
+                <div class="nm">M. Okafor</div>
+                <div class="tm">Lead writer · 1h ago</div>
+              </div>
+              <span class="mk-kind change">Insertion</span>
+            </div>
+            <div class="mk-body">Added missing exclusion criterion.</div>
+            <div class="mk-quote">
+              <span class="q-ins">pregnancy or breastfeeding</span>
+            </div>
+            <div class="mk-actions">
+              <button class="accept"><i data-lucide="check" width="13" height="13" stroke-width="2.5"></i>Accept</button>
+              <button class="reject"><i data-lucide="x" width="13" height="13" stroke-width="2.5"></i>Reject</button>
+            </div>
+            <div class="mk-readonly">Pending review</div>
+          </div>
+
+          <div class="mk-card comment" data-anchor="anc-2" data-id="m2">
+            <div class="mk-top">
+              <span class="mk-av deep">AM</span>
+              <div class="mk-who">
+                <div class="nm">A. Moreau</div>
+                <div class="tm">You · just now</div>
+              </div>
+              <span class="mk-kind comment">Comment</span>
+            </div>
+            <div class="mk-body">Add the forest plot reference here once Table 14.2.3 is finalized.</div>
+            <div class="mk-reply">
+              <input type="text" placeholder="Reply…" />
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== Status bar ===================== -->
+  <div class="statusbar">
+    <button class="sb-btn" id="pageBtn"><i data-lucide="file-text" width="13" height="13" stroke-width="2"></i> Page 1 of 24</button>
+    <span class="sb" id="wordCount"><i data-lucide="case-sensitive" width="14" height="14" stroke-width="2"></i> 8,412 words</span>
+    <span class="sb"><i data-lucide="message-square" width="13" height="13" stroke-width="2"></i> 2 comments · 3 changes</span>
+    <span class="grow"></span>
+    <span class="zoom">
+      <button id="zoomOut" aria-label="Zoom out"><i data-lucide="minus" width="14" height="14" stroke-width="2.25"></i></button>
+      <span class="zval" id="zoomVal">100%</span>
+      <button id="zoomIn" aria-label="Zoom in"><i data-lucide="plus" width="14" height="14" stroke-width="2.25"></i></button>
+    </span>
+  </div>
+
+  <!-- ===================== Floating menus ===================== -->
+  <div class="menu" id="ttypeMenu">
+    <button class="mi tt-h1" data-block="h1"><span class="lbl">Heading 1</span><span class="k">⌘⌥1</span></button>
+    <button class="mi tt-h2" data-block="h2"><span class="lbl">Heading 2</span><span class="k">⌘⌥2</span></button>
+    <button class="mi tt-h3" data-block="h3"><span class="lbl">Heading 3</span><span class="k">⌘⌥3</span></button>
+    <div class="mdiv"></div>
+    <button class="mi tt-p" data-block="p"><span class="lbl">Paragraph</span><span class="k">⌘⌥0</span></button>
+    <button class="mi tt-p" data-block="blockquote"><span class="lbl">Quote</span></button>
+  </div>
+
+  <div class="menu" id="listMenu">
+    <button class="mi" data-list="insertUnorderedList"><i data-lucide="list" width="16" height="16" stroke-width="2"></i>Bulleted list</button>
+    <button class="mi" data-list="insertOrderedList"><i data-lucide="list-ordered" width="16" height="16" stroke-width="2"></i>Numbered list</button>
+    <button class="mi" data-list="outdent"><i data-lucide="list-tree" width="16" height="16" stroke-width="2"></i>Decrease indent</button>
+    <button class="mi" data-list="indent"><i data-lucide="indent" width="16" height="16" stroke-width="2"></i>Increase indent</button>
+  </div>
+
+  <div class="menu" id="moreMenu">
+    <div class="mlabel">Format</div>
+    <button class="mi" data-cmd="strikeThrough"><i data-lucide="strikethrough" width="16" height="16" stroke-width="2"></i>Strikethrough</button>
+    <button class="mi" data-cmd="underline"><i data-lucide="underline" width="16" height="16" stroke-width="2"></i>Underline</button>
+    <button class="mi" data-cmd="superscript"><i data-lucide="superscript" width="16" height="16" stroke-width="2"></i>Superscript</button>
+    <button class="mi" data-cmd="subscript"><i data-lucide="subscript" width="16" height="16" stroke-width="2"></i>Subscript</button>
+  </div>
+
+  <div class="menu insert-menu" id="insertMenu">
+    <div class="ins-group">
+      <div class="ins-label">Text</div>
+      <div class="ins-grid">
+        <button class="ins-item" data-insert="paragraph" data-style><span class="ic"><i data-lucide="pilcrow" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Paragraph</span></button>
+        <button class="ins-item" data-insert="title" data-style><span class="ic"><i data-lucide="heading" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Title</span></button>
+        <button class="ins-item" data-insert="caption"><span class="ic"><i data-lucide="captions" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Caption</span></button>
+        <button class="ins-item" data-insert="heading-1" data-style><span class="ic"><i data-lucide="heading-1" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Heading 1</span></button>
+        <button class="ins-item" data-insert="heading-2" data-style><span class="ic"><i data-lucide="heading-2" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Heading 2</span></button>
+        <button class="ins-item" data-insert="heading-3" data-style><span class="ic"><i data-lucide="heading-3" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Heading 3</span></button>
+        <button class="ins-item" data-insert="heading-4" data-style><span class="ic"><i data-lucide="heading-4" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Heading 4</span></button>
+        <button class="ins-item" data-insert="biblio"><span class="ic"><i data-lucide="book-marked" width="16" height="16" stroke-width="1.75"></i></span><span class="lbl">Bibliographic style</span></button>
+        <button class="ins-item" data-insert="annotation"><span class="ic"><i data-lucide="highlighter" width="16" height="16" stroke-width="1.75"></i></span><span class="lbl">Annotation</span></button>
+        <button class="ins-item" data-insert="superscript"><span class="ic"><i data-lucide="superscript" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Superscript</span></button>
+        <button class="ins-item" data-insert="subscript"><span class="ic"><i data-lucide="subscript" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Subscript</span></button>
+      </div>
+    </div>
+
+    <div class="ins-group">
+      <div class="ins-label">Layout</div>
+      <div class="ins-grid">
+        <button class="ins-item" data-insert="page-break"><span class="ic"><i data-lucide="separator-horizontal" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Page break</span></button>
+        <button class="ins-item" data-insert="increase-indent"><span class="ic"><i data-lucide="indent-increase" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Increase indent</span></button>
+        <button class="ins-item" data-insert="decrease-indent"><span class="ic"><i data-lucide="indent-decrease" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Decrease indent</span></button>
+      </div>
+    </div>
+
+    <div class="ins-group">
+      <div class="ins-label">Blocks &amp; lists</div>
+      <div class="ins-grid">
+        <button class="ins-item" data-insert="bullet-list"><span class="ic"><i data-lucide="list" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Bullet list</span></button>
+        <button class="ins-item" data-insert="ordered-list"><span class="ic"><i data-lucide="list-ordered" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Ordered list</span></button>
+        <button class="ins-item" data-insert="table"><span class="ic"><i data-lucide="table" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Table</span></button>
+        <button class="ins-item" data-insert="figure"><span class="ic"><i data-lucide="image" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Figure</span></button>
+      </div>
+    </div>
+
+    <div class="ins-group">
+      <div class="ins-label">Inline objects</div>
+      <div class="ins-grid">
+        <button class="ins-item" data-insert="footnote"><span class="ic"><i data-lucide="asterisk" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Footnote</span></button>
+        <button class="ins-item" data-insert="acronym"><span class="ic"><i data-lucide="whole-word" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Acronym</span></button>
+        <button class="ins-item" data-insert="cross-ref"><span class="ic"><i data-lucide="link-2" width="16" height="16" stroke-width="1.75"></i></span><span class="lbl">Cross-ref.</span></button>
+      </div>
+    </div>
+
+    <div class="ins-group">
+      <div class="ins-label">Document directory</div>
+      <div class="ins-grid">
+        <button class="ins-item" data-insert="toc"><span class="ic"><i data-lucide="list-tree" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">Table of content</span></button>
+        <button class="ins-item" data-insert="list-tables"><span class="ic"><i data-lucide="list" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">List of Tables</span></button>
+        <button class="ins-item" data-insert="list-figures"><span class="ic"><i data-lucide="list" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">List of Figures</span></button>
+        <button class="ins-item" data-insert="list-acronyms"><span class="ic"><i data-lucide="list" width="17" height="17" stroke-width="1.75"></i></span><span class="lbl">List of Acronyms</span></button>
+      </div>
+    </div>
+
+    <div class="ins-group">
+      <div class="ins-label">Collaboration</div>
+      <div class="ins-grid">
+        <button class="ins-item" data-insert="comment"><span class="ic"><i data-lucide="message-square" width="16" height="16" stroke-width="1.75"></i></span><span class="lbl">Comment</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="linkpop" id="linkPop">
+    <label for="linkUrl">Link URL</label>
+    <input type="text" id="linkUrl" placeholder="https://" />
+    <div class="row">
+      <button id="linkCancel">Cancel</button>
+      <button id="linkApply" class="primary">Apply</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    lucide.createIcons();
+
+    /* ---------- toast ---------- */
+    const toastEl = document.getElementById('toast');
+    let toastTimer;
+    const toast = (msg) => {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+    };
+
+    /* ---------- sidebar ---------- */
+    const sidebar = document.getElementById('sidebar');
+    const scrim = document.getElementById('sidebarScrim');
+    const openSidebar = () => { sidebar.classList.add('open'); scrim.classList.add('open'); };
+    const closeSidebar = () => { sidebar.classList.remove('open'); scrim.classList.remove('open'); };
+    document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+    scrim.addEventListener('click', closeSidebar);
+    document.querySelectorAll('.sidebar .nav-item').forEach(b => {
+      if (b.tagName === 'A') return;
+      b.addEventListener('click', () => {
+        const labels = { members: 'Members', help: 'Help & feedback', settings: 'Settings' };
+        toast(`${labels[b.dataset.nav] || b.dataset.nav} — coming soon`);
+      });
+    });
+
+    /* ---------- profile menu ---------- */
+    const userWrap = document.getElementById('userWrap');
+    document.getElementById('userTrigger').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = userWrap.classList.toggle('open');
+      e.currentTarget.setAttribute('aria-expanded', open);
+    });
+    document.querySelectorAll('#userWrap .p-item').forEach(b => {
+      b.addEventListener('click', () => {
+        userWrap.classList.remove('open');
+        const a = b.dataset.action;
+        if (a === 'logout') toast('Logged out');
+        else if (a === 'settings') window.location.href = 'Settings.html';
+        else if (a === 'profile') window.location.href = 'Profile.html';
+      });
+    });
+    document.addEventListener('click', (e) => { if (!userWrap.contains(e.target)) userWrap.classList.remove('open'); });
+
+    /* ============================================================
+       Formatting — execCommand-backed
+       ============================================================ */
+    const docPage = document.getElementById('docPage');
+    docPage.addEventListener('focus', () => { try { document.execCommand('styleWithCSS', false, true); } catch (e) {} });
+
+    // generic command buttons (bold, italic, undo, redo, strikethrough, etc.)
+    document.querySelectorAll('[data-cmd]').forEach(btn => {
+      btn.addEventListener('mousedown', e => e.preventDefault()); // keep selection
+      btn.addEventListener('click', () => {
+        document.execCommand(btn.dataset.cmd, false, null);
+        markDirty();
+        refreshToolbarState();
+      });
+    });
+
+    // alignment
+    document.querySelectorAll('[data-align]').forEach(btn => {
+      btn.addEventListener('mousedown', e => e.preventDefault());
+      btn.addEventListener('click', () => {
+        document.execCommand(btn.dataset.align, false, null);
+        markDirty();
+        refreshToolbarState();
+      });
+    });
+
+    /* ---------- floating-menu helper ---------- */
+    function wireMenu(triggerId, menuId, opts = {}) {
+      const trigger = document.getElementById(triggerId);
+      const menu = document.getElementById(menuId);
+      const place = () => {
+        const r = trigger.getBoundingClientRect();
+        menu.style.top = (r.bottom + 6) + 'px';
+        if (opts.alignRight) menu.style.right = (window.innerWidth - r.right) + 'px', menu.style.left = 'auto';
+        else menu.style.left = r.left + 'px', menu.style.right = 'auto';
+      };
+      trigger.addEventListener('mousedown', e => e.preventDefault());
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willOpen = !menu.classList.contains('open');
+        closeAllMenus();
+        if (willOpen) { place(); menu.classList.add('open'); }
+      });
+      return { trigger, menu, place };
+    }
+    function closeAllMenus() {
+      document.querySelectorAll('.menu.open').forEach(m => m.classList.remove('open'));
+      linkPop.classList.remove('open');
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.menu') && !e.target.closest('.tbtn') && !e.target.closest('.linkpop')) closeAllMenus();
+    });
+
+    /* text-type */
+    const ttype = wireMenu('ttypeBtn', 'ttypeMenu');
+    const ttypeLbl = document.getElementById('ttypeLbl');
+    const blockLabels = { h1: 'Heading 1', h2: 'Heading 2', h3: 'Heading 3', p: 'Paragraph', blockquote: 'Quote' };
+    document.querySelectorAll('#ttypeMenu .mi').forEach(mi => {
+      mi.addEventListener('mousedown', e => e.preventDefault());
+      mi.addEventListener('click', () => {
+        const tag = mi.dataset.block;
+        document.execCommand('formatBlock', false, tag === 'p' ? 'P' : tag.toUpperCase());
+        ttypeLbl.textContent = blockLabels[tag];
+        closeAllMenus(); markDirty();
+      });
+    });
+
+    /* list */
+    wireMenu('listBtn', 'listMenu');
+    document.querySelectorAll('#listMenu .mi').forEach(mi => {
+      mi.addEventListener('mousedown', e => e.preventDefault());
+      mi.addEventListener('click', () => { document.execCommand(mi.dataset.list, false, null); closeAllMenus(); markDirty(); });
+    });
+
+    /* more */
+    wireMenu('moreBtn', 'moreMenu');
+    document.querySelectorAll('#moreMenu .mi').forEach(mi => {
+      mi.addEventListener('mousedown', e => e.preventDefault());
+      mi.addEventListener('click', () => { document.execCommand(mi.dataset.cmd, false, null); closeAllMenus(); markDirty(); });
+    });
+
+    /* insert */
+    wireMenu('insertBtn', 'insertMenu', { alignRight: true });
+    // reflect the current block style as the active text-style item when opening
+    document.getElementById('insertBtn').addEventListener('click', syncInsertActiveStyle);
+    function syncInsertActiveStyle() {
+      let block = '';
+      try { block = (document.queryCommandValue('formatBlock') || '').toLowerCase(); } catch (e) {}
+      const map = { p: 'paragraph', div: 'paragraph', '': 'paragraph', h1: 'heading-1', h2: 'heading-2', h3: 'heading-3', h4: 'heading-4' };
+      const target = map[block] || null;
+      document.querySelectorAll('#insertMenu .ins-item[data-style]').forEach(it => {
+        it.classList.toggle('active', it.dataset.insert === target);
+      });
+    }
+
+    const insertBlockMap = { paragraph: 'P', 'heading-1': 'H1', 'heading-2': 'H2', 'heading-3': 'H3', 'heading-4': 'H4' };
+    const insertNames = {
+      title: 'Title', caption: 'Caption', biblio: 'Bibliographic style', annotation: 'Annotation',
+      figure: 'Figure', footnote: 'Footnote', acronym: 'Acronym', 'cross-ref': 'Cross-reference',
+      toc: 'Table of contents', 'list-tables': 'List of tables', 'list-figures': 'List of figures',
+      'list-acronyms': 'List of acronyms'
+    };
+    function insertHTMLAtCursor(html) {
+      docPage.focus();
+      document.execCommand('insertHTML', false, html);
+      markDirty(); relayoutMarkupSoon();
+    }
+    function handleInsert(what) {
+      if (insertBlockMap[what]) {
+        docPage.focus();
+        document.execCommand('formatBlock', false, insertBlockMap[what]);
+        if (blockLabels[what === 'paragraph' ? 'p' : what.replace('heading-', 'h')]) {
+          ttypeLbl.textContent = what === 'paragraph' ? 'Paragraph' : 'Heading ' + what.split('-')[1];
+        }
+        markDirty(); return;
+      }
+      switch (what) {
+        case 'comment': addCommentFromSelection(); break;
+        case 'superscript': docPage.focus(); document.execCommand('superscript', false, null); markDirty(); break;
+        case 'subscript': docPage.focus(); document.execCommand('subscript', false, null); markDirty(); break;
+        case 'increase-indent': docPage.focus(); document.execCommand('indent', false, null); markDirty(); break;
+        case 'decrease-indent': docPage.focus(); document.execCommand('outdent', false, null); markDirty(); break;
+        case 'bullet-list': docPage.focus(); document.execCommand('insertUnorderedList', false, null); markDirty(); break;
+        case 'ordered-list': docPage.focus(); document.execCommand('insertOrderedList', false, null); markDirty(); break;
+        case 'page-break': insertHTMLAtCursor('<hr class="page-break" contenteditable="false"><p>&nbsp;</p>'); toast('Page break inserted'); break;
+        case 'table':
+          insertHTMLAtCursor('<table class="dt"><thead><tr><th>Column</th><th>Column</th><th>Column</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p>&nbsp;</p>');
+          toast('Table inserted'); break;
+        default: toast(`Insert ${insertNames[what] || what.replace('-', ' ')} — coming soon`);
+      }
+    }
+    document.querySelectorAll('#insertMenu .ins-item').forEach(mi => {
+      mi.addEventListener('mousedown', e => e.preventDefault());
+      mi.addEventListener('click', () => { closeAllMenus(); handleInsert(mi.dataset.insert); });
+    });
+
+    /* link popover */
+    const linkBtn = document.getElementById('linkBtn');
+    const linkPop = document.getElementById('linkPop');
+    const linkUrl = document.getElementById('linkUrl');
+    let savedRange = null;
+    linkBtn.addEventListener('mousedown', e => e.preventDefault());
+    linkBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const sel = window.getSelection();
+      savedRange = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+      const willOpen = !linkPop.classList.contains('open');
+      closeAllMenus();
+      if (willOpen) {
+        const r = linkBtn.getBoundingClientRect();
+        linkPop.style.top = (r.bottom + 6) + 'px';
+        linkPop.style.left = Math.min(r.left, window.innerWidth - 320) + 'px';
+        linkPop.classList.add('open');
+        linkUrl.value = '';
+        setTimeout(() => linkUrl.focus(), 0);
+      }
+    });
+    document.getElementById('linkCancel').addEventListener('click', () => closeAllMenus());
+    document.getElementById('linkApply').addEventListener('click', applyLink);
+    linkUrl.addEventListener('keydown', e => { if (e.key === 'Enter') applyLink(); });
+    function applyLink() {
+      const url = linkUrl.value.trim();
+      if (url && savedRange) {
+        const sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(savedRange);
+        document.execCommand('createLink', false, url);
+        markDirty();
+      }
+      closeAllMenus();
+    }
+
+    /* ---------- toolbar active state ---------- */
+    function refreshToolbarState() {
+      try {
+        document.querySelector('[data-cmd="bold"]').classList.toggle('on', document.queryCommandState('bold'));
+        document.querySelector('[data-cmd="italic"]').classList.toggle('on', document.queryCommandState('italic'));
+        const al = { justifyLeft: document.queryCommandState('justifyLeft'),
+                     justifyCenter: document.queryCommandState('justifyCenter'),
+                     justifyRight: document.queryCommandState('justifyRight') };
+        document.querySelectorAll('[data-align]').forEach(b => b.classList.toggle('on', al[b.dataset.align]));
+        // current block
+        let block = document.queryCommandValue('formatBlock').toLowerCase();
+        const map = { h1: 'Heading 1', h2: 'Heading 2', h3: 'Heading 3', blockquote: 'Quote', p: 'Paragraph', div: 'Paragraph', '': 'Paragraph' };
+        ttypeLbl.textContent = map[block] || 'Paragraph';
+      } catch (e) {}
+    }
+    document.addEventListener('selectionchange', () => {
+      if (document.activeElement === docPage || docPage.contains(window.getSelection().anchorNode)) refreshToolbarState();
+    });
+
+    /* ---------- dirty / save state ---------- */
+    const saveState = document.getElementById('saveState');
+    let dirtyTimer;
+    function markDirty() {
+      saveState.textContent = 'Saving…';
+      clearTimeout(dirtyTimer);
+      dirtyTimer = setTimeout(() => { saveState.textContent = 'Saved · just now'; updateWordCount(); }, 700);
+    }
+    docPage.addEventListener('input', () => { markDirty(); relayoutMarkupSoon(); });
+
+    /* ---------- word count ---------- */
+    const wordCountEl = document.getElementById('wordCount');
+    function updateWordCount() {
+      const words = (docPage.innerText.trim().match(/\S+/g) || []).length;
+      wordCountEl.innerHTML = `<i data-lucide="case-sensitive" width="14" height="14" stroke-width="2"></i> ${words.toLocaleString()} words`;
+      lucide.createIcons({ nameAttr: 'data-lucide' });
+    }
+
+    /* ============================================================
+       Markup rail — anchor cards to their text positions
+       ============================================================ */
+    const rail = document.getElementById('markupRail');
+    const cards = [...rail.querySelectorAll('.mk-card')];
+    const edScroll = document.getElementById('edScroll');
+
+    function layoutMarkup() {
+      const railRect = rail.getBoundingClientRect();
+      const GAP = 12;
+      let prevBottom = 0;
+      // sort by anchor position
+      const ordered = cards
+        .map(c => ({ c, anc: document.getElementById(c.dataset.anchor) }))
+        .filter(o => o.anc)
+        .sort((a, b) => a.anc.getBoundingClientRect().top - b.anc.getBoundingClientRect().top);
+      ordered.forEach(({ c, anc }) => {
+        const ancRect = anc.getBoundingClientRect();
+        let top = ancRect.top - railRect.top;
+        if (top < prevBottom + GAP) top = prevBottom + GAP;
+        c.style.top = Math.max(0, top) + 'px';
+        prevBottom = top + c.offsetHeight;
+      });
+    }
+    let relayoutRaf;
+    function relayoutMarkupSoon() {
+      cancelAnimationFrame(relayoutRaf);
+      relayoutRaf = requestAnimationFrame(layoutMarkup);
+    }
+    window.addEventListener('resize', relayoutMarkupSoon);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => setTimeout(layoutMarkup, 50));
+    window.addEventListener('load', () => setTimeout(layoutMarkup, 80));
+    setTimeout(layoutMarkup, 120);
+
+    /* card <-> anchor activation */
+    function activate(cardOrId) {
+      const card = typeof cardOrId === 'string' ? rail.querySelector(`.mk-card[data-anchor="${cardOrId}"]`) : cardOrId;
+      cards.forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.cmt-anchor.active, .ins.active, .del.active').forEach(a => a.classList.remove('active'));
+      if (!card) return;
+      card.classList.add('active');
+      const anc = document.getElementById(card.dataset.anchor);
+      if (anc) {
+        anc.classList.add('active');
+        // bring into view within scroll container
+        const ar = anc.getBoundingClientRect();
+        const sr = edScroll.getBoundingClientRect();
+        if (ar.top < sr.top + 80 || ar.bottom > sr.bottom - 40) {
+          edScroll.scrollTop += (ar.top - sr.top) - 140;
+        }
+      }
+      layoutMarkup();
+    }
+    cards.forEach(c => {
+      c.addEventListener('click', (e) => {
+        if (e.target.closest('input') || e.target.closest('button')) return;
+        activate(c);
+      });
+    });
+    document.querySelectorAll('.cmt-anchor, .ins, .del').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const card = rail.querySelector(`.mk-card[data-anchor="${a.id}"]`);
+        if (card) { e.stopPropagation(); activate(card); }
+      });
+    });
+
+    /* accept / reject changes */
+    rail.querySelectorAll('.mk-card.change').forEach(card => {
+      const anc = document.getElementById(card.dataset.anchor);
+      const accept = card.querySelector('.accept');
+      const reject = card.querySelector('.reject');
+      const resolve = (kind) => {
+        // an insertion accepted -> becomes plain text; rejected -> removed.
+        // a deletion accepted -> removed; rejected -> restored as plain text.
+        if (anc) {
+          const isDel = anc.classList.contains('del');
+          if ((kind === 'accept' && !isDel) || (kind === 'reject' && isDel)) {
+            anc.replaceWith(document.createTextNode(anc.textContent));
+          } else {
+            anc.remove();
+          }
+        }
+        card.style.transition = 'opacity .2s, transform .2s';
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(8px)';
+        setTimeout(() => { card.remove(); layoutMarkup(); updateWordCount(); }, 200);
+        toast(kind === 'accept' ? 'Change accepted' : 'Change rejected');
+      };
+      accept && accept.addEventListener('click', () => resolve('accept'));
+      reject && reject.addEventListener('click', () => resolve('reject'));
+    });
+
+    /* add a comment from the current selection */
+    function addCommentFromSelection() {
+      const sel = window.getSelection();
+      if (!sel.rangeCount || sel.isCollapsed || !docPage.contains(sel.anchorNode)) {
+        toast('Select text to comment on'); return;
+      }
+      const range = sel.getRangeAt(0);
+      const span = document.createElement('span');
+      span.className = 'cmt-anchor active';
+      span.id = 'anc-' + Date.now();
+      try { range.surroundContents(span); }
+      catch (e) { toast('Select text within a single paragraph'); return; }
+
+      const card = document.createElement('div');
+      card.className = 'mk-card comment active';
+      card.dataset.anchor = span.id;
+      card.innerHTML = `
+        <div class="mk-top">
+          <span class="mk-av deep">AM</span>
+          <div class="mk-who"><div class="nm">A. Moreau</div><div class="tm">You · just now</div></div>
+          <span class="mk-kind comment">Comment</span>
+        </div>
+        <div class="mk-body" contenteditable="true" data-placeholder="Add a comment…">New comment</div>
+        <div class="mk-reply"><input type="text" placeholder="Reply…" /></div>`;
+      rail.appendChild(card);
+      cards.push(card);
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('input') || e.target.closest('button') || e.target.isContentEditable) return;
+        activate(card);
+      });
+      span.addEventListener('click', () => activate(card));
+      activate(card);
+      const body = card.querySelector('.mk-body');
+      body.focus();
+      document.getSelection().selectAllChildren(body);
+      markDirty();
+    }
+
+    /* ============================================================
+       Mode toggle  (Authoring -> Submit for review / Review -> Finish review)
+       ============================================================ */
+    const edAction = document.getElementById('edAction');
+    const docStep = document.getElementById('docStep');
+    const PIPELINE = [
+      { label: 'Authoring', icon: 'square-pen',           cls: 'st-authoring' },
+      { label: 'QC',        icon: null,                   cls: 'st-qc' },
+      { label: 'Review',    icon: 'message-square-text',  cls: 'st-review' },
+      { label: 'Approved',  icon: 'file-badge',           cls: 'st-approved', final: true }
+    ];
+    function renderDocStep(mode) {
+      const cur = mode === 'review' ? 2 : 0;
+      docStep.innerHTML = '';
+      PIPELINE.forEach((s, i) => {
+        if (i > 0) {
+          const ln = document.createElement('div');
+          ln.className = 'ds-connect' + (i <= cur ? ' done' : '');
+          docStep.appendChild(ln);
+        }
+        if (i === cur) {
+          const a = document.createElement('div');
+          a.className = 'ds-active ' + s.cls;
+          a.innerHTML = `<span class="ds-ic"><i data-lucide="${s.icon || 'circle-dot'}" width="15" height="15" stroke-width="2.25"></i></span>`
+            + `<span class="ds-draft">Draft 1</span><span class="ds-div"></span><span class="ds-stage">${s.label}</span>`;
+          docStep.appendChild(a);
+        } else {
+          const c = document.createElement('div');
+          c.className = 'ds-circle' + (i < cur ? ' done' : '');
+          c.title = s.label;
+          if (i < cur) c.innerHTML = '<i data-lucide="check" width="14" height="14" stroke-width="2.5"></i>';
+          else if (s.final) c.innerHTML = `<i data-lucide="${s.icon}" width="14" height="14" stroke-width="2"></i>`;
+          else c.textContent = String(i + 1);
+          docStep.appendChild(c);
+        }
+      });
+      lucide.createIcons();
+    }
+    const modeConfig = {
+      author: { label: 'Submit for review', icon: 'send', status: 'Authoring', pill: 'Review', pillTxt: 'Review', toastMsg: 'Submitted for review' },
+      review: { label: 'Finish review', icon: 'check-check', status: 'Reviewing', pill: 'review', pillTxt: 'In review', toastMsg: 'Review finished' }
+    };
+    function setMode(mode) {
+      document.body.dataset.mode = mode;
+      const cfg = modeConfig[mode];
+      edAction.querySelector('.lbl').textContent = cfg.label;
+      edAction.querySelector('svg')?.remove();
+      const icon = document.createElement('i');
+      icon.setAttribute('data-lucide', cfg.icon);
+      icon.setAttribute('width', '15'); icon.setAttribute('height', '15'); icon.setAttribute('stroke-width', '2.25');
+      edAction.insertBefore(icon, edAction.firstChild);
+      renderDocStep(mode);
+      document.querySelectorAll('.mode-switch button').forEach(b => {
+        const on = b.dataset.mode === mode;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-pressed', on);
+      });
+      lucide.createIcons();
+      localStorage.setItem('azur-editor-mode', mode);
+      relayoutMarkupSoon();
+    }
+    document.querySelectorAll('.mode-switch button').forEach(b => {
+      b.addEventListener('click', () => setMode(b.dataset.mode));
+    });
+    edAction.addEventListener('click', () => {
+      toast(modeConfig[document.body.dataset.mode].toastMsg);
+    });
+    const urlMode = new URLSearchParams(location.search).get('mode');
+    setMode((urlMode === 'review' || urlMode === 'author') ? urlMode : (localStorage.getItem('azur-editor-mode') || 'author'));
+
+    /* ---------- track changes (always on; markup always shown) ---------- */
+
+    /* ============================================================
+       TOC — scrollspy + click
+       ============================================================ */
+    const tocLinks = [...document.querySelectorAll('.toc a')];
+    tocLinks.forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(a.dataset.target);
+        if (!target) return;
+        const sr = edScroll.getBoundingClientRect();
+        const tr = target.getBoundingClientRect();
+        edScroll.scrollTop += (tr.top - sr.top) - 28;
+      });
+    });
+    const headings = tocLinks.map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          const id = en.target.id;
+          tocLinks.forEach(a => a.classList.toggle('active', a.dataset.target === id));
+        }
+      });
+    }, { root: edScroll, rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    headings.forEach(h => spy.observe(h));
+
+    /* ============================================================
+       Search — CSS Custom Highlight API, non-destructive
+       ============================================================ */
+    const searchInput = document.getElementById('docSearch');
+    const searchCount = document.getElementById('searchCount');
+    let matches = [], curMatch = -1;
+    const supportsHL = typeof Highlight !== 'undefined' && CSS.highlights;
+
+    function runSearch() {
+      const term = searchInput.value.trim();
+      matches = []; curMatch = -1;
+      if (supportsHL) { CSS.highlights.delete('doc-search'); CSS.highlights.delete('doc-search-current'); }
+      if (!term) { searchCount.textContent = ''; return; }
+      const lower = term.toLowerCase();
+      const walker = document.createTreeWalker(docPage, NodeFilter.SHOW_TEXT, {
+        acceptNode: n => n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+      });
+      let node;
+      while ((node = walker.nextNode())) {
+        const text = node.nodeValue.toLowerCase();
+        let i = text.indexOf(lower);
+        while (i !== -1) {
+          const r = document.createRange();
+          r.setStart(node, i); r.setEnd(node, i + term.length);
+          matches.push(r);
+          i = text.indexOf(lower, i + term.length);
+        }
+      }
+      if (!matches.length) { searchCount.textContent = '0/0'; return; }
+      if (supportsHL) CSS.highlights.set('doc-search', new Highlight(...matches));
+      goToMatch(0);
+    }
+    function goToMatch(idx) {
+      if (!matches.length) return;
+      curMatch = (idx + matches.length) % matches.length;
+      searchCount.textContent = `${curMatch + 1}/${matches.length}`;
+      if (supportsHL) CSS.highlights.set('doc-search-current', new Highlight(matches[curMatch]));
+      const rect = matches[curMatch].getBoundingClientRect();
+      const sr = edScroll.getBoundingClientRect();
+      if (rect.top < sr.top + 60 || rect.bottom > sr.bottom - 40) {
+        edScroll.scrollTop += (rect.top - sr.top) - 160;
+      }
+    }
+    let searchDebounce;
+    searchInput.addEventListener('input', () => { clearTimeout(searchDebounce); searchDebounce = setTimeout(runSearch, 180); });
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); if (matches.length) goToMatch(curMatch + (e.shiftKey ? -1 : 1)); else runSearch(); }
+      if (e.key === 'Escape') { searchInput.value = ''; runSearch(); searchInput.blur(); }
+    });
+
+    /* ---------- zoom ---------- */
+    let zoom = 100;
+    const zoomVal = document.getElementById('zoomVal');
+    function applyZoom() {
+      docPage.style.transformOrigin = 'top center';
+      docPage.style.transform = `scale(${zoom / 100})`;
+      docPage.style.marginBottom = `${(zoom - 100) * 7}px`;
+      zoomVal.textContent = zoom + '%';
+      relayoutMarkupSoon();
+    }
+    document.getElementById('zoomIn').addEventListener('click', () => { zoom = Math.min(150, zoom + 10); applyZoom(); });
+    document.getElementById('zoomOut').addEventListener('click', () => { zoom = Math.max(70, zoom - 10); applyZoom(); });
+
+    /* ---------- misc status ---------- */
+    document.getElementById('pageBtn').addEventListener('click', () => toast('Go to page — coming soon'));
+
+    /* keyboard: cmd/ctrl+B/I handled natively by contenteditable; refresh state after */
+    docPage.addEventListener('keyup', refreshToolbarState);
+    docPage.addEventListener('mouseup', refreshToolbarState);
+
+    /* recompute markup layout when scrolling settles (cards stay put, but keeps robust) */
+    edScroll.addEventListener('scroll', () => { /* cards are absolute within rail; no action needed */ }, { passive: true });
+  </script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+#docStep .ds-stage { font-family: IBM Plex Sans !important }
+#docStep .ds-draft { font-family: IBM Plex Sans !important }
+</style>

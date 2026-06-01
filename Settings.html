@@ -1,0 +1,1645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Azur Note — Settings</title>
+<link rel="stylesheet" href="design-system/colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--azur-deep);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ===================== Top nav (shared) ===================== */
+  .topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar .menu-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: transparent;
+    display: grid; place-items: center;
+    cursor: pointer; color: var(--azur-deep);
+  }
+  .topbar .menu-btn:hover { background: var(--hover); }
+  .brand { display: flex; align-items: center; gap: 14px; margin-left: 18px; }
+  .brand .mark { width: 37px; height: 37px; display: grid; place-items: center; line-height: 1; }
+  .brand .mark .logo {
+    display: block; width: 37px; height: 37px;
+    background: url('assets/logo.svg') center / contain no-repeat;
+  }
+  .brand .name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .brand .name em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+  a.brand,
+  a.brand:hover,
+  a.brand:focus,
+  a.brand:visited {
+    color: inherit !important;
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+  }
+  a.brand *, a.brand:hover * {
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+  }
+  .topbar .spacer { flex: 1; }
+  .topbar .divider {
+    width: 1px; height: 28px;
+    background: var(--rule-strong);
+    margin: 0 20px;
+  }
+  .user-wrap { position: relative; }
+  .user-trigger {
+    display: flex; align-items: center; gap: 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 4px 6px 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--azur-deep);
+    font-family: inherit;
+  }
+  .user-trigger:hover { background: var(--hover); border-color: var(--rule); }
+  .user-trigger .who { line-height: 1.2; text-align: right; }
+  .user-trigger .who .name { font-size: 14px; font-weight: 500; }
+  .user-trigger .who .role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .user-trigger .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--sand);
+    color: var(--azur-deep);
+    border: 1px solid var(--rule-strong);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+  }
+
+  /* ===================== Sidebar ===================== */
+  .sidebar-scrim {
+    position: fixed; inset: 0;
+    background: rgba(35, 87, 112, 0.28);
+    opacity: 0; pointer-events: none;
+    transition: opacity .24s ease;
+    z-index: 40;
+  }
+  .sidebar-scrim.open { opacity: 1; pointer-events: auto; }
+  .sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0;
+    width: 300px; background: var(--bg);
+    border-right: 1px solid var(--rule-strong);
+    transform: translateX(-100%);
+    transition: transform .26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50;
+    display: flex; flex-direction: column;
+    box-shadow: 12px 0 32px rgba(35, 87, 112, 0.08);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-head .brand { margin: 0; }
+  .sidebar-close {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--rule-strong);
+    background: transparent; color: var(--azur-deep);
+    display: grid; place-items: center; cursor: pointer;
+  }
+  .sidebar-close:hover { background: var(--hover); }
+  .sidebar-nav {
+    flex: 1; padding: 14px 12px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .sidebar-nav .group-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    cursor: pointer; color: var(--azur-deep);
+    font-size: 15px; font-weight: 500;
+    background: transparent; border: 0; text-align: left;
+    width: 100%; font-family: inherit;
+    position: relative; text-decoration: none;
+  }
+  .nav-item:hover { background: var(--hover); }
+  .nav-item.active { background: var(--hover); color: var(--azur-deep); }
+  .nav-item.active::before {
+    content: ""; position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3px; background: var(--azur-deep);
+    border-radius: 0 3px 3px 0;
+  }
+  .nav-item .icon {
+    width: 18px; height: 18px;
+    display: grid; place-items: center;
+    color: var(--azur-mid);
+  }
+  .nav-item .badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--muted);
+    background: rgba(35,87,112,0.06);
+    padding: 2px 7px; border-radius: 100px;
+  }
+  .sidebar-foot {
+    border-top: 1px solid var(--rule);
+    padding: 10px 12px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  /* ===================== Page shell ===================== */
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 32px 96px;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--azur-mid);
+    margin-bottom: 10px;
+  }
+  .page-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 6px;
+  }
+  .page-head h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .page-head h1 em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+  .page-sub {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 640px;
+  }
+
+  /* ===================== Tabs ===================== */
+  .tabs {
+    display: flex; align-items: stretch;
+    gap: 4px;
+    margin-top: 36px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .tab {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 14px 18px 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    transition: color .15s;
+    margin-bottom: -1px; /* overlap the border for the active indicator */
+    border-bottom: 2px solid transparent;
+  }
+  .tab .ico {
+    display: grid; place-items: center;
+    color: currentColor;
+    opacity: 0.85;
+  }
+  .tab:hover { color: var(--azur-deep); }
+  .tab.active {
+    color: var(--azur-deep);
+    border-bottom-color: var(--azur-deep);
+  }
+  .tab[aria-disabled="true"] {
+    color: rgba(35, 87, 112, 0.35);
+    cursor: not-allowed;
+  }
+  .tab[aria-disabled="true"]:hover { color: rgba(35, 87, 112, 0.45); }
+  .tab .lock {
+    display: inline-grid; place-items: center;
+    color: rgba(35, 87, 112, 0.45);
+  }
+  .tab .soon {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(35, 87, 112, 0.45);
+    margin-left: 2px;
+  }
+
+  /* Tab panels */
+  .panel { display: none; padding-top: 36px; }
+  .panel.active { display: block; }
+
+  /* ===================== Section heads inside panels ===================== */
+  .panel-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 24px;
+  }
+  .panel-head .titles h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+  }
+  .panel-head .titles h2 em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+  .panel-head .titles p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 6px;
+    max-width: 520px;
+  }
+
+  /* Role preview pill */
+  .role-preview {
+    display: inline-flex;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 34px;
+    background: var(--bg);
+  }
+  .role-preview button {
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule-strong);
+    color: var(--azur-deep);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
+  .role-preview button:last-child { border-right: 0; }
+  .role-preview button:hover { background: var(--hover); }
+  .role-preview button.on {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+  .role-preview .lbl {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    align-self: center;
+    margin-right: 10px;
+  }
+
+  /* ===================== Read-only banner ===================== */
+  .readonly-banner {
+    display: none;
+    align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: rgba(65, 142, 160, 0.08);
+    border: 1px solid rgba(65, 142, 160, 0.25);
+    border-radius: 8px;
+    color: var(--azur-deep);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .readonly-banner .ico { color: var(--azur-mid); display: grid; place-items: center; flex-shrink: 0; }
+  body.role-writer .readonly-banner { display: flex; }
+
+  /* ===================== Checklists ===================== */
+  .checklist-switch {
+    display: inline-flex;
+    border: 1px solid var(--rule-strong);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .checklist-switch button {
+    height: 40px;
+    padding: 0 18px;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule-strong);
+    color: var(--azur-deep);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .checklist-switch button:last-child { border-right: 0; }
+  .checklist-switch button:hover { background: var(--hover); }
+  .checklist-switch button.on {
+    background: var(--azur-deep);
+    color: var(--sand);
+  }
+  .checklist-switch button .count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    opacity: 0.85;
+    padding: 2px 7px;
+    border-radius: 100px;
+    background: rgba(35,87,112,0.08);
+  }
+  .checklist-switch button.on .count {
+    background: rgba(243, 233, 225, 0.18);
+    color: var(--sand);
+  }
+
+  .checklist {
+    display: none;
+  }
+  .checklist.active { display: block; }
+  .checklist-meta {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .checklist-meta .name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .checklist-meta .name em {
+    font-style: normal;
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--azur-mid);
+  }
+  .checklist-meta .audit {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .steps {
+    list-style: none;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 28px 22px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px 14px 12px;
+    border-bottom: 1px solid var(--rule);
+    transition: background .12s;
+  }
+  .step:last-child { border-bottom: 0; }
+  .step:hover { background: var(--hover); }
+
+  .step .grip {
+    grid-column: 1;
+    color: rgba(35,87,112, 0.32);
+    display: grid; place-items: center;
+    cursor: grab;
+    touch-action: none;
+  }
+  .step .grip:active { cursor: grabbing; }
+  body.role-writer .step .grip { display: none; }
+
+  /* Dragging step — visually lifted */
+  .step.dragging {
+    position: relative;
+    z-index: 10;
+    background: var(--bg);
+    border-radius: 8px;
+    box-shadow: 0 10px 28px rgba(35, 87, 112, 0.22);
+    cursor: grabbing;
+  }
+  .step.shifting {
+    transition: transform .16s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .step .num {
+    grid-column: 2;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--rule-strong);
+    background: var(--bg);
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--azur-deep);
+  }
+  /* Writer view of the checklist matches the manager view visually —
+     we just block edit, drag, delete, and add affordances. */
+  body.role-writer .step .num {
+    border-color: var(--rule-strong);
+    color: var(--azur-deep);
+  }
+
+  .step .text-input {
+    grid-column: 3;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--azur-deep);
+    outline: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    line-height: 1.4;
+    transition: background .12s, box-shadow .12s;
+    resize: none;
+    min-height: 28px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .step .text-input:hover { background: rgba(35,87,112,0.045); }
+  .step .text-input:focus {
+    background: var(--bg);
+    box-shadow: 0 0 0 2px rgba(65,142,160,0.25);
+  }
+  body.role-writer .step .text-input {
+    cursor: default;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .step .actions {
+    grid-column: 4;
+    display: flex; gap: 4px;
+    align-items: center;
+    opacity: 0;
+    transition: opacity .12s;
+  }
+  .step:hover .actions { opacity: 1; }
+  body.role-writer .step .actions { display: none; }
+
+  .icon-btn {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--azur-deep);
+    display: grid; place-items: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all .12s;
+  }
+  .icon-btn:hover {
+    border-color: var(--rule-strong);
+    background: var(--bg);
+    opacity: 1;
+  }
+  .icon-btn.danger:hover {
+    color: var(--brick);
+    border-color: rgba(172, 40, 25, 0.3);
+  }
+
+  .add-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: 1px dashed var(--rule-strong);
+    background: transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--azur-mid);
+    cursor: pointer;
+    font-weight: 500;
+    transition: background .12s, border-color .12s;
+  }
+  .add-step:hover {
+    background: rgba(65, 142, 160, 0.06);
+    border-color: var(--azur-mid);
+    border-style: solid;
+  }
+  body.role-writer .add-step { display: none; }
+
+  /* Writer-mode: keep numbers, no check affordance */
+  body.role-writer .step .num {
+    cursor: default;
+  }
+
+  /* ===================== Acronyms ===================== */
+  .acronym-meta {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-bottom: 18px;
+  }
+  .acronym-meta .count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .acronym-meta .search {
+    display: flex; align-items: center; gap: 8px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    width: 280px;
+  }
+  .acronym-meta .search input {
+    border: 0; outline: 0; background: transparent;
+    font-family: inherit; font-size: 14px;
+    color: var(--azur-deep);
+    width: 100%;
+  }
+  .acronym-meta .search input::placeholder { color: var(--muted); }
+  .acronym-meta .search svg { flex: 0 0 auto; color: var(--muted); }
+
+  /* Auto-complete toggle row */
+  .pref-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    padding: 18px 18px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--bg);
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .pref-row .lbl { font-size: 15px; font-weight: 500; color: var(--azur-deep); }
+  .pref-row .desc { font-size: 13.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; max-width: 560px; }
+  .toggle {
+    width: 40px; height: 22px;
+    border-radius: 100px;
+    background: rgba(35, 87, 112, 0.22);
+    position: relative;
+    cursor: pointer; border: 0; padding: 0;
+    transition: background .2s var(--ease-out, ease);
+  }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    background: var(--bg);
+    border-radius: 50%;
+    transition: transform .2s var(--ease-out, ease);
+    box-shadow: 0 1px 3px rgba(35, 87, 112, 0.18);
+  }
+  .toggle.on { background: var(--azur-deep); }
+  .toggle.on::after { transform: translateX(18px); }
+  body.role-writer .toggle { pointer-events: none; opacity: 0.6; }
+
+  /* Acronyms table */
+  .table-wrap {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  table.acros {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.acros thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    white-space: nowrap;
+  }
+  table.acros thead th.section-letter {
+    width: 32px;
+  }
+  table.acros thead th.actions-col { width: 50px; }
+
+  table.acros tbody tr {
+    border-bottom: 1px solid var(--rule);
+    transition: background .12s;
+  }
+  table.acros tbody tr:last-child { border-bottom: 0; }
+  table.acros tbody tr:hover { background: rgba(35,87,112,0.035); }
+  body.role-writer table.acros tbody tr:hover { background: transparent; }
+
+  table.acros td {
+    padding: 12px 18px;
+    vertical-align: middle;
+  }
+  /* Acronym column: distinct + column rule aligned with add-row */
+  table.acros thead th:first-child,
+  table.acros td.acronym {
+    width: 200px;
+    border-right: 1px solid var(--rule);
+    background: rgba(35, 87, 112, 0.035);
+  }
+  table.acros td.letter {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--azur-mid);
+    font-weight: 500;
+    text-align: center;
+    border-right: 1px solid var(--rule);
+    width: 32px;
+    background: rgba(35,87,112,0.025);
+  }
+  table.acros td.acronym .a-input,
+  table.acros td.definition .d-input {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    color: var(--azur-deep);
+    outline: none;
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background .12s, box-shadow .12s;
+  }
+  table.acros td.acronym .a-input {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--azur-deep);
+    text-transform: uppercase;
+  }
+  table.acros td.definition .d-input {
+    font-size: 14.5px;
+    line-height: 1.4;
+    color: rgba(35, 87, 112, 0.78);
+  }
+  table.acros td .a-input:hover,
+  table.acros td .d-input:hover { background: rgba(35,87,112,0.04); }
+  table.acros td .a-input:focus,
+  table.acros td .d-input:focus {
+    background: var(--bg);
+    box-shadow: 0 0 0 2px rgba(65,142,160,0.25);
+  }
+  body.role-writer table.acros td .a-input,
+  body.role-writer table.acros td .d-input {
+    cursor: default;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  table.acros td.act {
+    text-align: right;
+    width: 50px;
+  }
+  table.acros td.act .icon-btn { opacity: 0; }
+  table.acros tbody tr:hover td.act .icon-btn { opacity: 0.8; }
+  body.role-writer table.acros td.act .icon-btn { display: none; }
+  /* Add-acronym row */
+  .add-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 50px;
+    align-items: stretch;
+    border-top: 1px solid var(--rule);
+    background: rgba(243, 233, 225, 0.22);
+  }
+  .add-row .cell {
+    padding: 10px 18px;
+    border-right: 1px solid var(--rule);
+  }
+  .add-row .cell input {
+    width: 100%;
+    height: 36px;
+    border: 1px solid transparent;
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 0 10px;
+    font-family: inherit;
+    color: var(--azur-deep);
+    outline: none;
+    transition: border-color .12s, box-shadow .12s;
+  }
+  .add-row .cell.acro input {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--azur-deep);
+    text-transform: uppercase;
+  }
+  .add-row .cell input:focus {
+    border-color: var(--azur-mid);
+    box-shadow: 0 0 0 3px rgba(65,142,160,0.15);
+  }
+  .add-row .add-btn {
+    width: 44px;
+    border: 0;
+    background: transparent;
+    color: var(--azur-mid);
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: background .12s, color .12s;
+  }
+  .add-row .add-btn:hover { background: rgba(65, 142, 160, 0.1); color: var(--azur-deep); }
+  .add-row .add-btn:disabled { opacity: 0.3; cursor: not-allowed; background: transparent; }
+  /* Writers can still add an acronym; they just can't edit or delete existing ones */
+
+  .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty-state h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--azur-deep);
+    margin-bottom: 6px;
+  }
+
+  /* ===================== Locked tab dialog ===================== */
+  .lock-toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--azur-deep);
+    color: var(--sand);
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s, transform .2s;
+    z-index: 100;
+    box-shadow: 0 6px 24px rgba(35,87,112,0.2);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .lock-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ===================== Footer mark ===================== */
+  .foot-note {
+    text-align: center;
+    padding-top: 56px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-faint);
+  }
+
+  /* Responsive */
+  @media (max-width: 780px) {
+    .page { padding: 32px 20px 64px; }
+    .page-head h1 { font-size: 40px; }
+    .panel-head { flex-direction: column; align-items: flex-start; }
+    .checklist-switch { width: 100%; }
+    .checklist-switch button { flex: 1; justify-content: center; }
+    .add-row { grid-template-columns: 1fr 44px; }
+    .add-row .cell.def { grid-column: 1 / 2; border-top: 1px solid var(--rule); }
+    table.acros td.acronym { width: 120px; }
+  }
+</style>
+
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- ===================== Sidebar ===================== -->
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+        <div class="name">Azur <em>Note</em></div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu" style="border-style: none">
+        <i data-lucide="x" width="14" height="14" stroke-width="2.25"></i>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="group-label">Workspace</span>
+      <a class="nav-item" href="index.html" data-nav="dashboard">
+        <span class="icon"><i data-lucide="layout-grid" width="18" height="18" stroke-width="2.25"></i></span>
+        Dashboard
+      </a>
+      <a class="nav-item" href="projects.html" data-nav="projects">
+        <span class="icon"><i data-lucide="folder" width="18" height="18" stroke-width="2.25"></i></span>
+        Projects
+        <span class="badge">24</span>
+      </a>
+      <a class="nav-item" href="Clients.html" data-nav="clients">
+        <span class="icon"><i data-lucide="briefcase" width="18" height="18" stroke-width="2.25"></i></span>
+        Clients
+        <span class="badge">12</span>
+      </a>
+      <button class="nav-item" data-nav="members">
+        <span class="icon"><i data-lucide="users-round" width="18" height="18" stroke-width="2.25"></i></span>
+        Members
+        <span class="badge">8</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="nav-item" data-nav="help">
+        <span class="icon"><i data-lucide="help-circle" width="18" height="18" stroke-width="2.25"></i></span>
+        Help &amp; feedback
+      </button>
+      <a class="nav-item active" href="Settings.html" data-nav="settings" aria-current="page">
+        <span class="icon"><i data-lucide="settings" width="18" height="18" stroke-width="2.25"></i></span>
+        Settings
+      </a>
+    </div>
+  </aside>
+
+  <!-- ===================== Top nav ===================== -->
+  <nav class="topbar" aria-label="Primary">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <i data-lucide="menu" width="16" height="12" stroke-width="2.25"></i>
+    </button>
+
+    <a class="brand" href="index.html" aria-label="Go to dashboard" style="color: inherit; text-decoration: none;">
+      <div class="mark"><span class="logo" aria-label="Azur Note" role="img"></span></div>
+      <div class="name">Azur <em>Note</em></div>
+    </a>
+
+    <div class="spacer"></div>
+    <div class="divider"></div>
+
+    <div class="user-wrap" id="userWrap">
+      <a class="user-trigger" href="Profile.html" aria-label="Open profile">
+        <div class="who">
+          <div class="name">A. Moreau</div>
+          <div class="role">Medical writer</div>
+        </div>
+        <div class="avatar">A</div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===================== Page ===================== -->
+  <main class="page">
+
+    <div class="eyebrow">Workspace</div>
+    <div class="page-head">
+      <h1>Settings<em>.</em></h1>
+    </div>
+    <p class="page-sub">Workspace-wide preferences for project managers and writers.</p>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Settings tabs">
+      <button class="tab active" role="tab" data-tab="checklists" aria-selected="true">
+        <span class="ico"><i data-lucide="list-checks" width="16" height="16" stroke-width="2"></i></span>
+        Checklists
+      </button>
+      <button class="tab" role="tab" data-tab="acronyms" aria-selected="false">
+        <span class="ico"><i data-lucide="book-marked" width="16" height="16" stroke-width="2"></i></span>
+        Acronyms
+      </button>
+      <button class="tab" role="tab" data-tab="permissions" aria-disabled="true" aria-selected="false">
+        <span class="ico"><i data-lucide="shield-check" width="16" height="16" stroke-width="2"></i></span>
+        Permissions &amp; roles
+      </button>
+    </div>
+
+    <!-- =================================================== -->
+    <!-- Checklists panel                                    -->
+    <!-- =================================================== -->
+    <section class="panel active" id="panel-checklists" role="tabpanel">
+
+      <div class="panel-head">
+        <div class="titles">
+          <h2>Project checklists<em>.</em></h2>
+        </div>
+      </div>
+
+      <div class="readonly-banner">
+        <span class="ico"><i data-lucide="eye" width="16" height="16" stroke-width="2"></i></span>
+        <span>You are viewing as a writer. The list is maintained by your project manager.</span>
+      </div>
+
+      <!-- Which checklist -->
+      <div class="checklist-switch" role="tablist" aria-label="Checklist phase">
+        <button class="on" data-cl="draft" role="tab">
+          <i data-lucide="file-edit" width="15" height="15" stroke-width="2.25"></i>
+          Before first draft
+          <span class="count" id="count-draft">8</span>
+        </button>
+        <button data-cl="final" role="tab">
+          <i data-lucide="send" width="15" height="15" stroke-width="2.25"></i>
+          Before publishing final version
+          <span class="count" id="count-final">8</span>
+        </button>
+      </div>
+
+      <!-- Checklist: draft -->
+      <div class="checklist active" data-cl="draft">
+        <div class="checklist-meta">
+          <div class="name">Checklist before first draft<em>.</em></div>
+        </div>
+        <ul class="steps" id="steps-draft"></ul>
+        <button class="add-step" data-add="draft">
+          <i data-lucide="plus" width="14" height="14" stroke-width="2.5"></i>
+          Add step
+        </button>
+      </div>
+
+      <!-- Checklist: final -->
+      <div class="checklist" data-cl="final">
+        <div class="checklist-meta">
+          <div class="name">Checklist before publishing final version<em>.</em></div>
+        </div>
+        <ul class="steps" id="steps-final"></ul>
+        <button class="add-step" data-add="final">
+          <i data-lucide="plus" width="14" height="14" stroke-width="2.5"></i>
+          Add step
+        </button>
+      </div>
+
+    </section>
+
+    <!-- =================================================== -->
+    <!-- Acronyms panel                                      -->
+    <!-- =================================================== -->
+    <section class="panel" id="panel-acronyms" role="tabpanel">
+
+      <div class="panel-head">
+        <div class="titles">
+          <h2>Acronym library<em>.</em></h2>
+        </div>
+      </div>
+
+      <!-- Auto-complete preference -->
+      <div class="pref-row">
+        <div>
+          <div class="lbl">Automatically complete the library with acronyms added by editors</div>
+        </div>
+        <button class="toggle on" id="autocomplete" aria-pressed="true" aria-label="Toggle auto-complete"></button>
+      </div>
+
+      <div class="acronym-meta">
+        <div class="count"><span id="acroCount">15</span> entries · alphabetical</div>
+        <div class="search">
+          <i data-lucide="search" width="14" height="14" stroke-width="2"></i>
+          <input type="text" placeholder="Search acronym or definition" id="acroSearch" />
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="acros">
+          <thead>
+            <tr>
+              <th>Acronym</th>
+              <th>Definition</th>
+              <th class="actions-col"></th>
+            </tr>
+          </thead>
+          <tbody id="acroBody"></tbody>
+        </table>
+
+        <!-- Add row (always visible at bottom) -->
+        <div class="add-row" id="addRow">
+          <div class="cell acro">
+            <input type="text" id="newAcro" placeholder="ACRONYM" maxlength="20" autocomplete="off" />
+          </div>
+          <div class="cell def">
+            <input type="text" id="newDef" placeholder="Definition or full term" autocomplete="off" />
+          </div>
+          <button class="add-btn" id="addAcroBtn" aria-label="Add acronym" disabled>
+            <i data-lucide="check" width="16" height="16" stroke-width="2.5"></i>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =================================================== -->
+    <!-- Permissions & roles panel (intentionally empty)     -->
+    <!-- =================================================== -->
+    <section class="panel" id="panel-permissions" role="tabpanel" aria-hidden="true">
+      <!-- Tab is disabled; this panel never shows -->
+    </section>
+
+    <div class="foot-note">Workspace settings · Azur Health Science</div>
+  </main>
+
+  <div class="lock-toast" id="lockToast">
+    <i data-lucide="lock" width="14" height="14" stroke-width="2.25"></i>
+    <span>Permissions &amp; roles — coming soon</span>
+  </div>
+
+  <script>
+    // ===== Initial data =====
+    const DRAFT_STEPS = [
+      "Confirm the document type and template version with the project manager",
+      "Read the protocol synopsis and confirm the study objectives",
+      "Verify that the latest approved Statistical Analysis Plan is available",
+      "Locate the most recent tables, listings, and figures package",
+      "Check that the indication and population align with the target label",
+      "Review the previous version of the document if applicable",
+      "Confirm the authoring style guide and house writing conventions",
+      "Set up the Huddle folder structure following the naming convention"
+    ];
+    const FINAL_STEPS = [
+      "All tables, listings, and figures match the final Statistical Analysis Plan",
+      "Cross-references, hyperlinks, and table of contents updated",
+      "Acronym list complete and consistent with the body of the document",
+      "All tracked changes resolved and comment threads closed",
+      "QC checklist signed off by the assigned QC reviewer",
+      "Sponsor comments addressed and the comment log archived",
+      "Reference list verified against PubMed identifiers and DOIs",
+      "Final saved as version 1.0 in Huddle; earlier drafts moved to Archive"
+    ];
+
+    const ACRONYMS = [
+      ["AE",   "Adverse Event"],
+      ["CMC",  "Chemistry, Manufacturing, and Controls"],
+      ["CSR",  "Clinical Study Report"],
+      ["eCTD", "Electronic Common Technical Document"],
+      ["FDA",  "Food and Drug Administration"],
+      ["IB",   "Investigator's Brochure"],
+      ["ICH",  "International Council for Harmonisation"],
+      ["MAH",  "Marketing Authorisation Holder"],
+      ["PK",   "Pharmacokinetics"],
+      ["PRO",  "Patient-Reported Outcome"],
+      ["QC",   "Quality Control"],
+      ["SAE",  "Serious Adverse Event"],
+      ["SAP",  "Statistical Analysis Plan"],
+      ["TLF",  "Tables, Listings, and Figures"],
+      ["TPP",  "Target Product Profile"]
+    ];
+
+    // Persisted state
+    const LS_KEY = 'azur.settings.v1';
+    const state = loadState();
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return {
+        draft: DRAFT_STEPS.slice(),
+        final: FINAL_STEPS.slice(),
+        acronyms: ACRONYMS.map(a => [a[0], a[1]]),
+        autocomplete: true,
+        activeTab: 'checklists',
+        activeChecklist: 'draft',
+        writerChecks: { draft: [], final: [] }
+      };
+    }
+    function saveState() {
+      try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    // ===== Sidebar =====
+    const sidebar = document.getElementById('sidebar');
+    const scrim = document.getElementById('sidebarScrim');
+    function openSidebar() { sidebar.classList.add('open'); scrim.classList.add('open'); }
+    function closeSidebar() { sidebar.classList.remove('open'); scrim.classList.remove('open'); }
+    document.getElementById('menuBtn').addEventListener('click', openSidebar);
+    document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+    scrim.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+
+    // ===== Tabs =====
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel');
+    function setTab(name) {
+      tabs.forEach(t => {
+        const on = t.dataset.tab === name;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+      state.activeTab = name;
+      saveState();
+      // Re-measure textareas that may have rendered while hidden (scrollHeight = 0)
+      if (name === 'checklists') resizeVisibleTextareas();
+    }
+    function resizeVisibleTextareas() {
+      document.querySelectorAll('.checklist.active .step textarea').forEach(autoSize);
+    }
+    tabs.forEach(t => t.addEventListener('click', () => {
+      if (t.getAttribute('aria-disabled') === 'true') { showLockToast(); return; }
+      setTab(t.dataset.tab);
+    }));
+
+    function showLockToast() {
+      const tt = document.getElementById('lockToast');
+      tt.classList.add('show');
+      clearTimeout(tt._h);
+      tt._h = setTimeout(() => tt.classList.remove('show'), 1800);
+    }
+
+    // restore active tab
+    if (state.activeTab && state.activeTab !== 'permissions') setTab(state.activeTab);
+
+    // ===== Role preview (driven by Tweaks panel) =====
+    window.setRole = function(role) {
+      const writer = role === 'writer';
+      document.body.classList.toggle('role-writer', writer);
+      // Block edits on existing step textareas + acronym inputs without changing visuals
+      document.querySelectorAll('.step .text-input').forEach(ta => { ta.readOnly = writer; });
+      document.querySelectorAll('table.acros .a-input, table.acros .d-input').forEach(inp => { inp.readOnly = writer; });
+    };
+    window.setRole('manager');
+
+    // ===== Checklists =====
+    const checklists = document.querySelectorAll('.checklist');
+    const phaseBtns = document.querySelectorAll('.checklist-switch button');
+
+    function setChecklist(which) {
+      checklists.forEach(c => c.classList.toggle('active', c.dataset.cl === which));
+      phaseBtns.forEach(b => b.classList.toggle('on', b.dataset.cl === which));
+      state.activeChecklist = which;
+      saveState();
+      resizeVisibleTextareas();
+    }
+    phaseBtns.forEach(b => b.addEventListener('click', () => setChecklist(b.dataset.cl)));
+    setChecklist(state.activeChecklist || 'draft');
+
+    function renderChecklist(which) {
+      const ul = document.getElementById('steps-' + which);
+      const items = state[which];
+      ul.innerHTML = '';
+      items.forEach((text, i) => {
+        const li = document.createElement('li');
+        li.className = 'step';
+        li.dataset.idx = i;
+        li.innerHTML = `
+          <span class="grip" aria-hidden="true"><i data-lucide="grip-vertical" width="14" height="14" stroke-width="2"></i></span>
+          <span class="num" data-num>${i + 1}</span>
+          <textarea class="text-input" rows="1" data-text${isWriter() ? ' readonly' : ''}>${escapeHtml(text)}</textarea>
+          <span class="actions">
+            <button class="icon-btn" data-dup title="Duplicate"><i data-lucide="copy" width="14" height="14" stroke-width="2"></i></button>
+            <button class="icon-btn danger" data-del title="Delete"><i data-lucide="trash-2" width="14" height="14" stroke-width="2"></i></button>
+          </span>`;
+        ul.appendChild(li);
+      });
+      // Auto-size textareas
+      ul.querySelectorAll('textarea').forEach(autoSize);
+      document.getElementById('count-' + which).textContent = items.length;
+      if (window.lucide) lucide.createIcons();
+      bindStepEvents(ul, which);
+    }
+    function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function autoSize(ta) {
+      ta.style.height = 'auto';
+      ta.style.height = (ta.scrollHeight) + 'px';
+    }
+    const isWriter = () => document.body.classList.contains('role-writer');
+
+    function bindStepEvents(ul, which) {
+      ul.querySelectorAll('.step').forEach(li => {
+        const idx = +li.dataset.idx;
+        const ta = li.querySelector('[data-text]');
+        ta.addEventListener('input', () => {
+          autoSize(ta);
+          if (!isWriter()) {
+            state[which][idx] = ta.value;
+            saveState();
+          }
+        });
+        ta.addEventListener('blur', () => {
+          if (!isWriter() && ta.value.trim() === '') {
+            state[which].splice(idx, 1);
+            saveState();
+            renderChecklist(which);
+          }
+        });
+        ta.addEventListener('keydown', e => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (!isWriter()) addStepAt(which, idx + 1);
+          }
+        });
+        li.querySelector('[data-del]')?.addEventListener('click', () => {
+          state[which].splice(idx, 1);
+          saveState();
+          renderChecklist(which);
+        });
+        li.querySelector('[data-dup]')?.addEventListener('click', () => {
+          state[which].splice(idx + 1, 0, state[which][idx]);
+          saveState();
+          renderChecklist(which);
+        });
+
+        // Pointer-based vertical-only drag (manager only).
+        // Lifts the step and shifts siblings to show the drop target —
+        // motion is constrained to the Y axis.
+        const grip = li.querySelector('.grip');
+        grip.addEventListener('pointerdown', e => {
+          if (isWriter() || e.button !== 0) return;
+          e.preventDefault();
+          const siblings = [...ul.children];
+          const rects = siblings.map(s => s.getBoundingClientRect());
+          const startY = e.clientY;
+          const stepH = rects[idx].height + 1; // include border
+          let currentTargetIdx = idx;
+
+          li.classList.add('dragging');
+          siblings.forEach(s => { if (s !== li) s.classList.add('shifting'); });
+          document.body.style.cursor = 'grabbing';
+          document.body.style.userSelect = 'none';
+
+          function onMove(ev) {
+            const dy = ev.clientY - startY;
+            li.style.transform = `translateY(${dy}px)`;
+            // Determine current target index from the dragged center
+            const draggedCenter = rects[idx].top + rects[idx].height / 2 + dy;
+            let newIdx = idx;
+            for (let i = 0; i < rects.length; i++) {
+              if (i === idx) continue;
+              const c = rects[i].top + rects[i].height / 2;
+              if (i < idx && draggedCenter < c) { newIdx = i; break; }
+              if (i > idx && draggedCenter > c) newIdx = i;
+            }
+            if (newIdx !== currentTargetIdx) {
+              currentTargetIdx = newIdx;
+              // Shift siblings to make room
+              siblings.forEach((s, i) => {
+                if (s === li) return;
+                let shift = 0;
+                if (newIdx > idx && i > idx && i <= newIdx) shift = -stepH;
+                else if (newIdx < idx && i < idx && i >= newIdx) shift = stepH;
+                s.style.transform = `translateY(${shift}px)`;
+              });
+            }
+          }
+          function onUp() {
+            document.removeEventListener('pointermove', onMove);
+            document.removeEventListener('pointerup', onUp);
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            li.classList.remove('dragging');
+            li.style.transform = '';
+            siblings.forEach(s => { s.classList.remove('shifting'); s.style.transform = ''; });
+            if (currentTargetIdx !== idx) {
+              const arr = state[which];
+              const moved = arr.splice(idx, 1)[0];
+              arr.splice(currentTargetIdx, 0, moved);
+              saveState();
+              renderChecklist(which);
+            }
+          }
+          document.addEventListener('pointermove', onMove);
+          document.addEventListener('pointerup', onUp);
+        });
+      });
+    }
+
+    function addStepAt(which, pos) {
+      state[which].splice(pos, 0, '');
+      saveState();
+      renderChecklist(which);
+      // Focus the new step
+      requestAnimationFrame(() => {
+        const ul = document.getElementById('steps-' + which);
+        const ta = ul.children[pos]?.querySelector('textarea');
+        if (ta) ta.focus();
+      });
+    }
+    document.querySelectorAll('.add-step').forEach(b => {
+      b.addEventListener('click', () => {
+        const w = b.dataset.add;
+        addStepAt(w, state[w].length);
+      });
+    });
+
+    renderChecklist('draft');
+    renderChecklist('final');
+
+    // ===== Acronyms =====
+    function sortAcronyms() {
+      state.acronyms.sort((a, b) => a[0].localeCompare(b[0], undefined, { sensitivity: 'base' }));
+    }
+    function renderAcronyms() {
+      sortAcronyms();
+      const body = document.getElementById('acroBody');
+      const q = (document.getElementById('acroSearch').value || '').toLowerCase().trim();
+      body.innerHTML = '';
+      let visibleCount = 0;
+      state.acronyms.forEach((row, i) => {
+        const [acro, def] = row;
+        if (q && !acro.toLowerCase().includes(q) && !def.toLowerCase().includes(q)) return;
+        const tr = document.createElement('tr');
+        tr.dataset.idx = i;
+        tr.innerHTML = `
+          <td class="acronym"><input type="text" class="a-input" value="${escapeHtml(acro)}" data-field="acro"${document.body.classList.contains('role-writer') ? ' readonly' : ''} /></td>
+          <td class="definition"><input type="text" class="d-input" value="${escapeHtml(def)}" data-field="def"${document.body.classList.contains('role-writer') ? ' readonly' : ''} /></td>
+          <td class="act"><button class="icon-btn danger" data-del-acro title="Delete"><i data-lucide="trash-2" width="14" height="14" stroke-width="2"></i></button></td>`;
+        body.appendChild(tr);
+        visibleCount++;
+      });
+      document.getElementById('acroCount').textContent = state.acronyms.length;
+      if (window.lucide) lucide.createIcons();
+      bindAcroEvents();
+
+      if (visibleCount === 0 && q) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="3"><div class="empty-state"><h3>No matches</h3><p>No acronym contains "${escapeHtml(q)}"</p></div></td>`;
+        body.appendChild(tr);
+      }
+    }
+    function bindAcroEvents() {
+      document.querySelectorAll('#acroBody tr').forEach(tr => {
+        const idx = +tr.dataset.idx;
+        if (isNaN(idx)) return;
+        const inputs = tr.querySelectorAll('input');
+        inputs.forEach(inp => {
+          let savedVal = inp.value;
+          inp.addEventListener('focus', () => savedVal = inp.value);
+          inp.addEventListener('blur', () => {
+            if (document.body.classList.contains('role-writer')) return;
+            const field = inp.dataset.field;
+            const newVal = inp.value.trim();
+            if (newVal === savedVal.trim()) return;
+            if (newVal === '') { inp.value = savedVal; return; }
+            if (field === 'acro') state.acronyms[idx][0] = newVal.toUpperCase().replace(/\s+/g,'');
+            else state.acronyms[idx][1] = newVal;
+            saveState();
+            renderAcronyms();
+          });
+          inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') inp.blur();
+          });
+        });
+        tr.querySelector('[data-del-acro]')?.addEventListener('click', () => {
+          state.acronyms.splice(idx, 1);
+          saveState();
+          renderAcronyms();
+        });
+      });
+    }
+
+    // Add-row controls
+    const newAcro = document.getElementById('newAcro');
+    const newDef = document.getElementById('newDef');
+    const addBtn = document.getElementById('addAcroBtn');
+    function updateAddBtn() {
+      addBtn.disabled = !(newAcro.value.trim() && newDef.value.trim());
+    }
+    newAcro.addEventListener('input', () => {
+      newAcro.value = newAcro.value.toUpperCase().replace(/\s+/g, '');
+      updateAddBtn();
+    });
+    newDef.addEventListener('input', updateAddBtn);
+    function doAddAcro() {
+      const a = newAcro.value.trim();
+      const d = newDef.value.trim();
+      if (!a || !d) return;
+      // Prevent duplicate
+      if (state.acronyms.find(r => r[0].toLowerCase() === a.toLowerCase())) {
+        // Quick shake feedback
+        newAcro.style.boxShadow = '0 0 0 3px rgba(172, 40, 25, 0.18)';
+        setTimeout(() => newAcro.style.boxShadow = '', 700);
+        return;
+      }
+      state.acronyms.push([a, d]);
+      saveState();
+      newAcro.value = ''; newDef.value = ''; updateAddBtn();
+      renderAcronyms();
+      newAcro.focus();
+    }
+    addBtn.addEventListener('click', doAddAcro);
+    newDef.addEventListener('keydown', e => { if (e.key === 'Enter') doAddAcro(); });
+    newAcro.addEventListener('keydown', e => { if (e.key === 'Enter') newDef.focus(); });
+
+    document.getElementById('acroSearch').addEventListener('input', renderAcronyms);
+
+    // Auto-complete toggle
+    const autoToggle = document.getElementById('autocomplete');
+    function setAutoToggle(on) {
+      state.autocomplete = on;
+      autoToggle.classList.toggle('on', on);
+      autoToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+      saveState();
+    }
+    autoToggle.addEventListener('click', () => setAutoToggle(!state.autocomplete));
+    setAutoToggle(state.autocomplete !== false);
+
+    renderAcronyms();
+
+    // ===== Lucide init =====
+    if (window.lucide && window.lucide.createIcons) lucide.createIcons();
+  </script>
+
+  <!-- Tweaks panel -->
+  <div id="tweaks-root"></div>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "viewAs": "Manager"
+    }/*EDITMODE-END*/;
+    function TweaksApp() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useEffect(() => {
+        const role = t.viewAs === 'Writer' ? 'writer' : 'manager';
+        if (window.setRole) window.setRole(role);
+      }, [t.viewAs]);
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Preview" />
+          <TweakRadio label="View as" value={t.viewAs}
+            options={['Manager', 'Writer']}
+            onChange={(v) => setTweak('viewAs', v)} />
+        </TweaksPanel>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+  </script>
+
+
+  <!-- ===================== Persistent icon rail (collapsed sidebar) ===================== -->
+  <style id="__azur-rail">
+    :root { --rail-w: 76px; --rail-w-open: 280px; }
+    /* reserve the left gutter for the always-visible rail (topbar + content shift right);
+       when the sidebar expands, the whole page shifts further right and reflows into the
+       narrower remaining width — it pushes content rather than overlaying it. */
+    body {
+      padding-left: var(--rail-w);
+      transition: padding-left .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    body.nav-open { padding-left: var(--rail-w-open); }
+    /* the expanded sidebar sits flush against (not over) the content, so no scrim / dim */
+    .sidebar-scrim { display: none; }
+    /* the rail owns the olive-tree mark; the topbar wordmark + close-X + group label are dropped */
+    .topbar .brand { display: none; }
+    .sidebar-head .sidebar-close { display: none; }
+    .group-label { display: none; }
+    /* full-height topbar divider */
+    .topbar .divider { height: auto; align-self: stretch; }
+
+    /* rail: always visible, icon-only, expands to full sidebar when .open */
+    .sidebar {
+      top: 0; bottom: 0; left: 0;
+      width: var(--rail-w);
+      transform: none;
+      transition: width .24s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 30;
+      box-shadow: none;
+      border-right: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .sidebar.open {
+      width: var(--rail-w-open);
+      z-index: 50;
+      border-right: 1px solid var(--rule-strong);
+    }
+
+    /* head: centered mark when collapsed, full brand when open */
+    .sidebar-head {
+      height: 64px;
+      padding: 0 16px 0 19.5px;
+      flex: none;
+      justify-content: flex-start;
+      border-bottom: 1px solid var(--rule);
+    }
+    .sidebar-head .brand { gap: 12px; flex-wrap: nowrap; }
+    .sidebar-head .name { white-space: nowrap; }
+    .sidebar:not(.open) .sidebar-head .name { display: none; }
+    .sidebar.open .sidebar-head {
+      justify-content: flex-start;
+      padding: 0 16px 0 19.5px;
+    }
+    /* keep the icon column on the rail center axis (x~38) in both states */
+    .sidebar.open .sidebar-nav,
+    .sidebar.open .sidebar-foot { padding-left: 15px; }
+    .sidebar.open .rail-toggle { margin-left: 14px; }
+
+    /* nav: labels hidden, icons centered when collapsed */
+    .nav-item { white-space: nowrap; line-height: 1.2; }
+    /* normalize vertical padding so row pitch is identical collapsed vs open across all pages */
+    .sidebar .nav-item { padding-top: 10px; padding-bottom: 10px; }
+    .sidebar:not(.open) .sidebar-nav { padding: 14px 0 14px 14px; align-items: flex-start; }
+    .sidebar:not(.open) .sidebar-foot { padding: 10px 0 14px 14px; align-items: flex-start; }
+    .sidebar:not(.open) .nav-item {
+      width: 48px;
+      justify-content: center;
+      padding: 10px 0;
+      gap: 0;
+      font-size: 0;            /* hides the bare text node next to the icon */
+    }
+    .sidebar:not(.open) .nav-item .badge { display: none; }
+    .sidebar:not(.open) .nav-item.active::before { display: none; }
+    .sidebar:not(.open) .nav-item.active { background: rgba(35, 87, 112, 0.10); }
+    .sidebar:not(.open) .nav-item.active .icon { color: var(--azur-deep); }
+
+    /* opening control lives in the rail's foot; the topbar menu button is gone */
+    .topbar #menuBtn { display: none; }
+    .rail-toggle {
+      display: flex; align-items: center; gap: 12px;
+      margin: 6px 12px 14px;
+      padding: 11px 14px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--azur-deep);
+      font-family: inherit; font-size: 15px; font-weight: 500;
+      cursor: pointer; white-space: nowrap; text-align: left;
+    }
+    .rail-toggle:hover { background: var(--hover); }
+    .rail-toggle .icon {
+      width: 18px; height: 18px;
+      display: inline-flex; align-items: center;
+      color: var(--azur-mid);
+    }
+    .sidebar:not(.open) .rail-toggle {
+      width: 48px; margin: 6px 0 14px 14px; align-self: flex-start;
+      justify-content: center; padding: 11px 0; gap: 0; font-size: 0;
+    }
+    .rail-sep { height: 1px; background: var(--rule); margin: 0 0 6px; }
+  </style>
+  <script>
+  (function () {
+    var sb = document.getElementById('sidebar');
+    if (!sb || document.getElementById('railToggle')) return;
+    var btn = document.createElement('button');
+    btn.id = 'railToggle';
+    btn.className = 'rail-toggle';
+    btn.type = 'button';
+    function render() {
+      var open = sb.classList.contains('open');
+      btn.setAttribute('aria-label', open ? 'Collapse menu' : 'Open menu');
+      btn.innerHTML = '<span class="icon"><i data-lucide="' + (open ? 'chevrons-left' : 'chevrons-right') +
+        '" width="18" height="18" stroke-width="2.25"></i></span><span class="rt-label">Collapse menu</span>';
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+    }
+    function sync() {
+      document.body.classList.toggle('nav-open', sb.classList.contains('open'));
+      render();
+    }
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      sb.classList.toggle('open');
+    });
+    var sep = document.createElement('div');
+    sep.className = 'rail-sep';
+    sb.appendChild(sep);
+    sb.appendChild(btn);
+    new MutationObserver(sync).observe(sb, { attributes: true, attributeFilter: ['class'] });
+    sync();
+    window.addEventListener('load', render);
+  })();
+  </script>
+</body>
+</html>
